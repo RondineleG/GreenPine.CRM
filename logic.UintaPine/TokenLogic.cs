@@ -4,6 +4,7 @@ using JWT.Serializers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
+using model.UintaPine.Data;
 using model.UintaPine.Utility;
 using Newtonsoft.Json;
 using System;

@@ -1,4 +1,5 @@
-﻿using model.damn;
+﻿using model.UintaPine.Data;
+using model.UintaPine.Utility;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 
@@ -33,13 +34,9 @@ namespace data.UintaPine
 
             //Link the accessible collections to actual DB collections
             Users = Database.GetCollection<User>("users");
-            Todos = Database.GetCollection<Todo>("todos");
-            Pings = Database.GetCollection<Ping>("pings");
         }
 
         //Define the collections which are accessible
         public IMongoCollection<User> Users { get; set; }
-        public IMongoCollection<Todo> Todos { get; set; }
-        public IMongoCollection<Ping> Pings { get; set; }
     }
 }

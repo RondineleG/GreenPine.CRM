@@ -1,5 +1,8 @@
-﻿using data.damn;
-using model.damn;
+﻿using data.UintaPine;
+using model.UintaPine.Api;
+using model.UintaPine.Data;
+using model.UintaPine.ExtensionMethods;
+using model.UintaPine.Utility;
 using MongoDB.Driver;
 using System;
 using System.Linq;
@@ -11,11 +14,11 @@ namespace logic.UintaPine
     public class UserLogic
     {
         private MongoContext _db { get; set; }
-        private HasherLogic _hasherHelper { get; set; }
-        public UserLogic(MongoContext context, HasherLogic hasherHelper)
+        private UtilityLogic _utilityLogic { get; set; }
+        public UserLogic(MongoContext context, UtilityLogic utilityLogic)
         {
             _db = context;
-            _hasherHelper = hasherHelper;
+            _utilityLogic = utilityLogic;
         }
 
         /// <summary>
@@ -23,13 +26,13 @@ namespace logic.UintaPine
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        async public Task<User> GetUserByIdAsync(string id)
+        async public Task<UserSlim> GetUserByIdAsync(string id)
         {
             User user = await _db.Users.Find(u => u.Id == id).FirstOrDefaultAsync();
             if (user != null)
-                return user;
+                return user.ToUserSlim();
             else
-                return default(User);
+                return default(UserSlim);
         }
 
         /// <summary>
@@ -37,13 +40,13 @@ namespace logic.UintaPine
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-        async public Task<User> GetUserByEmailAsync(string email)
+        async public Task<UserSlim> GetUserByEmailAsync(string email)
         {
             User user = await _db.Users.Find(u => u.Email == email).FirstOrDefaultAsync();
             if (user != null)
-                return user;
+                return user.ToUserSlim();
             else
-                return default(User);
+                return default(UserSlim);
         }
 
         /// <summary>
@@ -72,21 +75,8 @@ namespace logic.UintaPine
             await _db.Users.UpdateOneAsync(u => u.Id == id, update);
         }
 
-        public UserSlim UserToUserSlim(User user)
-        {
-            return new UserSlim()
-            {
-                Id = user.Id,
-                Email = user.Email,
-                Name = user.Name,
-                LastSignin = user.LastSignin,
-                Created = user.Created,
-                Updated = user.Updated,
-                Roles = user.Roles
-            };
-        }
 
-        async public Task<UserValidationResponse> ValidateUserIdentityAsync(string username, string password)
+        async public Task<UserValidation> ValidateUserIdentityAsync(string username, string password)
         {
             if (username != null)
                 username = username.ToLower();
@@ -94,7 +84,7 @@ namespace logic.UintaPine
 
             if (user == null)
             {
-                return new UserValidationResponse()
+                return new UserValidation()
                 {
                     Code = UserValidationResponseCode.Invalid
                 };
@@ -119,13 +109,13 @@ namespace logic.UintaPine
                     var updateLockoutDate = Builders<User>.Update.Set(u => u.LockoutDateTime, user.LockoutDateTime);
                     await _db.Users.UpdateOneAsync(u => u.Id == user.Id, updateLockoutDate);
 
-                    return new UserValidationResponse()
+                    return new UserValidation()
                     {
                         Code = UserValidationResponseCode.LockedOut
                     };
                 }
 
-                return new UserValidationResponse()
+                return new UserValidation()
                 {
                     Code = UserValidationResponseCode.Invalid
                 };
@@ -137,16 +127,16 @@ namespace logic.UintaPine
                     user.LockoutCount = 0;
                     var updateLockoutCount = Builders<User>.Update.Set(u => u.LockoutCount, user.LockoutCount).Set(u => u.LockoutDateTime, null);
                     await _db.Users.UpdateOneAsync(u => u.Id == user.Id, updateLockoutCount);
-                    return new UserValidationResponse()
+                    return new UserValidation()
                     {
                         Code = UserValidationResponseCode.Validated,
-                        User = user
+                        User = user.ToUserSlim()
                     };
                 }
 
                 else if (user.LockoutCount >= 10 && user.LockoutDateTime > DateTime.UtcNow.Subtract(new TimeSpan(0, 30, 0)))
                 {
-                    return new UserValidationResponse()
+                    return new UserValidation()
                     {
                         Code = UserValidationResponseCode.LockedOut
                     };
@@ -159,10 +149,10 @@ namespace logic.UintaPine
                         var updateLockoutCount = Builders<User>.Update.Set(u => u.LockoutCount, user.LockoutCount).Set(u => u.LockoutDateTime, null);
                         await _db.Users.UpdateOneAsync(u => u.Id == user.Id, updateLockoutCount);
                     }
-                    return new UserValidationResponse()
+                    return new UserValidation()
                     {
                         Code = UserValidationResponseCode.Validated,
-                        User = user
+                        User = user.ToUserSlim()
                     };
                 }
             }
@@ -188,7 +178,7 @@ namespace logic.UintaPine
         /// <returns></returns>
         public bool PasswordMatch(User user, string password)
         {
-            string hash = _hasherHelper.GetHash(password + user.Salt);
+            string hash = _utilityLogic.GetHash(password + user.Salt);
 
             if (user.Password == hash)
                 return true;
@@ -282,69 +272,14 @@ namespace logic.UintaPine
             }
             return default(User);
         }
-
-        async public Task<string> GetActivationTokenAsync(User user)
-        {
-            if (user.ActivationToken != null && user.ActivationTokenExpiration > DateTime.Now.ToUniversalTime())
-                return user.ActivationToken;
-            else
-            {
-                user.ActivationToken = Guid.NewGuid().ToString();
-                user.ActivationTokenExpiration = DateTime.Now.ToUniversalTime().AddDays(2);
-                var update = Builders<User>.Update
-                    .Set(u => u.ActivationToken, user.ActivationToken)
-                    .Set(u => u.ActivationTokenExpiration, user.ActivationTokenExpiration);
-
-                await _db.Users.UpdateOneAsync(u => u.Id == user.Id, update);
-                return user.ActivationToken;
-            }
-        }
-
-        async public Task<User> ValidateActivationToken(string token)
-        {
-            User user = await _db.Users.Find(u => u.ActivationToken == token).FirstOrDefaultAsync();
-            if (user != null && user.ActivationToken == token && user.ActivationTokenExpiration >= DateTime.Now.ToUniversalTime())
-            {
-                var update = Builders<User>.Update
-                    .Set(u => u.ActivationToken, null)
-                    .Set(u => u.ActivationTokenExpiration, null);
-
-                await _db.Users.UpdateOneAsync(u => u.Id == user.Id, update);
-                return user;
-            }
-
-            if (user != null)
-            {
-                var cleanUp = Builders<User>.Update
-                    .Set(u => u.ActivationToken, null)
-                    .Set(u => u.ActivationTokenExpiration, null);
-
-                //await _db.Users.UpdateOneAsync(u => u.Id == user.Id, cleanUp);
-            }
-            return default(User);
-        }
-
-        async public Task ActivateUser(User user)
-        {
-            var update = Builders<User>.Update
-                .Set(u => u.ActivationToken, null)
-                .Set(u => u.ActivationTokenExpiration, null)
-                .Set(u => u.EmailValidated, true);
-
-            await _db.Users.UpdateOneAsync(u => u.Id == user.Id, update);
-        }
-
         async public Task UpdateUserPasswordByUserIdAsync(string userId, string password)
         {
             string newSalt = CreatUserSalt();
-            string newPasswordHash = _hasherHelper.GetHash(password + newSalt);
+            string newPasswordHash = _utilityLogic.GetHash(password + newSalt);
 
             var updatePasswordAndSalt = Builders<User>.Update
                 .Set(u => u.Salt, newSalt)
-                .Set(u => u.Password, newPasswordHash)
-                .Set(u => u.ActivationToken, null)
-                .Set(u => u.ActivationTokenExpiration, null)
-                .Set(u => u.EmailValidated, true);
+                .Set(u => u.Password, newPasswordHash);
 
             await _db.Users.UpdateOneAsync(u => u.Id == userId, updatePasswordAndSalt);
         }
