@@ -24,19 +24,19 @@ namespace app.UintaPine.Logic
             var result = await _client.GetAsync("api/v1/ping");
         }
 
-        public async Task RegisterUser(User user)
-        {
-            await _client.PostJsonAsync("api/v1/user", user);
-        }
-        public async Task AuthenticateUser(string username, string password)
-        {
-            Authenticate content = new Authenticate()
-            {
-                Email = username,
-                Password = password
-            };
+        //public async Task RegisterUser(User user)
+        //{
+        //    await _client.PostJsonAsync("api/v1/user", user);
+        //}
+        //public async Task AuthenticateUser(string username, string password)
+        //{
+        //    Authenticate content = new Authenticate()
+        //    {
+        //        Email = username,
+        //        Password = password
+        //    };
 
-            await _client.PostJsonAsync("api/v1/authenticate", content);
-        }
+        //    await _client.PostJsonAsync("api/v1/authenticate", content);
+        //}
     }
 }

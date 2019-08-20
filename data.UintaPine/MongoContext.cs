@@ -34,9 +34,11 @@ namespace data.UintaPine
 
             //Link the accessible collections to actual DB collections
             Users = Database.GetCollection<User>("users");
+            Pings = Database.GetCollection<Ping>("pings");
         }
 
         //Define the collections which are accessible
         public IMongoCollection<User> Users { get; set; }
+        public IMongoCollection<Ping> Pings { get; set; }
     }
 }
