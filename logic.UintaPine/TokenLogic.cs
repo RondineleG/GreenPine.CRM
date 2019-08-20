@@ -4,6 +4,7 @@ using JWT.Serializers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
+using model.UintaPine.Api;
 using model.UintaPine.Data;
 using model.UintaPine.Utility;
 using Newtonsoft.Json;
@@ -50,7 +51,7 @@ namespace logic.UintaPine
 			return recoveryToken;
 		}
 
-		async public Task<string> BuildJwtAuthorizationToken(User user, TokenProviderOptions options)
+		async public Task<string> BuildJwtAuthorizationToken(UserSlim user, TokenProviderOptions options)
 		{
 			var now = DateTime.UtcNow;
 			// Specifically add the jti (nonce), iat (issued timestamp), and sub (subject/user) claims.

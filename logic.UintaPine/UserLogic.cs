@@ -26,13 +26,22 @@ namespace logic.UintaPine
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        async public Task<UserSlim> GetUserByIdAsync(string id)
+        async public Task<UserSlim> GetUserSlimByIdAsync(string id)
         {
             User user = await _db.Users.Find(u => u.Id == id).FirstOrDefaultAsync();
             if (user != null)
                 return user.ToUserSlim();
             else
                 return default(UserSlim);
+        }
+
+        async internal Task<User> GetUserByIdAsync(string id)
+        {
+            User user = await _db.Users.Find(u => u.Id == id).FirstOrDefaultAsync();
+            if (user != null)
+                return user;
+            else
+                return default(User);
         }
 
         /// <summary>
@@ -54,29 +63,33 @@ namespace logic.UintaPine
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        async public Task<bool> CreateUserAsync(User user)
+        async public Task<UserSlim> CreateUserAsync(string email, string password)
         {
-            if (await GetUserByEmailAsync(user.Email) != null) //User email address must be unique
-                return false;
-            else if (!IsValidPassword(user.Password)) //User password must meet complexity requirements
-                return false;
+            if (await GetUserByEmailAsync(email) != null) //User email address must be unique
+                return default(UserSlim);
+            else if (!IsValidPassword(password)) //User password must meet complexity requirements
+                return default(UserSlim);
+
+            User user = new User();
+            user.Email = email.ToLower();
+            user.Salt = CreatUserSalt();
+            user.Password = _utilityLogic.GetHash(password + user.Salt);
 
             await _db.Users.InsertOneAsync(user);
 
-            return true;
+            return user.ToUserSlim();
         }
 
-        async public Task UpdateUserAsync(string id, string email, string name)
+        async public Task UpdateUserAsync(string id, string email)
         {
             var update = Builders<User>.Update
-                                .Set(u => u.Email, email)
-                                .Set(u => u.Name, name);
+                                .Set(u => u.Email, email);
 
             await _db.Users.UpdateOneAsync(u => u.Id == id, update);
         }
 
 
-        async public Task<UserValidation> ValidateUserIdentityAsync(string username, string password)
+        async public Task<UserValidation> ValidateUserAndUpdateIdentityAsync(string username, string password)
         {
             if (username != null)
                 username = username.ToLower();
@@ -158,8 +171,6 @@ namespace logic.UintaPine
             }
         }
 
-
-
         /// <summary>
         /// Test password for complexity 
         /// </summary>
@@ -176,7 +187,12 @@ namespace logic.UintaPine
         /// <param name="user"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public bool PasswordMatch(User user, string password)
+        async public Task<bool> PasswordMatch(string userId, string password)
+        {
+            User user = await GetUserByIdAsync(userId);
+            return PasswordMatch(user, password);
+        }
+        internal bool PasswordMatch(User user, string password)
         {
             string hash = _utilityLogic.GetHash(password + user.Salt);
 
@@ -203,37 +219,41 @@ namespace logic.UintaPine
             return Convert.ToBase64String(salt); ;
         }
 
-        async public Task UserSetLastSignInAsync(User user)
+        async public Task UserSetLastSignInAsync(string userId)
         {
             var lastSignIn = Builders<User>.Update.Set(u => u.LastSignin, DateTime.UtcNow);
-            await _db.Users.UpdateOneAsync(u => u.Id == user.Id, lastSignIn);
+            await _db.Users.UpdateOneAsync(u => u.Id == userId, lastSignIn);
         }
 
-        async public Task ChangePasswordAsync(User user, string newSalt, string newPasswordHash)
+        async public Task ChangePasswordAsync(string userId, string newSalt, string newPasswordHash)
         {
             var updatePasswordAndSalt = Builders<User>.Update
                                 .Set(u => u.Salt, newSalt)
                                 .Set(u => u.Password, newPasswordHash);
 
-            await _db.Users.UpdateOneAsync(u => u.Id == user.Id, updatePasswordAndSalt);
+            await _db.Users.UpdateOneAsync(u => u.Id == userId, updatePasswordAndSalt);
         }
 
-        async public Task ResetPasswordAsync(User user, string newSalt, string newPasswordHash)
+        async public Task ResetPasswordAsync(string userId, string newSalt, string newPasswordHash)
         {
             var updatePasswordAndSalt = Builders<User>.Update
                                 .Set(u => u.Salt, newSalt)
                                 .Set(u => u.Password, newPasswordHash);
 
-            await _db.Users.UpdateOneAsync(u => u.Id == user.Id, updatePasswordAndSalt);
+            await _db.Users.UpdateOneAsync(u => u.Id == userId, updatePasswordAndSalt);
         }
 
-        async public Task DeleteUserAsync(User user)
+        async public Task DeleteUserAsync(string userId)
         {
-            await _db.Users.DeleteOneAsync(u => u.Id == user.Id);
+            await _db.Users.DeleteOneAsync(u => u.Id == userId);
         }
 
-        async public Task<string> GetRecoveryTokenAsync(User user)
+        async public Task<string> GetRecoveryTokenAsync(string userId)
         {
+            User user = await GetUserByIdAsync(userId);
+            if (user == null)
+                return default(string);
+
             if (user.RecoveryToken != null && user.RecoveryTokenExpiration > DateTime.Now.ToUniversalTime())
                 return user.RecoveryToken;
             else
@@ -249,7 +269,7 @@ namespace logic.UintaPine
             }
         }
 
-        async public Task<User> ValidateRecoveryToken(string token)
+        async public Task<UserSlim> ValidateRecoveryToken(string token)
         {
             User user = await _db.Users.Find(u => u.RecoveryToken == token).FirstOrDefaultAsync();
             if (user != null && user.RecoveryToken == token && user.RecoveryTokenExpiration >= DateTime.Now.ToUniversalTime())
@@ -259,7 +279,7 @@ namespace logic.UintaPine
                     .Set(u => u.RecoveryTokenExpiration, null);
 
                 await _db.Users.UpdateOneAsync(u => u.Id == user.Id, update);
-                return user;
+                return user.ToUserSlim();
             }
 
             if (user != null)
@@ -270,7 +290,7 @@ namespace logic.UintaPine
 
                 await _db.Users.UpdateOneAsync(u => u.Id == user.Id, cleanUp);
             }
-            return default(User);
+            return default(UserSlim);
         }
         async public Task UpdateUserPasswordByUserIdAsync(string userId, string password)
         {
