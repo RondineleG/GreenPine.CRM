@@ -48,16 +48,16 @@ namespace logic.UintaPine
 
             try
             {
-                //_db.Pings.InsertOne(ping);
-                //ping = await _db.Pings.Find(p => p.Id == ping.Id).FirstOrDefaultAsync();
+                _db.Pings.InsertOne(ping);
+                ping = await _db.Pings.Find(p => p.Id == ping.Id).FirstOrDefaultAsync();
 
-                //if (ping != null)
-                //{
-                //    ping.DB = true;
-                //    await _db.Pings.ReplaceOneAsync(p => p.Id == ping.Id, ping);
-                //}
-                //else
-                //    ping.DB = false;
+                if (ping != null)
+                {
+                    ping.DB = true;
+                    await _db.Pings.ReplaceOneAsync(p => p.Id == ping.Id, ping);
+                }
+                else
+                    ping.DB = false;
 
                 return ping;
             }
