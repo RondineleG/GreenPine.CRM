@@ -6,10 +6,22 @@
 
 <div class="main">
     <div class="top-row px-4">
-        <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+        <ul class="my-auto ml-md-auto list-inline">
+            <li class="list-inline-item">
+                <NavLink class="nav-link nav-link-header-bar" href="account">
+                    Register
+                </NavLink>
+            </li>
+            <li class="list-inline-item">|</li>
+            <li class="list-inline-item">
+                <NavLink class="nav-link nav-link-header-bar" href="account">
+                    Sign In
+                </NavLink>
+            </li>
+        </ul>
     </div>
 
-    <div class="content px-4">
+    <div class="content px-4 container">
         @Body
     </div>
 </div>
