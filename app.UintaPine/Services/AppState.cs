@@ -12,6 +12,11 @@ namespace app.UintaPine.Services
 
         public event Action OnChange;
 
+        public AppState()
+        {
+            Email = "asdf";
+        }
+
         public void SetEmail(string email)
         {
             Email = email;

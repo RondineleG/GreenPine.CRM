@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@using app.UintaPine.Shared
+@inherits MainLayoutBase
 
 <div class="sidebar">
     <NavMenu />
@@ -18,10 +19,13 @@
                     Sign In
                 </NavLink>
             </li>
+            <li class="list-inline-item">
+                @AppState.Email
+            </li>
         </ul>
     </div>
 
-    <div class="content px-4 container">
+    <div class="content px-4">
         @Body
     </div>
 </div>
