@@ -1,3 +1,4 @@
+using app.UintaPine.Services;
 using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -7,6 +8,7 @@ namespace app.UintaPine
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<AppState>();
         }
 
         public void Configure(IComponentsApplicationBuilder app)
