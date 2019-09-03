@@ -9,10 +9,13 @@ namespace app.UintaPine
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<AppState>();
+            services.AddMvc()
+                    .AddRazorRuntimeCompilation();
         }
 
         public void Configure(IComponentsApplicationBuilder app)
         {
+
             app.AddComponent<App>("app");
         }
     }

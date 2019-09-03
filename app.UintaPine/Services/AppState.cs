@@ -8,21 +8,21 @@ namespace app.UintaPine.Services
     //https://chrissainty.com/3-ways-to-communicate-between-components-in-blazor/
     public class AppState
     {
-        public string Email { get; set; }
+        private string _email { get; set; }
+        public string Email
+        {
+            get
+            {
+                return _email;
+            }
+            set
+            {
+                _email = value;
+                NotifyStateChanged();
+            }
+        }
 
         public event Action OnChange;
-
-        public AppState()
-        {
-            Email = "asdf";
-        }
-
-        public void SetEmail(string email)
-        {
-            Email = email;
-            NotifyStateChanged();
-        }
-
         private void NotifyStateChanged() => OnChange?.Invoke();
     }
 }

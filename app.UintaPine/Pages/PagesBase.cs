@@ -14,6 +14,13 @@ namespace app.UintaPine.Pages
         protected AppState AppState { get; set; }
         
         protected API _api { get; set; } = new API();
+
+        protected override void OnInitialized()
+        {
+            AppState.Email = "dahln@outlook.com";
+
+            base.OnInitialized();
+        }
     }
 
     public class API

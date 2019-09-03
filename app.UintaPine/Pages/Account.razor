@@ -2,7 +2,7 @@
 @inherits AccountBase
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-3 offset-md-3">
         <div class="row">
             <h3>Register</h3>
         </div>
@@ -10,14 +10,17 @@
             <input type="text" class="form-control" />
         </div>
         <div class="row">
-            <input type="password" class="form-control"  />
+            <input type="password" class="form-control" />
         </div>
         <div class="row">
-            <input type="password" class="form-control"  />
+            <input type="password" class="form-control" />
+        </div>
+        <div class="row">
+            <input type="button" class="btn btn-success" value="Sign In" @onclick="Authenticate" />
         </div>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-3">
         <div class="row">
             <h3>Sign In</h3>
         </div>
@@ -28,7 +31,7 @@
             <input type="password" class="form-control"  />
         </div>
         <div class="row">
-            <input type="button" value="Sign In" @onclick="Authenticate" />
+            <input type="button" class="btn btn-primary" value="Sign In" @onclick="Authenticate" />
         </div>
     </div>
 </div>

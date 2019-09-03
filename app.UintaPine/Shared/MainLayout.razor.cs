@@ -21,6 +21,8 @@ namespace app.UintaPine.Shared
         protected override void OnInitialized()
         {
             AppState.OnChange += StateHasChanged;
+
+            AppState.Email = "dahln@outlook.com";
         }
     }
 }

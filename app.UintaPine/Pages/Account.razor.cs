@@ -11,7 +11,7 @@ namespace app.UintaPine.Pages
 
         public void Authenticate()
         {
-            AppState.SetEmail(Email);
+            AppState.Email = Email;
         }
     }
 }
