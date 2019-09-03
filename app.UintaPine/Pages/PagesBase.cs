@@ -1,5 +1,6 @@
 ﻿using app.UintaPine.Services;
 using Microsoft.AspNetCore.Components;
+using model.UintaPine.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,13 +15,6 @@ namespace app.UintaPine.Pages
         protected AppState AppState { get; set; }
         
         protected API _api { get; set; } = new API();
-
-        protected override void OnInitialized()
-        {
-            AppState.Email = "dahln@outlook.com";
-
-            base.OnInitialized();
-        }
     }
 
     public class API
@@ -29,24 +23,28 @@ namespace app.UintaPine.Pages
         public API()
         {
             _client = new HttpClient();
-            _client.BaseAddress = new Uri("http://localhost:53653");
+            _client.BaseAddress = new Uri("http://localhost:50119");
         }
         public async Task Ping()
         {
             var result = await _client.GetAsync("api/v1/ping");
         }
-        //public async Task RegisterUser(User user)
-        //{
-        //    await _client.PostJsonAsync("api/v1/user", user);
-        //}
-        //public async Task AuthenticateUser(string username, string password)
-        //{
-        //    Authenticate content = new Authenticate()
-        //    {
-        //        Email = username,
-        //        Password = password
-        //    };
-        //    await _client.PostJsonAsync("api/v1/authenticate", content);
-        //}
+        
+        public async Task<Identifier> RegisterUser(Register content)
+        {
+            var response = await _client.PostJsonAsync<Identifier>("api/v1/user", content);
+            return response;
+        }
+
+        public async Task<UserSlim> AuthenticateUser(string username, string password)
+        {
+            Authenticate content = new Authenticate()
+            {
+                Email = username,
+                Password = password
+            };
+            var response = await _client.PostJsonAsync<UserSlim>("api/v1/authenticate", content);
+            return response;
+        }
     }
 }

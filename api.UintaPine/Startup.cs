@@ -90,7 +90,7 @@ namespace api.UintaPine
             {
                 options.AddPolicy("AllowAll",
                     builder => builder
-                    .WithOrigins("http://localhost:59190")
+                    .WithOrigins("http://localhost:49907")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials());

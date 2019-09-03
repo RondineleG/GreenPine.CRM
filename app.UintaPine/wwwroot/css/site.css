@@ -129,3 +129,11 @@ app {
 }
 /*#endregion*/
 
+@media (min-width: 768px) {
+    .account-left {
+        margin-right: 10px;
+    }
+    .account-right {
+        margin-left: 10px;
+    }
+}
