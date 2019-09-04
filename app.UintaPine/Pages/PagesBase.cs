@@ -46,5 +46,11 @@ namespace app.UintaPine.Pages
             var response = await _client.PostJsonAsync<UserSlim>("api/v1/authenticate", content);
             return response;
         }
+
+        public async Task<UserSlim> GetUserCurrent()
+        {
+            var response = await _client.GetJsonAsync<UserSlim>("api/v1/user/me");
+            return response;
+        }
     }
 }
