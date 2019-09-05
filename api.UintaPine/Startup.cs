@@ -86,7 +86,7 @@ namespace api.UintaPine
             {
                 options.AddPolicy("AllowAll",
                     builder => builder
-                    .WithOrigins("http://localhost:49907")
+                    .WithOrigins("http://localhost:49907","https://uintapine.azurewebsites.net")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials());
