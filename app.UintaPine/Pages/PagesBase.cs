@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Components;
 using model.UintaPine.Api;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -23,7 +21,8 @@ namespace app.UintaPine.Pages
         public API()
         {
             _client = new HttpClient();
-            _client.BaseAddress = new Uri("http://localhost:50119");
+            //_client.BaseAddress = new Uri("http://localhost:50119");
+            _client.BaseAddress = new Uri("https://uintapineapi.azurewebsites.net");
         }
         public async Task Ping()
         {
