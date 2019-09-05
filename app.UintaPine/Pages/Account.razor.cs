@@ -23,7 +23,7 @@ namespace app.UintaPine.Pages
             var response = await _api.RegisterUser(register);
             if (response.Success == true)
             {
-                AppState.Email = response.Id;
+                AppState.User = response;
             }
             else
             {
@@ -41,7 +41,7 @@ namespace app.UintaPine.Pages
             var response = await _api.AuthenticateUser(Email, Password);
             if (response.Success == true)
             {
-                AppState.Email = response.Email;
+                AppState.User = response;
             }
             else
             {

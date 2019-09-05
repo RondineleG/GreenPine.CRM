@@ -32,13 +32,14 @@ namespace app.UintaPine.Shared
             UserSlim user = await _api.GetUserCurrent();
             if(user.Success == true)
             {
-                AppState.Email = user.Email;
+                AppState.User = user;
             }
         }
 
-        public void SignOut()
+        async public Task SignOut()
         {
-            AppState.Email = null;
+            await _api.Logout();
+            AppState.User = null;
         }
     }
 }

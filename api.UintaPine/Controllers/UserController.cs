@@ -110,10 +110,10 @@ namespace api.UintaPine.Controllers
                     return Ok(user);
                 }
                 else
-                    return BadRequest("Could not create user profile.");
+                    return BadRequest(new UserSlim() { Success = false, Message = "Could not create user profile." });
             }
             else
-                return BadRequest("Invalid data");
+                return BadRequest();
 
         }
 
@@ -222,7 +222,7 @@ namespace api.UintaPine.Controllers
                 return Ok();
             }
             else
-                return BadRequest(ModelState);
+                return BadRequest();
         }
 
         [Authorize]

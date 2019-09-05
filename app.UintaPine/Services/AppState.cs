@@ -1,4 +1,5 @@
-﻿using System;
+﻿using model.UintaPine.Api;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,16 +9,16 @@ namespace app.UintaPine.Services
     //https://chrissainty.com/3-ways-to-communicate-between-components-in-blazor/
     public class AppState
     {
-        private string _email { get; set; }
-        public string Email
+        private UserSlim _user { get; set; }
+        public UserSlim User
         {
             get
             {
-                return _email;
+                return _user;
             }
             set
             {
-                _email = value;
+                _user = value;
                 NotifyStateChanged();
             }
         }

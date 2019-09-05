@@ -30,9 +30,9 @@ namespace app.UintaPine.Pages
             var result = await _client.GetAsync("api/v1/ping");
         }
         
-        public async Task<Identifier> RegisterUser(Register content)
+        public async Task<UserSlim> RegisterUser(Register content)
         {
-            var response = await _client.PostJsonAsync<Identifier>("api/v1/user", content);
+            var response = await _client.PostJsonAsync<UserSlim>("api/v1/user", content);
             return response;
         }
 
@@ -45,6 +45,11 @@ namespace app.UintaPine.Pages
             };
             var response = await _client.PostJsonAsync<UserSlim>("api/v1/authenticate", content);
             return response;
+        }
+
+        public async Task Logout()
+        {
+            await _client.GetAsync("api/v1/logout");
         }
 
         public async Task<UserSlim> GetUserCurrent()
