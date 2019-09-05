@@ -21,8 +21,8 @@ namespace app.UintaPine.Pages
         public API()
         {
             _client = new HttpClient();
-            //_client.BaseAddress = new Uri("http://localhost:50119");
-            _client.BaseAddress = new Uri("https://uintapineapi.azurewebsites.net");
+            _client.BaseAddress = new Uri("http://localhost:50119");
+            //_client.BaseAddress = new Uri("https://uintapineapi.azurewebsites.net");
         }
         public async Task Ping()
         {
