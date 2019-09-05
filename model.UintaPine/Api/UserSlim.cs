@@ -4,7 +4,7 @@ using System.Text;
 
 namespace model.UintaPine.Api
 {
-    public class UserSlim
+    public class UserSlim : ApiResponse
     {
         public string Id { get; set; }
         public string Email { get; set; }

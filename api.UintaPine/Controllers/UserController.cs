@@ -41,15 +41,15 @@ namespace api.UintaPine.Controllers
             UserValidation validation = await _userHelper.ValidateUserAndUpdateIdentityAsync(username, password);
             if (validation.Code == UserValidationResponseCode.Invalid)
             {
-                return BadRequest("Invalid Username or Password");
+                return BadRequest(new UserSlim() { Success = false, Message = "Invalid Username or Password" });
             }
             else if (validation.Code == UserValidationResponseCode.LockedOut)
             {
-                return BadRequest("Account is Locked. Wait 30 minutes.");
+                return BadRequest(new UserSlim() { Success = false, Message = "Account is Locked. Wait 30 minutes." });
             }
             else if (validation.Code == UserValidationResponseCode.Invalidated)
             {
-                return BadRequest("Email has not been validated");
+                return BadRequest(new UserSlim() { Success = false, Message = "Email has not been validated" });
             }
 
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_applicationSettings.SigningKey));
@@ -84,36 +84,36 @@ namespace api.UintaPine.Controllers
             if (ModelState.IsValid)
             {
                 if (model.Email == null || model.Email == "")
-                    return BadRequest("Email is required");
+                    return BadRequest(new UserSlim() { Success = false, Message = "Email is required" });
 
                 if (_utilityLogic.Email(model.Email) == false)
-                    return BadRequest("Valid email address is required");
+                    return BadRequest(new UserSlim() { Success = false, Message = "Valid email address is required" });
 
                 UserSlim existing = await _userHelper.GetUserByEmailAsync(model.Email);
                 if (existing != null)
-                    return BadRequest("Email address already used.");
+                    return BadRequest(new UserSlim() { Success = false, Message = "Email address already used." });
 
                 if (model.Password == null || model.Password == "")
-                    return BadRequest("Password is required");
+                    return BadRequest(new UserSlim() { Success = false, Message = "Password is required" });
 
                 if (model.Password != model.ConfirmPassword)
-                    return BadRequest("Passwords do not match");
+                    return BadRequest(new UserSlim() { Success = false, Message = "Passwords do not match" });
 
                 if (!_userHelper.IsValidPassword(model.Password))
-                    return BadRequest("Password is not complex enough.");
+                    return BadRequest(new UserSlim() { Success = false, Message = "Password is not complex enough." });
 
                 UserSlim user = await _userHelper.CreateUserAsync(model.Email, model.Password);
                 if (user != null)
                 {
                     //Use this if you want to send an activation email.
                     //await _emailHelper.SendActivationEmailAsync(user);
-                    return Ok(new Identifier() { Id = user.Id });
+                    return Ok(user);
                 }
                 else
-                    return BadRequest("Could not create user profile.");
+                    return BadRequest(new UserSlim() { Success = false, Message = "Could not create user profile." });
             }
             else
-                return BadRequest("Invalid data");
+                return BadRequest();
 
         }
 
@@ -130,7 +130,7 @@ namespace api.UintaPine.Controllers
 
                 //Remove this if you want to allow user info to be requested by others users.
                 if (id != user?.Id && id != "me")
-                    return BadRequest("Invalid Permissions");
+                    return BadRequest(new UserSlim() { Success = false, Message = "Invalid Permissions" });
 
                 if (user != null)
                 {
@@ -222,7 +222,7 @@ namespace api.UintaPine.Controllers
                 return Ok();
             }
             else
-                return BadRequest(ModelState);
+                return BadRequest();
         }
 
         [Authorize]

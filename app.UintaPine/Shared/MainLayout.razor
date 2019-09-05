@@ -1,27 +1,41 @@
 ﻿@using app.UintaPine.Shared
 @inherits MainLayoutBase
 
-<div class="sidebar">
-    <NavMenu />
-</div>
+@if (AppState?.User != null)
+{
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+}
 
 <div class="main">
     <div class="top-row px-4">
         <ul class="my-auto ml-md-auto list-inline">
-            <li class="list-inline-item">
-                <NavLink class="nav-link nav-link-header-bar" href="account">
-                    Register
-                </NavLink>
-            </li>
-            <li class="list-inline-item">|</li>
-            <li class="list-inline-item">
-                <NavLink class="nav-link nav-link-header-bar" href="account">
-                    Sign In
-                </NavLink>
-            </li>
-            <li class="list-inline-item">
-                @AppState.Email
-            </li>
+            @if (AppState?.User == null)
+            {
+                <li class="list-inline-item">
+                    <NavLink class="nav-link nav-link-header-bar" href="account">
+                        Register
+                    </NavLink>
+                </li>
+                <li class="list-inline-item">|</li>
+                <li class="list-inline-item">
+                    <NavLink class="nav-link nav-link-header-bar" href="account">
+                        Sign In
+                    </NavLink>
+                </li>
+            }
+            else if(AppState?.User != null)
+            {
+                <li class="list-inline-item">
+                    @AppState.User.Email
+                </li>
+                <li class="list-inline-item">
+                    <NavLink class="nav-link nav-link-header-bar" href="" @onclick="SignOut">
+                        Sign Out
+                    </NavLink>
+                </li>
+            }
         </ul>
     </div>
 
