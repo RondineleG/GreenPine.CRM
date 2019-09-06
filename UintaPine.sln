@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "model.UintaPine", "model.Ui
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "api.UintaPine", "api.UintaPine\api.UintaPine.csproj", "{F4ABAD0B-F5F2-43F8-A6C3-5EAF73C19EFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "app.UintaPine", "app.UintaPine\app.UintaPine.csproj", "{AC33B116-6B33-491A-B75D-57449F83A014}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "app.UintaPine", "app.UintaPine\app.UintaPine.csproj", "{AC33B116-6B33-491A-B75D-57449F83A014}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
