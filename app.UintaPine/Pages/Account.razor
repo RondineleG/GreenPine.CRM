@@ -10,19 +10,30 @@
             <p>Create a new user account and get started.</p>
         </div>
         <div class="row">
-            <input type="text" class="form-control" placeholder="Email Address" @bind="Email" />
+            <input type="text" class="form-control" placeholder="Email Address" @bind="EmailRegister" />
         </div>
         <div class="row mt-1">
-            <input type="password" class="form-control" placeholder="Password" @bind="Password" />
+            <input type="password" class="form-control" placeholder="Password" @bind="PasswordRegister" />
         </div>
         <div class="row mt-1">
-            <input type="password" class="form-control" placeholder="Configm Password" @bind="ConfirmPassword" />
+            <input type="password" class="form-control" placeholder="Configm Password" @bind="ConfirmPasswordRegister" />
         </div>
+        @if (string.IsNullOrEmpty(MessageRegister) == false)
+        {
+            <div class="row mt-1">
+                <div class="col-md-12">
+                    <div class="row alert alert-warning" role="alert">
+                        A simple warning alert—check it out!
+                    </div>
+                </div>
+            </div>
+        }
         <div class="row mt-1">
             <div class="col-md-12">
                 <input type="button" class="row btn btn-success float-right" value="Sign In" @onclick="Register" />
             </div>
         </div>
+
     </div>
 
     <div class="col-md-3 account-right">
@@ -33,11 +44,21 @@
             <p>Already have an account? Sign in here.</p>
         </div>
         <div class="row">
-            <input type="text" class="form-control" @bind="Email" placeholder="Email Address" />
+            <input type="text" class="form-control" @bind="EmailAuthenticate" placeholder="Email Address" />
         </div>
         <div class="row mt-1">
-            <input type="password" class="form-control" @bind="Password" placeholder="Password" />
+            <input type="password" class="form-control" @bind="PasswordAuthenticate" placeholder="Password" />
         </div>
+        @if (string.IsNullOrEmpty(MessageAuthentication) == false)
+        {
+            <div class="row mt-1">
+                <div class="col-md-12">
+                    <div class="row alert alert-warning" role="alert">
+                        A simple warning alert—check it out!
+                    </div>
+                </div>
+            </div>
+        }
         <div class="row mt-1">
             <div class="col-md-12">
                 <input type="button" class="row btn btn-primary float-right" value="Sign In" @onclick="Authenticate" />

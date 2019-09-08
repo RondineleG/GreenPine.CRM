@@ -16,6 +16,9 @@ namespace app.UintaPine.Pages
         [Inject]
         public AppState AppState { get; set; }
 
+        [Inject]
+        public NavigationManager Navigation { get; set; }
+
         public API _api { get; set; } = new API();
     }
 

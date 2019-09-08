@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "api.UintaPine", "api.UintaP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "app.UintaPine", "app.UintaPine\app.UintaPine.csproj", "{AC33B116-6B33-491A-B75D-57449F83A014}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "model.Shared.UintaPine", "model.Shared.UintaPine\model.Shared.UintaPine.csproj", "{B7C26128-BB7C-4B32-9128-67F7CE30C552}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{AC33B116-6B33-491A-B75D-57449F83A014}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC33B116-6B33-491A-B75D-57449F83A014}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC33B116-6B33-491A-B75D-57449F83A014}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7C26128-BB7C-4B32-9128-67F7CE30C552}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7C26128-BB7C-4B32-9128-67F7CE30C552}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7C26128-BB7C-4B32-9128-67F7CE30C552}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7C26128-BB7C-4B32-9128-67F7CE30C552}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
