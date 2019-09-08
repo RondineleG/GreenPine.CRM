@@ -30,7 +30,7 @@ namespace app.UintaPine.Shared
         async protected override Task OnInitializedAsync()
         {
             UserSlim user = await _api.GetUserCurrent();
-            if (user.Success == true)
+            if (user?.Success == true)
             {
                 AppState.User = user;
             }

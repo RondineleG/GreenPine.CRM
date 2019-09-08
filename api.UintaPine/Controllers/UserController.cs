@@ -81,39 +81,34 @@ namespace api.UintaPine.Controllers
         [Route("api/v1/user")]
         async public Task<IActionResult> CreateUser([FromBody]Register model)
         {
-            if (ModelState.IsValid)
+            if (model.Email == null || model.Email == "")
+                return BadRequest(new UserSlim() { Success = false, Message = "Email is required" });
+
+            if (_utilityLogic.Email(model.Email) == false)
+                return BadRequest(new UserSlim() { Success = false, Message = "Valid email address is required" });
+
+            UserSlim existing = await _userHelper.GetUserByEmailAsync(model.Email);
+            if (existing != null)
+                return BadRequest(new UserSlim() { Success = false, Message = "Email address already used." });
+
+            if (model.Password == null || model.Password == "")
+                return BadRequest(new UserSlim() { Success = false, Message = "Password is required" });
+
+            if (model.Password != model.ConfirmPassword)
+                return BadRequest(new UserSlim() { Success = false, Message = "Passwords do not match" });
+
+            if (!_userHelper.IsValidPassword(model.Password))
+                return BadRequest(new UserSlim() { Success = false, Message = "Password is not complex enough." });
+
+            UserSlim user = await _userHelper.CreateUserAsync(model.Email, model.Password);
+            if (user != null)
             {
-                if (model.Email == null || model.Email == "")
-                    return BadRequest(new UserSlim() { Success = false, Message = "Email is required" });
-
-                if (_utilityLogic.Email(model.Email) == false)
-                    return BadRequest(new UserSlim() { Success = false, Message = "Valid email address is required" });
-
-                UserSlim existing = await _userHelper.GetUserByEmailAsync(model.Email);
-                if (existing != null)
-                    return BadRequest(new UserSlim() { Success = false, Message = "Email address already used." });
-
-                if (model.Password == null || model.Password == "")
-                    return BadRequest(new UserSlim() { Success = false, Message = "Password is required" });
-
-                if (model.Password != model.ConfirmPassword)
-                    return BadRequest(new UserSlim() { Success = false, Message = "Passwords do not match" });
-
-                if (!_userHelper.IsValidPassword(model.Password))
-                    return BadRequest(new UserSlim() { Success = false, Message = "Password is not complex enough." });
-
-                UserSlim user = await _userHelper.CreateUserAsync(model.Email, model.Password);
-                if (user != null)
-                {
-                    //Use this if you want to send an activation email.
-                    //await _emailHelper.SendActivationEmailAsync(user);
-                    return Ok(user);
-                }
-                else
-                    return BadRequest(new UserSlim() { Success = false, Message = "Could not create user profile." });
+                //Use this if you want to send an activation email.
+                //await _emailHelper.SendActivationEmailAsync(user);
+                return Ok(user);
             }
             else
-                return BadRequest();
+                return BadRequest(new UserSlim() { Success = false, Message = "Could not create user profile." });
 
         }
 
@@ -122,25 +117,20 @@ namespace api.UintaPine.Controllers
         [Authorize]
         async public Task<IActionResult> GetUser(string id)
         {
-            if (ModelState.IsValid)
+            UserSlim user = await _userHelper.GetUserSlimByIdAsync(User.Identity.Name);
+            if (user == null)
+                return NotFound(new UserSlim() { Success = false, Message = "User Not Found" });
+
+            //Remove this if you want to allow user info to be requested by others users.
+            if (id != user?.Id && id != "me")
+                return BadRequest(new UserSlim() { Success = false, Message = "Invalid Permissions" });
+
+            if (user != null)
             {
-                UserSlim user = await _userHelper.GetUserSlimByIdAsync(User.Identity.Name);
-                if (user == null)
-                    return NotFound();
-
-                //Remove this if you want to allow user info to be requested by others users.
-                if (id != user?.Id && id != "me")
-                    return BadRequest(new UserSlim() { Success = false, Message = "Invalid Permissions" });
-
-                if (user != null)
-                {
-                    return Ok(user);
-                }
-                else
-                    return NotFound();
+                return Ok(user);
             }
             else
-                return BadRequest();
+                return NotFound(new UserSlim() { Success = false, Message = "User Not Found" });
         }
 
 

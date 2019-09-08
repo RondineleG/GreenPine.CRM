@@ -14,38 +14,27 @@ namespace app.UintaPine.Pages
 
         async public Task Register()
         {
-            Register register = new Register()
-            {
-                Email = Email,
-                Password = Password,
-                ConfirmPassword = ConfirmPassword
-            };
-            var response = await _api.RegisterUser(register);
-            if (response.Success == true)
+            var response = await _api.RegisterUser(Email, Password, ConfirmPassword);
+            if (response.Success)
             {
                 AppState.User = response;
             }
             else
             {
-                //somethign else
+                //Show message
             }
         }
 
         async public Task Authenticate()
         {
-            Authenticate authenticate = new Authenticate()
-            {
-                Email = Email,
-                Password = Password
-            };
             var response = await _api.AuthenticateUser(Email, Password);
-            if (response.Success == true)
+            if (response?.Success == true)
             {
                 AppState.User = response;
             }
             else
             {
-                //somethign else
+                //Show message
             }
         }
     }
