@@ -93,7 +93,15 @@ namespace app.UintaPine.Pages
             }
             else
             {
-                return default(T);
+                try
+                {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<T>(responseContent);
+                }
+                catch
+                {
+                    return default(T);
+                }
             }
         }
 
@@ -110,7 +118,15 @@ namespace app.UintaPine.Pages
             }
             else
             {
-                return default(T);
+                try
+                {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<T>(responseContent);
+                }
+                catch 
+                {
+                    return default(T);
+                }
             }
         }
 
@@ -127,7 +143,15 @@ namespace app.UintaPine.Pages
             }
             else
             {
-                return default(T);
+                try
+                {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<T>(responseContent);
+                }
+                catch
+                {
+                    return default(T);
+                }
             }
         }
 
@@ -141,7 +165,15 @@ namespace app.UintaPine.Pages
             }
             else
             {
-                return default(T);
+                try
+                {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<T>(responseContent);
+                }
+                catch
+                {
+                    return default(T);
+                }
             }
         }
         #endregion
