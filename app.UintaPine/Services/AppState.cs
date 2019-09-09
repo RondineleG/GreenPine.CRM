@@ -22,6 +22,20 @@ namespace app.UintaPine.Services
             }
         }
 
+        private bool _isInitialized { get; set; } = false;
+        public bool IsInitialized
+        {
+            get
+            {
+                return _isInitialized;
+            }
+            set
+            {
+                _isInitialized = value;
+                NotifyStateChanged();
+            }
+        }
+
         public event Action OnChange;
         private void NotifyStateChanged() => OnChange?.Invoke();
     }

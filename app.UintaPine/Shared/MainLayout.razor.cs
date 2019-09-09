@@ -37,6 +37,7 @@ namespace app.UintaPine.Shared
             {
                 AppState.User = user;
             }
+            AppState.IsInitialized = true;
         }
 
         async public Task SignOut()
