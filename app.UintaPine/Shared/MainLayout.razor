@@ -1,45 +1,38 @@
 ﻿@using app.UintaPine.Shared
 @inherits MainLayoutBase
 
-@if (AppState?.User != null)
-{
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-}
 
-<div class="main">
-    <div class="top-row px-4">
-        <ul class="my-auto ml-md-auto list-inline">
-            @if (AppState?.User == null)
-            {
-                <li class="list-inline-item">
-                    <NavLink class="nav-link nav-link-header-bar" href="account">
-                        Register
-                    </NavLink>
-                </li>
-                <li class="list-inline-item">|</li>
-                <li class="list-inline-item">
-                    <NavLink class="nav-link nav-link-header-bar" href="account">
-                        Sign In
-                    </NavLink>
-                </li>
-            }
-            else if (AppState?.User != null)
-            {
-                <li class="list-inline-item">
-                    @AppState.User.Email
-                </li>
-                <li class="list-inline-item">
-                    <NavLink class="nav-link nav-link-header-bar" href="" @onclick="SignOut">
-                        Sign Out
-                    </NavLink>
-                </li>
-            }
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <NavLink class="navbar-brand nav-link" href="/">
+        <i class="fas fa-tree mr-1"></i> <span>Uinta Pine</span>
+    </NavLink>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
         </ul>
+        @if (AppState?.User != null)
+        {
+            <span class="navbar-text">
+                <NavLink class="nav-link" href="" @onclick="SignOut">
+                    @AppState.User.Email | Sign Out <i class="fas fa-sign-out-alt"></i>
+                </NavLink>
+            </span>
+        }
+        else
+        {
+            <span class="navbar-text">
+                <NavLink class="nav-link" href="account">
+                    Register/Sign In
+                </NavLink>
+            </span>
+        }
     </div>
+</nav>
 
-    <div class="content px-4">
-        @Body
-    </div>
+<div class="content px-4 py-3">
+    @Body
 </div>

@@ -14,6 +14,9 @@ namespace app.UintaPine.Shared
         [Inject]
         public AppState AppState { get; set; }
 
+        [Inject]
+        private NavigationManager _navigation { get; set; }
+
         private API _api { get; set; }
 
         public MainLayoutBase()
@@ -40,6 +43,8 @@ namespace app.UintaPine.Shared
         {
             await _api.Logout();
             AppState.User = null;
+
+            _navigation.NavigateTo("account");
         }
     }
 }

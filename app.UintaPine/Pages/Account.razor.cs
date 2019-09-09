@@ -38,7 +38,7 @@ namespace app.UintaPine.Pages
             if (response?.Success == true)
             {
                 AppState.User = response;
-                Navigation.NavigateTo("/");
+                Navigation.NavigateTo("customers");
             }
             else
             {
