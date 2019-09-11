@@ -25,16 +25,6 @@
         <div class="row mt-1">
             <input type="password" class="form-control" placeholder="Configm Password" @bind="ConfirmPasswordRegister" />
         </div>
-        @if (string.IsNullOrEmpty(MessageRegister) == false)
-        {
-            <div class="row mt-1">
-                <div class="col-md-12">
-                    <div class="row alert alert-warning" role="alert">
-                        @MessageRegister
-                    </div>
-                </div>
-            </div>
-        }
         <div class="row mt-1">
             <div class="col-md-12">
                 <input type="button" class="row btn btn-success float-right" value="Register" @onclick="Register" />
@@ -57,16 +47,6 @@
         <div class="row mt-1">
             <input type="password" class="form-control" @bind="PasswordAuthenticate" placeholder="Password" />
         </div>
-        @if (string.IsNullOrEmpty(MessageAuthentication) == false)
-        {
-            <div class="row mt-1">
-                <div class="col-md-12">
-                    <div class="row alert alert-warning" role="alert">
-                        @MessageAuthentication
-                    </div>
-                </div>
-            </div>
-        }
         <div class="row mt-1">
             <div class="col-md-12">
                 <input type="button" class="row btn btn-primary float-right" value="Sign In" @onclick="Authenticate" />
@@ -82,13 +62,11 @@
     //Authentication bindable properties
     string EmailAuthenticate { get; set; }
     string PasswordAuthenticate { get; set; }
-    string MessageAuthentication { get; set; }
 
     //Registration bindable properties
     string EmailRegister { get; set; }
     string PasswordRegister { get; set; }
     string ConfirmPasswordRegister { get; set; }
-    string MessageRegister { get; set; }
 
     async Task Register()
     {
@@ -99,7 +77,7 @@
         }
         else
         {
-            MessageRegister = response.Message;
+            toastService.ShowError(response.Message);
         }
     }
 
@@ -113,9 +91,7 @@
         }
         else
         {
-            MessageAuthentication = response.Message;
-
-            toastService.ShowError("Something went wrong");
+            toastService.ShowError(response.Message);
         }
     }
 }
