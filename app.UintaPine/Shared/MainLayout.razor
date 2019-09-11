@@ -1,8 +1,16 @@
-﻿@using app.UintaPine.Shared
-@inherits MainLayoutBase
+﻿@inherits LayoutComponentBase
+@using Blazored.Toast.Configuration
+@using app.UintaPine.Services
+@using model.UintaPine.Api
+@inject AppState _appState
+@inject API _api
+@inject NavigationManager _navigationManager
 
-
-
+<BlazoredToasts Position="ToastPosition.BottomRight"
+                Timeout="10"
+                SuccessClass="success-toast-override"
+                SuccessIconClass="fa fa-thumbs-up"
+                ErrorIconClass="fa fa-bug" />
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <NavLink class="navbar-brand nav-link" href="/">
@@ -14,13 +22,13 @@
     <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto">
         </ul>
-        @if (AppState.IsInitialized == true)
+        @if (_appState.IsInitialized == true)
         {
-            @if (AppState?.User != null)
+            @if (_appState?.User != null)
             {
                 <span class="navbar-text">
                     <NavLink class="nav-link" href="" @onclick="SignOut">
-                        @AppState.User.Email | Sign Out <i class="fas fa-sign-out-alt"></i>
+                        @_appState.User.Email | Sign Out <i class="fas fa-sign-out-alt"></i>
                     </NavLink>
                 </span>
             }
@@ -40,4 +48,28 @@
     @Body
 </div>
 
+@code {
 
+    protected override void OnInitialized()
+    {
+        _appState.OnChange += StateHasChanged;
+    }
+
+    async protected override Task OnInitializedAsync()
+    {
+        UserSlim user = await _api.GetUserCurrent();
+        if (user?.Success == true)
+        {
+            _appState.User = user;
+        }
+        _appState.IsInitialized = true;
+    }
+
+    async public Task SignOut()
+    {
+        await _api.Logout();
+        _appState.User = null;
+
+        _navigationManager.NavigateTo("account");
+    }
+}

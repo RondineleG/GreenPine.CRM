@@ -1,4 +1,5 @@
 using app.UintaPine.Services;
+using Blazored.Toast;
 using Microsoft.AspNetCore.Blazor.Http;
 using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +11,8 @@ namespace app.UintaPine
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<AppState>();
+            services.AddSingleton<API>();
+            services.AddBlazoredToast();
         }
 
         public void Configure(IComponentsApplicationBuilder app)

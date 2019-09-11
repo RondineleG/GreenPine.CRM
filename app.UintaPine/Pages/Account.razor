@@ -1,5 +1,10 @@
 ﻿@page "/account"
-@inherits AccountBase
+@using app.UintaPine.Services
+@inject AppState _appState
+@inject API _api
+@inject NavigationManager _navigationManger
+
+@inject IToastService toastService
 
 <div class="row">
 
@@ -72,3 +77,45 @@
 
 </div>
 
+
+@code {
+    //Authentication bindable properties
+    string EmailAuthenticate { get; set; }
+    string PasswordAuthenticate { get; set; }
+    string MessageAuthentication { get; set; }
+
+    //Registration bindable properties
+    string EmailRegister { get; set; }
+    string PasswordRegister { get; set; }
+    string ConfirmPasswordRegister { get; set; }
+    string MessageRegister { get; set; }
+
+    async Task Register()
+    {
+        var response = await _api.RegisterUser(EmailRegister, PasswordRegister, ConfirmPasswordRegister);
+        if (response.Success)
+        {
+            _appState.User = response;
+        }
+        else
+        {
+            MessageRegister = response.Message;
+        }
+    }
+
+    async Task Authenticate()
+    {
+        var response = await _api.AuthenticateUser(EmailAuthenticate, PasswordAuthenticate);
+        if (response?.Success == true)
+        {
+            _appState.User = response;
+            _navigationManger.NavigateTo("customers");
+        }
+        else
+        {
+            MessageAuthentication = response.Message;
+
+            toastService.ShowError("Something went wrong");
+        }
+    }
+}

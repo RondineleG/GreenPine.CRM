@@ -8,20 +8,11 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Blazored.Toast;
+using Blazored.Toast.Services;
 
-namespace app.UintaPine.Pages
+namespace app.UintaPine.Services
 {
-    public class PageBase : ComponentBase
-    {
-        [Inject]
-        public AppState AppState { get; set; }
-
-        [Inject]
-        public NavigationManager Navigation { get; set; }
-
-        public API _api { get; set; } = new API();
-    }
-
     public class API
     {
         private HttpClient _client;
@@ -30,7 +21,6 @@ namespace app.UintaPine.Pages
             _client = new HttpClient();
             _client.BaseAddress = new Uri("http://localhost:50119");
         }
-
 
         public async Task<UserSlim> RegisterUser(string email, string password, string confirmPassword)
         {
