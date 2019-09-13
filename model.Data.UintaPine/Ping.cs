@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace model.UintaPine.Utility
+namespace model.Data.UintaPine
 {
     public class Ping
     {

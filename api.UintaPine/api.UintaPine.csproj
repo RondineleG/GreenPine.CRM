@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\logic.UintaPine\logic.UintaPine.csproj" />
-    <ProjectReference Include="..\model.UintaPine\model.UintaPine.csproj" />
   </ItemGroup>
 
 </Project>

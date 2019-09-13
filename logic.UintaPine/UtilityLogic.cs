@@ -1,5 +1,5 @@
 ﻿using data.UintaPine;
-using model.UintaPine.Utility;
+using model.Data.UintaPine;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -61,7 +61,7 @@ namespace logic.UintaPine
 
                 return ping;
             }
-            catch(Exception ex)
+            catch
             {
                 ping.DB = false;
                 return ping;

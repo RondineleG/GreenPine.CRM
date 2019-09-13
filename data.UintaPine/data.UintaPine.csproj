@@ -9,7 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\model.UintaPine\model.UintaPine.csproj" />
+    <ProjectReference Include="..\model.Data.UintaPine\model.Data.UintaPine.csproj" />
+    <ProjectReference Include="..\model.Server.UintaPine\model.Server.UintaPine.csproj" />
   </ItemGroup>
 
 </Project>

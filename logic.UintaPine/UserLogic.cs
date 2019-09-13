@@ -1,7 +1,7 @@
 ﻿using data.UintaPine;
-using model.UintaPine.Api;
-using model.UintaPine.Data;
-using model.UintaPine.ExtensionMethods;
+using logic.UintaPine.Utility;
+using model.Data.UintaPine;
+using model.Shared.UintaPine;
 using model.UintaPine.Utility;
 using MongoDB.Driver;
 using System;

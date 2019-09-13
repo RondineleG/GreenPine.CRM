@@ -1,7 +1,4 @@
-﻿using model.UintaPine.Api;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using model.Shared.UintaPine;
 
 namespace model.UintaPine.Utility
 {

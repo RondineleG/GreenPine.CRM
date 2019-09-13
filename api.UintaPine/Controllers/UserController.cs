@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using model.UintaPine.Api;
+using model.Server.UintaPine;
+using model.Shared.UintaPine;
 using model.UintaPine.Utility;
 
 namespace api.UintaPine.Controllers

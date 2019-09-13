@@ -1,12 +1,12 @@
 ﻿using JWT;
 using JWT.Algorithms;
 using JWT.Serializers;
+using logic.UintaPine.Utility;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
-using model.UintaPine.Api;
-using model.UintaPine.Data;
-using model.UintaPine.Utility;
+using model.Server.UintaPine;
+using model.Shared.UintaPine;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

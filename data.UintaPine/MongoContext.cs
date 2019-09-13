@@ -1,5 +1,5 @@
-﻿using model.UintaPine.Data;
-using model.UintaPine.Utility;
+﻿using model.Data.UintaPine;
+using model.Server.UintaPine;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 

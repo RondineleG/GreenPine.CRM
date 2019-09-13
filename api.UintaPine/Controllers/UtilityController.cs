@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using logic.UintaPine;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using model.Server.UintaPine;
 using model.UintaPine.Utility;
 
 namespace api.UintaPine.Controllers
@@ -23,15 +24,7 @@ namespace api.UintaPine.Controllers
         [HttpGet]
         async public Task<IActionResult> Ping()
         {
-            Ping result = new Ping();
-            try
-            {
-                result = await _utilityLogic.PingAsync(_applicationSettings.Name);
-            }
-            catch
-            {
-                result = default(Ping);
-            }
+            var result = await _utilityLogic.PingAsync(_applicationSettings.Name);
 
             return Ok(result);
         }

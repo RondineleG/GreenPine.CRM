@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace model.UintaPine.Api
+namespace model.Shared.UintaPine
 {
     public class ApiResponse
     {

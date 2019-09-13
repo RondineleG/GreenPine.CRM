@@ -14,7 +14,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\data.UintaPine\data.UintaPine.csproj" />
-    <ProjectReference Include="..\model.UintaPine\model.UintaPine.csproj" />
+    <ProjectReference Include="..\model.Server.UintaPine\model.Server.UintaPine.csproj" />
+    <ProjectReference Include="..\model.Shared.UintaPine\model.Shared.UintaPine.csproj" />
   </ItemGroup>
 
 </Project>
