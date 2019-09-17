@@ -20,7 +20,12 @@ namespace app.UintaPine
         public void Configure(IComponentsApplicationBuilder app)
         {
             //https://github.com/aspnet/AspNetCore/issues/9894
-            WebAssemblyHttpMessageHandler.DefaultCredentials = FetchCredentialsOption.Include;
+            //WebAssemblyHttpMessageHandler.DefaultCredentials = FetchCredentialsOption.Include;
+            
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Create("WEBASSEMBLY")))
+            {
+                WebAssemblyHttpMessageHandler.DefaultCredentials = FetchCredentialsOption.Include;
+            }
 
             app.AddComponent<App>("app");
         }
