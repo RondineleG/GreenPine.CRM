@@ -1,4 +1,7 @@
-﻿/*#region Boilerplate*/
+﻿@import url('../_content/Blazored.Toast/blazored-toast.css');
+
+
+/*#region Boilerplate*/
 html {
     font-family: 'Segoe UI';
 }
