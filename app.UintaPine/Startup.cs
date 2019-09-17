@@ -3,6 +3,7 @@ using Blazored.Toast;
 using Microsoft.AspNetCore.Blazor.Http;
 using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using System.Runtime.InteropServices;
 
 namespace app.UintaPine
 {
@@ -21,7 +22,7 @@ namespace app.UintaPine
         {
             //https://github.com/aspnet/AspNetCore/issues/9894
             //WebAssemblyHttpMessageHandler.DefaultCredentials = FetchCredentialsOption.Include;
-            
+
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Create("WEBASSEMBLY")))
             {
                 WebAssemblyHttpMessageHandler.DefaultCredentials = FetchCredentialsOption.Include;
