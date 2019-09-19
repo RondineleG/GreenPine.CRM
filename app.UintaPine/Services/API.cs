@@ -86,7 +86,13 @@ namespace app.UintaPine.Services
 #region HttpClient Methods
         private async Task<bool> Get(string path)
         {
-            var response = await _client.GetAsync(path);
+            var httpWebRequest = new HttpRequestMessage(HttpMethod.Get, path);
+            httpWebRequest.Properties[WebAssemblyHttpMessageHandler.FetchArgs] = new
+            {
+                credentials = "include"
+            };
+            var response = await _client.SendAsync(httpWebRequest);
+
             if (response.IsSuccessStatusCode)
             {
                 return true;

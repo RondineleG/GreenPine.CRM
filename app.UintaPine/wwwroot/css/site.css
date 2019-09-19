@@ -35,11 +35,11 @@ html {
 
 
 @media (min-width: 768px) {
-    .account-left {
+    .signin-left {
         margin-right: 10px;
     }
 
-    .account-right {
+    .signin-right {
         margin-left: 10px;
     }
 }

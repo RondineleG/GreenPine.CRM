@@ -28,16 +28,30 @@
         {
             @if (_appState?.User != null)
             {
-                <span class="navbar-text">
-                    <NavLink class="nav-link" href="" @onclick="SignOut">
-                        @_appState.User.Email | Sign Out <i class="fas fa-sign-out-alt"></i>
-                    </NavLink>
-                </span>
+                <div class="navbar-text">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <NavLink class="nav-link" href="company">
+                                Company Profile
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="account">
+                                @_appState.User.Email
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="" @onclick="SignOut">
+                                Sign Out <i class="fas fa-sign-out-alt"></i>
+                            </NavLink>
+                        </li>
+                    </ul>
+                </div>
             }
             else
             {
                 <span class="navbar-text">
-                    <NavLink class="nav-link" href="account">
+                    <NavLink class="nav-link" href="signin">
                         Register/Sign In
                     </NavLink>
                 </span>
@@ -72,6 +86,6 @@
         await _api.Logout();
         _appState.User = null;
 
-        _navigationManager.NavigateTo("account");
+        _navigationManager.NavigateTo("signin");
     }
 }

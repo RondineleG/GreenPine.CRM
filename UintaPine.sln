@@ -13,11 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "app.UintaPine", "app.UintaP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "model.Shared.UintaPine", "model.Shared.UintaPine\model.Shared.UintaPine.csproj", "{B7C26128-BB7C-4B32-9128-67F7CE30C552}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "model.Data.UintaPine", "model.Data.UintaPine\model.Data.UintaPine.csproj", "{636EF1E3-AE65-4FE5-AF13-34519272B375}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "model.Data.UintaPine", "model.Data.UintaPine\model.Data.UintaPine.csproj", "{636EF1E3-AE65-4FE5-AF13-34519272B375}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "model.Server.UintaPine", "model.Server.UintaPine\model.Server.UintaPine.csproj", "{B9EAA9CA-C2F8-4FBD-86F0-0FABFE982056}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "model.Server.UintaPine", "model.Server.UintaPine\model.Server.UintaPine.csproj", "{B9EAA9CA-C2F8-4FBD-86F0-0FABFE982056}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "model.Client.UintaPine", "model.Client.UintaPine\model.Client.UintaPine.csproj", "{95142878-7544-410F-ADD5-BF558235C5CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "model.Client.UintaPine", "model.Client.UintaPine\model.Client.UintaPine.csproj", "{95142878-7544-410F-ADD5-BF558235C5CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
