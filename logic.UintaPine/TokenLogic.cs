@@ -80,17 +80,28 @@ namespace logic.UintaPine
 			return encodedJwt;
 		}
 
-		public void BuildResponseCookie(HttpContext context, string encodedJwt)
+		public void BuildResponseCookieSignIn(HttpContext context, string encodedJwt)
 		{
 			CookieOptions options = new CookieOptions()
 			{
 				Expires = new DateTimeOffset(DateTime.Now.AddDays(1000)),
 				HttpOnly = true,
-				SameSite = SameSiteMode.None
+				SameSite = SameSiteMode.Lax
 			};
 			context.Response.Cookies.Append("access_token", encodedJwt, options);
 		}
-	}
+
+        public void BuildResponseCookieSignOut(HttpContext context)
+        {
+            CookieOptions options = new CookieOptions()
+            {
+                Expires = new DateTimeOffset(new DateTime()),
+                HttpOnly = true,
+                SameSite = SameSiteMode.Lax
+            };
+            context.Response.Cookies.Delete("access_token", options);
+        }
+    }
 
 	public class TokenProviderOptions
 	{

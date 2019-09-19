@@ -63,7 +63,7 @@ namespace api.UintaPine.Controllers
             string encodedJwt = await _tokenHelper.BuildJwtAuthorizationToken(validation.User, options);
 
             await _userHelper.UserSetLastSignInAsync(validation.User.Id);
-            _tokenHelper.BuildResponseCookie(Request.HttpContext, encodedJwt);
+            _tokenHelper.BuildResponseCookieSignIn(Request.HttpContext, encodedJwt);
 
             return Ok(validation.User);
         }
@@ -74,7 +74,7 @@ namespace api.UintaPine.Controllers
         [HttpGet]
         public IActionResult Logout()
         {
-            Response.Cookies.Delete("access_token");
+            _tokenHelper.BuildResponseCookieSignOut(Request.HttpContext);
             return Ok();
         }
 
