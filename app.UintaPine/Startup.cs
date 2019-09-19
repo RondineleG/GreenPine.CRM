@@ -1,9 +1,10 @@
 using app.UintaPine.Services;
-using Blazored.Toast;
 using Microsoft.AspNetCore.Blazor.Http;
 using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.InteropServices;
+using Blazored.Toast;
+using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 namespace app.UintaPine
 {
@@ -16,10 +17,13 @@ namespace app.UintaPine
             services.AddSingleton<AppState>();
             services.AddSingleton<API>();
             services.AddBlazoredToast();
+            services.AddLoadingBar();
         }
 
         public void Configure(IComponentsApplicationBuilder app)
         {
+            app.UseLoadingBar();
+
             //https://github.com/aspnet/AspNetCore/issues/9894
             //WebAssemblyHttpMessageHandler.DefaultCredentials = FetchCredentialsOption.Include;
 
