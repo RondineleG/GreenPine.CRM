@@ -1,7 +1,9 @@
 ﻿@page "/customer"
+@page "/customer/{Id}"
 
 <h3>CustomerDetails</h3>
-
+<h5>@Id</h5>
 @code {
-
+    [Parameter]
+    public string Id { get; set; }
 }
