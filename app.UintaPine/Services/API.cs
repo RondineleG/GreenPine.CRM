@@ -83,16 +83,10 @@ namespace app.UintaPine.Services
 
 
 
-#region HttpClient Methods
+        #region HttpClient Methods
         private async Task<bool> Get(string path)
         {
-            var httpWebRequest = new HttpRequestMessage(HttpMethod.Get, path);
-            httpWebRequest.Properties[WebAssemblyHttpMessageHandler.FetchArgs] = new
-            {
-                credentials = "include"
-            };
-            var response = await _client.SendAsync(httpWebRequest);
-
+            var response = await _client.GetAsync(path);
             if (response.IsSuccessStatusCode)
             {
                 return true;
@@ -105,13 +99,7 @@ namespace app.UintaPine.Services
 
         private async Task<T> GetAsAsync<T>(string path)
         {
-            var httpWebRequest = new HttpRequestMessage(HttpMethod.Get, path);
-            httpWebRequest.Properties[WebAssemblyHttpMessageHandler.FetchArgs] = new
-            {
-                credentials = "include"
-            };
-            var response = await _client.SendAsync(httpWebRequest);
-            
+            var response = await _client.GetAsync(path);
             if (response.IsSuccessStatusCode)
             {
                 string responseContent = await response.Content.ReadAsStringAsync();
@@ -135,14 +123,7 @@ namespace app.UintaPine.Services
         {
             string json = JsonConvert.SerializeObject(content);
             StringContent postContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
-
-            var httpWebRequest = new HttpRequestMessage(HttpMethod.Post, path);
-            httpWebRequest.Content = postContent;
-            httpWebRequest.Properties[WebAssemblyHttpMessageHandler.FetchArgs] = new
-            {
-                credentials = "include"
-            };
-            var response = await _client.SendAsync(httpWebRequest);
+            var response = await _client.PostAsync(path, postContent);
 
             if (response.IsSuccessStatusCode)
             {
@@ -156,7 +137,7 @@ namespace app.UintaPine.Services
                     string responseContent = await response.Content.ReadAsStringAsync();
                     return JsonConvert.DeserializeObject<T>(responseContent);
                 }
-                catch 
+                catch
                 {
                     return default(T);
                 }
@@ -167,14 +148,7 @@ namespace app.UintaPine.Services
         {
             string json = JsonConvert.SerializeObject(content);
             StringContent postContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
-
-            var httpWebRequest = new HttpRequestMessage(HttpMethod.Put, path);
-            httpWebRequest.Content = postContent;
-            httpWebRequest.Properties[WebAssemblyHttpMessageHandler.FetchArgs] = new
-            {
-                credentials = "include"
-            };
-            var response = await _client.SendAsync(httpWebRequest);
+            var response = await _client.PutAsync(path, postContent);
 
             if (response.IsSuccessStatusCode)
             {
@@ -197,13 +171,7 @@ namespace app.UintaPine.Services
 
         private async Task<T> Delete<T>(string path)
         {
-            var httpWebRequest = new HttpRequestMessage(HttpMethod.Delete, path);
-            httpWebRequest.Properties[WebAssemblyHttpMessageHandler.FetchArgs] = new
-            {
-                credentials = "include"
-            };
-            var response = await _client.SendAsync(httpWebRequest);
-            
+            var response = await _client.DeleteAsync(path);
             if (response.IsSuccessStatusCode)
             {
                 string responseContent = await response.Content.ReadAsStringAsync();
@@ -222,6 +190,6 @@ namespace app.UintaPine.Services
                 }
             }
         }
-#endregion
+        #endregion
     }
 }
