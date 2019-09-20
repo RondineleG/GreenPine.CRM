@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using Blazored.Toast;
 using Blazored.Toast.Services;
 using UintaPine.CRM.Model.Shared;
-using model.Client.UintaPine;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Blazor.Http;
 

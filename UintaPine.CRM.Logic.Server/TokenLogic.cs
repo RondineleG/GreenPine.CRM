@@ -5,7 +5,6 @@ using UintaPine.CRM.Logic.Server.Utility;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
-using UintaPine.CRM.Model.Server;
 using UintaPine.CRM.Model.Shared;
 using Newtonsoft.Json;
 using System;
@@ -13,16 +12,17 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace UintaPine.CRM.Logic.Server
 {
 	public class TokenLogic
 	{
-		private ApplicationSettings _applicationSettings { get; set; }
+		private IConfiguration _configuration { get; set; }
 
-		public TokenLogic(ApplicationSettings applicationSettings)
+		public TokenLogic(IConfiguration configuration)
 		{
-			_applicationSettings = applicationSettings;
+            _configuration = configuration;
 		}
 
 		public string EncodeStandardJwtToken(IToken payload)
@@ -32,7 +32,7 @@ namespace UintaPine.CRM.Logic.Server
 			IBase64UrlEncoder urlEncoder = new JwtBase64UrlEncoder();
 			IJwtEncoder encoder = new JwtEncoder(algorithm, serializer, urlEncoder);
 
-			var jwt = encoder.Encode(payload, _applicationSettings.SigningKey);
+			var jwt = encoder.Encode(payload, _configuration["SigningKey"]);
 
 			return jwt;
 		}
@@ -45,7 +45,7 @@ namespace UintaPine.CRM.Logic.Server
 			IBase64UrlEncoder urlEncoder = new JwtBase64UrlEncoder();
 			IJwtDecoder decoder = new JwtDecoder(serializer, validator, urlEncoder);
 
-			string json = decoder.Decode(token, _applicationSettings.SigningKey, verify: true);
+			string json = decoder.Decode(token, _configuration["SigningKey"], verify: true);
 			T recoveryToken = JsonConvert.DeserializeObject<T>(json);
 
 			return recoveryToken;

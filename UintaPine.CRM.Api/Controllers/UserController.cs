@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using UintaPine.CRM.Model.Server;
 using UintaPine.CRM.Model.Shared;
 using model.UintaPine.Utility;
+using Microsoft.Extensions.Configuration;
 
 namespace UintaPine.CRM.Api.Controllers
 {
@@ -19,13 +19,13 @@ namespace UintaPine.CRM.Api.Controllers
         private UserLogic _userHelper { get; set; }
         private UtilityLogic _utilityLogic { get; set; }
         private TokenLogic _tokenHelper { get; set; }
-        private ApplicationSettings _applicationSettings { get; set; }
-        public UserController(UserLogic userHelper, UtilityLogic utilityLogic, TokenLogic tokenHelper, ApplicationSettings applicationSettings)
+        private IConfiguration _configuration { get; set; }
+        public UserController(UserLogic userHelper, UtilityLogic utilityLogic, TokenLogic tokenHelper, IConfiguration configuration)
         {
             _userHelper = userHelper;
             _utilityLogic = utilityLogic;
             _tokenHelper = tokenHelper;
-            _applicationSettings = applicationSettings;
+            _configuration = configuration;
         }
 
         [HttpPost]
@@ -53,7 +53,7 @@ namespace UintaPine.CRM.Api.Controllers
                 return BadRequest(new UserSlim() { Success = false, Message = "Email has not been validated" });
             }
 
-            SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_applicationSettings.SigningKey));
+            SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["SigningKey"]));
             TokenProviderOptions options = new TokenProviderOptions()
             {
                 Issuer = this.Request.Host.Value,

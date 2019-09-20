@@ -1,5 +1,5 @@
-﻿using UintaPine.CRM.Model.Database;
-using UintaPine.CRM.Model.Server;
+﻿using Microsoft.Extensions.Configuration;
+using UintaPine.CRM.Model.Database;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 
@@ -14,12 +14,12 @@ namespace UintaPine.CRM.Database
         /// Options from Startup, used to setup db connection
         /// </summary>
         /// <param name="settings"></param>
-        public MongoContext(ApplicationSettings settings)
+        public MongoContext(IConfiguration configuration)
         {
             //Connect to the database
-            _client = new MongoClient(settings.DatabaseConnectionString);
+            _client = new MongoClient(configuration.GetConnectionString("MongoDBConnectionString"));
 
-            Setup(settings.DatabaseName);
+            Setup(configuration["DatabaseName"]);
         }
               
         private void Setup(string database)

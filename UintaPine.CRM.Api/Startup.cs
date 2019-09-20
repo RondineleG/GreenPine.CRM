@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Serialization;
-using UintaPine.CRM.Model.Server;
 
 namespace UintaPine.CRM.Api
 {
@@ -29,14 +28,13 @@ namespace UintaPine.CRM.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var settings = Configuration.Get<ApplicationSettings>();
-            services.AddSingleton(settings);
+            services.AddSingleton<IConfiguration>(Configuration);
 
             //When an access token is sent to the server, use these rules to validate the token.
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(settings.SigningKey)),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["SigningKey"])),
                 ValidateIssuer = false,
                 ValidateAudience = false,
                 ValidateLifetime = false,

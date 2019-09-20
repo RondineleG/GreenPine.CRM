@@ -15,10 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UintaPine.CRM.Model.Shared"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UintaPine.CRM.Model.Database", "UintaPine.CRM.Model.Database\UintaPine.CRM.Model.Database.csproj", "{636EF1E3-AE65-4FE5-AF13-34519272B375}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UintePine.CRM.Model.Server", "UintePine.CRM.Model.Server\UintePine.CRM.Model.Server.csproj", "{B9EAA9CA-C2F8-4FBD-86F0-0FABFE982056}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UintaPine.CRM.Model.Client", "UintaPine.CRM.Model.Client\UintaPine.CRM.Model.Client.csproj", "{95142878-7544-410F-ADD5-BF558235C5CF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,14 +45,6 @@ Global
 		{636EF1E3-AE65-4FE5-AF13-34519272B375}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{636EF1E3-AE65-4FE5-AF13-34519272B375}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{636EF1E3-AE65-4FE5-AF13-34519272B375}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B9EAA9CA-C2F8-4FBD-86F0-0FABFE982056}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B9EAA9CA-C2F8-4FBD-86F0-0FABFE982056}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B9EAA9CA-C2F8-4FBD-86F0-0FABFE982056}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B9EAA9CA-C2F8-4FBD-86F0-0FABFE982056}.Release|Any CPU.Build.0 = Release|Any CPU
-		{95142878-7544-410F-ADD5-BF558235C5CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{95142878-7544-410F-ADD5-BF558235C5CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{95142878-7544-410F-ADD5-BF558235C5CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{95142878-7544-410F-ADD5-BF558235C5CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
