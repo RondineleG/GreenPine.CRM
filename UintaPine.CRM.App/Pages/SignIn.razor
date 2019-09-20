@@ -1,0 +1,93 @@
+﻿@page "/signin"
+@using UintaPine.CRM.App.Services
+@inject AppState _appState
+@inject API _api
+@inject NavigationManager _navigationManger
+
+@inject IToastService toastService
+
+    <div class="row">
+
+        <div class="col-md-3 offset-md-3 signin-left">
+            <div class="row">
+                <h3>Sign In</h3>
+            </div>
+            <div class="row">
+                <p>Already have an account? Sign in here.</p>
+            </div>
+            <div class="row">
+                <input type="text" class="form-control" @bind="EmailAuthenticate" placeholder="Email Address" />
+            </div>
+            <div class="row mt-1">
+                <input type="password" class="form-control" @bind="PasswordAuthenticate" placeholder="Password" />
+            </div>
+            <div class="row mt-1">
+                <div class="col-md-12">
+                    <input type="button" class="row btn btn-primary float-right" value="Sign In" @onclick="Authenticate" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 signin-right">
+            <div class="row">
+                <h3>Register</h3>
+            </div>
+            <div class="row">
+                <p>Create a new user account and get started.</p>
+            </div>
+            <div class="row">
+                <input type="text" class="form-control" placeholder="Email Address" @bind="EmailRegister" />
+            </div>
+            <div class="row mt-1">
+                <input type="password" class="form-control" placeholder="Password" @bind="PasswordRegister" />
+            </div>
+            <div class="row mt-1">
+                <input type="password" class="form-control" placeholder="Configm Password" @bind="ConfirmPasswordRegister" />
+            </div>
+            <div class="row mt-1">
+                <div class="col-md-12">
+                    <input type="button" class="row btn btn-success float-right" value="Register" @onclick="Register" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+@code {
+    //Authentication bindable properties
+    string EmailAuthenticate { get; set; }
+    string PasswordAuthenticate { get; set; }
+
+    //Registration bindable properties
+    string EmailRegister { get; set; }
+    string PasswordRegister { get; set; }
+    string ConfirmPasswordRegister { get; set; }
+
+    async Task Register()
+    {
+        var response = await _api.RegisterUser(EmailRegister, PasswordRegister, ConfirmPasswordRegister);
+        if (response.Success)
+        {
+            _appState.User = response;
+        }
+        else
+        {
+            toastService.ShowError(response.Message);
+        }
+    }
+
+    async Task Authenticate()
+    {
+        var response = await _api.AuthenticateUser(EmailAuthenticate, PasswordAuthenticate);
+        if (response?.Success == true)
+        {
+            _appState.User = response;
+            _navigationManger.NavigateTo("customers");
+        }
+        else
+        {
+            toastService.ShowError(response.Message);
+        }
+    }
+}

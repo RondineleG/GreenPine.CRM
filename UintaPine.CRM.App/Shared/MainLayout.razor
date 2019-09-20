@@ -1,0 +1,96 @@
+﻿@inherits LayoutComponentBase
+
+@using Blazored.Toast.Configuration
+@using UintaPine.CRM.App.Services
+@using UintaPine.CRM.Model.Shared
+
+@inject AppState _appState
+@inject API _api
+@inject NavigationManager _navigationManager
+
+<BlazoredToasts Position="ToastPosition.TopRight"
+                Timeout="10"
+                SuccessClass="success-toast-override"
+                SuccessIconClass="fa fa-thumbs-up"
+                ErrorIconClass="fas fa-exclamation-circle" />
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <NavLink class="navbar-brand nav-link" href="/">
+        <i class="fas fa-tree mr-1"></i> <span>Uinta Pine</span>
+    </NavLink>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+        </ul>
+        @if (_appState.IsInitialized == true)
+        {
+            @if (_appState?.User != null)
+            {
+                <div class="navbar-text">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="customers">
+                                Customers
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="company">
+                                Company
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="account">
+                                @_appState.User.Email
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="" @onclick="SignOut">
+                                Sign Out <i class="fas fa-sign-out-alt"></i>
+                            </NavLink>
+                        </li>
+                    </ul>
+                </div>
+            }
+            else
+            {
+                <span class="navbar-text">
+                    <NavLink class="nav-link" href="signin">
+                        Register/Sign In
+                    </NavLink>
+                </span>
+            }
+        }
+    </div>
+</nav>
+
+<div class="content px-4 py-3">
+    @Body
+</div>
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        _appState.OnChange += StateHasChanged;
+    }
+
+    async protected override Task OnInitializedAsync()
+    {
+        UserSlim user = await _api.GetUserCurrent();
+        if (user?.Success == true)
+        {
+            _appState.User = user;
+        }
+        _appState.IsInitialized = true;
+    }
+
+    async public Task SignOut()
+    {
+        await _api.Logout();
+        _appState.User = null;
+
+        _navigationManager.NavigateTo("signin");
+    }
+}
