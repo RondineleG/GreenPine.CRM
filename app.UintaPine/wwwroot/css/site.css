@@ -43,3 +43,8 @@ html {
         margin-left: 10px;
     }
 }
+
+
+.list-group-item {
+    border: 0px !important;
+}

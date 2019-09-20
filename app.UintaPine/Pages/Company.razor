@@ -2,6 +2,76 @@
 
 <h3>Company</h3>
 
+<div class="row">
+    <div class="col-md-6">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <strong><label for="name">Name</label></strong>
+                <input id="name" type="text" class="form-control" />
+            </li>
+            <li class="list-group-item">
+                <strong><label for="address">Address</label></strong>
+                <textarea id="address" class="form-control"></textarea>
+            </li>
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-md-5 mt-1">
+                        <strong><label for="city">City</label></strong>
+                        <input id="city" type="text" class="form-control" />
+                    </div>
+                    <div class="col-md-3 mt-1">
+                        <strong><label for="state">State</label></strong>
+                        <input id="state" type="text" class="form-control" />
+                    </div>
+                    <div class="col-md-4 mt-1">
+                        <strong><label for="postal">Postal</label></strong>
+                        <input id="postal" type="text" class="form-control" />
+                    </div>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <strong><label for="timezone">Time Zone</label></strong>
+                <select class="form-control">
+                </select>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-6">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <strong><label for="phone">Primary Contact Name</label></strong>
+                <input id="phone" type="text" class="form-control" />
+            </li>
+            <li class="list-group-item">
+                <strong><label for="phone">Primary Contact Phone</label></strong>
+                <input id="phone" type="text" class="form-control" />
+            </li>
+            <li class="list-group-item mt-4">
+                <strong><label for="email">Primary Contact Email</label></strong>
+                <input id="email" type="text" class="form-control" />
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="dropdown float-right mt-3">
+            <button class="btn btn-success btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Actions
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <span class="dropdown-item pointer">Save Company</span>
+                <span class="dropdown-item pointer">Delete Company</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
 @code {
 
 }
