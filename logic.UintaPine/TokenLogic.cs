@@ -86,7 +86,7 @@ namespace logic.UintaPine
 			{
 				Expires = new DateTimeOffset(DateTime.Now.AddDays(1000)),
 				HttpOnly = true,
-				SameSite = SameSiteMode.Lax
+				SameSite = SameSiteMode.None
 			};
 			context.Response.Cookies.Append("access_token", encodedJwt, options);
 		}
@@ -97,7 +97,7 @@ namespace logic.UintaPine
             {
                 Expires = new DateTimeOffset(new DateTime()),
                 HttpOnly = true,
-                SameSite = SameSiteMode.Lax
+                SameSite = SameSiteMode.None
             };
             context.Response.Cookies.Delete("access_token", options);
         }
