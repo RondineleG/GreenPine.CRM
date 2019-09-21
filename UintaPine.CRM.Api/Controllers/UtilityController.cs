@@ -24,7 +24,7 @@ namespace UintaPine.CRM.Api.Controllers
         [HttpGet]
         async public Task<IActionResult> Ping()
         {
-            var result = await _utilityLogic.PingAsync(_configuration["SigningKey"]);
+            var result = await _utilityLogic.PingAsync(_configuration["Name"]);
 
             return Ok(result);
         }
