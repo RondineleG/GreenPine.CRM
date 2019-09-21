@@ -44,6 +44,9 @@ html {
     }
 }
 
+.pointer {
+    cursor: pointer;
+}
 
 .list-group-item {
     border: 0px !important;

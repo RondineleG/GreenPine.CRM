@@ -79,7 +79,15 @@ namespace UintaPine.CRM.App.Services
         }
 
 
+        public async Task<CompanySlim> CreateCompany(CreateCompany content)
+        {
+            return await Post<CompanySlim>("api/v1/company", content);
+        }
 
+        public async Task<List<CompanySlim>> GetCompaniesByUser(string userId)
+        {
+            return await GetAsAsync<List<CompanySlim>>($"api/v1/company/user/{userId}");
+        }
 
 
 #region HttpClient Methods

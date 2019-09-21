@@ -80,6 +80,7 @@ namespace UintaPine.CRM.Api
             services.AddSingleton<UtilityLogic>();
             services.AddSingleton<TokenLogic>();
             services.AddSingleton<UserLogic>();
+            services.AddSingleton<CompanyLogic>();
 
             services.AddCors(options =>
             {
