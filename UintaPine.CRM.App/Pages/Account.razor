@@ -1,12 +1,5 @@
 ﻿@page "/account"
 
-@using UintaPine.CRM.App.Services
-@using UintaPine.CRM.Model.Shared
-
-@inject API _api
-@inject AppState _appState
-@inject IToastService toastService
-
 
 <div class="row">
     <div class="col-md-6 mb-3">
@@ -34,32 +27,7 @@
     </div>
 
     <div class="col-md-5 offset-md-1">
-        <h3>Companies</h3>
-        <p>
-            Create/Manage your companies. Customers you create must be associated with a company.
-        </p>
-
-        <div class="input-group mt-1">
-            <input type="text" class="form-control" placeholder="Company Name" aria-label="Company Name" aria-describedby="button-addon2" @bind="NewCompanyName" />
-            <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button" id="button-addon2" @onclick="CreateNewCompany">Create Company</button>
-            </div>
-        </div>
-        <table class="table">
-            <tbody>
-                @foreach (var company in Companies)
-                {
-                    <tr>
-                        <td>@company.Name</td>
-                        <td>
-                            <input type="button" class="btn btn-sm btn-danger pointer float-right" value="Delete Company" />
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-
-        <h3 class="mt-5">Delete Account</h3>
+            <h3 class="mt-5">Delete Account</h3>
         <p>
             Click the button below to delete your account. This will delete your account and all associated data. This cannot be undone!
         </p>
@@ -72,29 +40,5 @@
 
 @code {
 
-    string NewCompanyName { get; set; }
-    List<CompanySlim> Companies { get; set; } = new List<CompanySlim>();
-
-    async protected override Task OnInitializedAsync()
-    {
-        Companies = await _api.GetCompaniesByUser(_appState.User.Id);
-    }
-
-    public async Task CreateNewCompany()
-    {
-        CreateCompany newCompanyContent = new CreateCompany()
-        {
-            Name = NewCompanyName
-        };
-
-        CompanySlim response = await _api.CreateCompany(newCompanyContent);
-        if (response.Success)
-        {
-            Companies.Add(response);
-        }
-        else
-        {
-            toastService.ShowError(response.Message);
-        }
-    }
+    
 }

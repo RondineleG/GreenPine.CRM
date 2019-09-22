@@ -19,13 +19,9 @@ namespace UintaPine.CRM.Model.Shared
     public class CompanySlim : ApiResponse
     {
         public string Id { get; set; }
-        public string OwnerId { get; set; }
+        public List<string> Owners { get; set; } = new List<string>();
+        public List<string> Authorized { get; set; } = new List<string>();
         public string Name { get; set; }
-        public List<string> AuthorizedUsers { get; set; } = new List<string>();
-    }
-    public class CompaniesByUser : ApiResponse
-    {
-        public List<CompanySlim> Companies { get; set; } = new List<CompanySlim>();
     }
 
     public class CustomerSlim

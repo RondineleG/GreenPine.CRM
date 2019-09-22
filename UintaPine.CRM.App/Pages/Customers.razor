@@ -1,0 +1,96 @@
+﻿@page "/customers"
+
+@using UintaPine.CRM.App.Services
+@using UintaPine.CRM.Model.Shared
+
+@inject API _api
+@inject AppState _appState
+@inject IToastService toastService
+
+@if (Company != null && Company?.Id == null)
+{
+    <h3>You don't have a company setup, lets take care of that.</h3>
+    <p>Create a company name. All customers must be part of a company. This company name can be changed at any time.</p>
+    <div class="mt-1">
+        <input type="text" placeholder="Company Name" class="form-control" @bind="Company.Name" />
+    </div>
+    <div class="mt-1">
+        <input type="button" class="btn btn-info" value="Create Company" @onclick="SaveCompany" />
+    </div>
+}
+else if (Company != null && Company?.Id != null)
+{
+    <h3 class="d-inline">@Company.Name</h3> <i class="ml-2 d-inline btn btn-link far fa-edit pointer"></i>
+    <div class="btn btn-link btn-sm pointer float-right">Manage Tags</div>
+    <div class="btn btn-link btn-sm pointer float-right">Manage Permissions</div>
+
+    <table class="table table-hover mt-3">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">First</th>
+                <th scope="col">Last</th>
+                <th scope="col">Handle</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@@mdo</td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@@fat</td>
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <td colspan="2">Larry the Bird</td>
+                <td>@@twitter</td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+@code {
+
+    CompanySlim Company { get; set; }
+
+    async protected override Task OnInitializedAsync()
+    {
+        var loadCompanyResponse = await _api.GetCompanyCurrentUser();
+        if (loadCompanyResponse == null)
+            Company = new CompanySlim();
+        else
+            Company = loadCompanyResponse;
+    }
+
+    public async Task SaveCompany()
+    {
+        if (Company.Id == null)
+        {
+            //Create a company
+            CreateCompany newCompanyContent = new CreateCompany()
+            {
+                Name = Company.Name
+            };
+            CompanySlim response = await _api.CreateCompany(newCompanyContent);
+
+            if (response.Success)
+            {
+                Company = response;
+            }
+            else
+            {
+                toastService.ShowError(response.Message);
+            }
+        }
+        else
+        {
+            //Update a company
+        }
+    }
+}

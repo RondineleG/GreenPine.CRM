@@ -30,21 +30,20 @@ namespace UintaPine.CRM.Api.Controllers
             //TODO: Field validation
 
             var response = await _companyLogic.CreateCompanyAsync(model.Name, user.Id);
-            return Ok(response);
+            if (response == null)
+                return BadRequest(new CompanySlim() { Message = "A company is already associated with this user", Success = false });
+            else
+                return Ok(response);
         }
 
-        [Route("api/v1/company/user/{id}")]
+        [Route("api/v1/company/user/current")]
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetCompaniesByUser(string id)
+        public async Task<IActionResult> GetCompanyCurrentUser()
         {
             UserSlim user = await _userLogic.GetUserSlimByIdAsync(User.Identity.Name);
 
-            //Validate that you own the account that is being deleted.
-            if (id != user?.Id)
-                return BadRequest(new CompaniesByUser() { Message = "Invalid Permissions", Success = false });
-
-            var companies = await _companyLogic.GetCompaniesByUser(user.Id);
+            var companies = await _companyLogic.GetCompanyByUser(user.Id);
 
             return Ok(companies);
         }

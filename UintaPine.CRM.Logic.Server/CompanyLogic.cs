@@ -20,12 +20,16 @@ namespace UintaPine.CRM.Logic.Server
             _utilityLogic = utilityLogic;
         }
 
-        async public Task<CompanySlim> CreateCompanyAsync(string companyName, string ownerId)
+        async public Task<CompanySlim> CreateCompanyAsync(string companyName, string userId)
         {
+            var existingCompany = await GetCompanyByUser(userId);
+            if (existingCompany != null)
+                return default(CompanySlim);
+
             Company company = new Company()
             {
                 Name = companyName,
-                OwnerId = ownerId
+                Owners = new List<string>() { userId }
             };
 
             await _db.Companies.InsertOneAsync(company);
@@ -36,17 +40,16 @@ namespace UintaPine.CRM.Logic.Server
             return newCompany;
         }
 
-        async public Task<List<CompanySlim>> GetCompaniesByUser(string userId)
+        async public Task<CompanySlim> GetCompanyByUser(string userId)
         {
-            var companies = await _db.Companies.Find(c => c.OwnerId == userId).Project(c => new CompanySlim() 
+            var company = await _db.Companies.Find(c => c.Owners.Contains(userId) || c.Authorized.Contains(userId)).Project(c => new CompanySlim() 
                                     { 
                                         Id = c.Id,
                                         Name = c.Name,
-                                        OwnerId = c.OwnerId,
-                                        AuthorizedUsers = c.AuthorizedUsers
-                                    }).ToListAsync();
-
-            return companies;
+                                        Owners = c.Owners,
+                                        Authorized = c.Authorized
+                                    }).FirstOrDefaultAsync();
+            return company;
         }
     }
 }

@@ -7,18 +7,13 @@ namespace UintaPine.CRM.Model.Database
     public class Company
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
-        /// <summary>
-        /// OwnerId is the User.Id of the user who created, and therefore owns this company
-        /// </summary>
-        public string OwnerId { get; set; }
+        public List<string> Owners { get; set; } = new List<string>();
+        public List<string> Authorized { get; set; } = new List<string>();
+
         public string Name { get; set; }
-
-        /// <summary>
-        /// Email address of users who are authorized to access this company
-        /// </summary>
-        public List<string> AuthorizedUsers { get; set; } = new List<string>();
-
         public List<Customer> Customers { get; set; } = new List<Customer>();
+
+        public List<string> Tags { get; set; } = new List<string>();
     }
 
     public class Customer
@@ -34,6 +29,8 @@ namespace UintaPine.CRM.Model.Database
         public string Postal { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
+
+        public List<string> Tags { get; set; } = new List<string>();
     }
 
     public enum Gender
