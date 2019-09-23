@@ -51,3 +51,7 @@ html {
 .list-group-item {
     border: 0px !important;
 }
+
+.deleteTagButton:hover {
+    color: red;
+}

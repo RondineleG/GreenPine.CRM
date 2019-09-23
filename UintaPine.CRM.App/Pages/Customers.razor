@@ -21,8 +21,35 @@
 else if (Company != null && Company?.Id != null)
 {
     <h3 class="d-inline">@Company.Name</h3> <i class="ml-2 d-inline btn btn-link far fa-edit pointer"></i>
-    <div class="btn btn-link btn-sm pointer float-right">Manage Tags</div>
-    <div class="btn btn-link btn-sm pointer float-right">Manage Permissions</div>
+    <div class="btn btn-link btn-sm pointer float-right" data-toggle="collapse" href="#settingsCollapse" role="button" aria-expanded="false" aria-controls="settingsCollapse">Settings</div>
+    <div class="collapse mt-3" id="settingsCollapse">
+        <div class="card card-body">
+            <h5 class="card-title">Settings</h5>
+            <h6 class="card-subtitle mb-2 mt-2 text-muted">Manage Tags</h6>
+            <p class="card-text">
+                Add or Remove tags. "Tags" are synonymous to a status or folder.
+            </p>
+            <p class="card-text">
+                <span class="badge badge-pill badge-info px-2 py-1">Pending Sale<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
+                <span class="badge badge-pill badge-info px-2 py-1">Needs Review<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
+                <span class="badge badge-pill badge-info px-2 py-1">Need To Contact<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
+                <span class="badge badge-pill badge-info px-2 py-1">Approved<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
+                <span class="badge badge-pill badge-info px-2 py-1">Denied <i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
+                <span class="badge badge-pill badge-info px-2 py-1">Pending Approval<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
+            </p>
+            <h6 class="card-subtitle mb-2 text-muted mt-2">Manage Authorized Users/Owners</h6>
+            <p class="card-text">
+                Add or remove users who should have access to this company data. Add the email address of the user - be sure to spell it correctly.
+            </p>
+            <div class="card-text">
+                <p class="ml-3">something1@@uintapine.com<span class="btn btn-link btn-sm pointer">remove</span></p>
+                <p class="ml-3">something2@@uintapine.com<span class="btn btn-link btn-sm pointer">remove</span></p>
+                <p class="ml-3">something3@@uintapine.com<span class="btn btn-link btn-sm pointer">remove</span></p>
+                <p class="ml-3">something4@@uintapine.com<span class="btn btn-link btn-sm pointer">remove</span></p>
+                <p class="ml-3">something5@@uintapine.com<span class="btn btn-link btn-sm pointer">remove</span></p>
+            </div>
+        </div>
+    </div>
 
     <table class="table table-hover mt-3">
         <thead>
@@ -93,4 +120,5 @@ else if (Company != null && Company?.Id != null)
             //Update a company
         }
     }
+
 }
