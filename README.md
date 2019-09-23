@@ -1,4 +1,4 @@
-# UintaPine
+# Uinta Pine CRM
 Disclaimer: This is an on-going project. I am still learning Blazor and Blazor (client side) is still "a work in progress".
 
 Simple CRM application, created with Blazor
