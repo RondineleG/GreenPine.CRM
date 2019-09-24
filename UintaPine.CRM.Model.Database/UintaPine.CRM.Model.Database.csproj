@@ -4,4 +4,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\UintaPine.CRM.Model.Shared\UintaPine.CRM.Model.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

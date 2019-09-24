@@ -18,7 +18,7 @@
         <input type="button" class="btn btn-info" value="Create Company" @onclick="SaveCompany" />
     </div>
 }
-else if (Company != null && Company?.Id != null)
+else if (Company?.Id != null)
 {
     <h3 class="d-inline">@Company.Name</h3> <i class="ml-2 d-inline btn btn-link far fa-edit pointer"></i>
     <div class="btn btn-link btn-lg pointer float-right" data-toggle="collapse" href="#settingsCollapse" role="button" aria-expanded="false" aria-controls="settingsCollapse"><i class="fas fa-cog"></i></div>
@@ -125,16 +125,31 @@ else if (Company != null && Company?.Id != null)
         </tbody>
     </table>
 }
+<h2>Nonconditional markup</h2>
 
 @code {
 
-    CompanySlim Company { get; set; }
+    CompanyResponseModel Company { get; set; }
+
 
     async protected override Task OnInitializedAsync()
     {
-        var loadCompanyResponse = await _api.GetCompanyCurrentUser();
+        if (_appState.IsInitialized)
+            await LoadCompanyData();
+     
+        _appState.OnChange += async () => await LoadCompanyData();
+    }
+
+    private async Task AppState_OnChange()
+    {
+        await LoadCompanyData();
+    }
+
+    private async Task LoadCompanyData()
+    {
+        var loadCompanyResponse = await _api.GetCompanyByUser(_appState.User.Id);
         if (loadCompanyResponse == null)
-            Company = new CompanySlim();
+            Company = new CompanyResponseModel();
         else
             Company = loadCompanyResponse;
     }
@@ -144,11 +159,11 @@ else if (Company != null && Company?.Id != null)
         if (Company.Id == null)
         {
             //Create a company
-            CreateCompany newCompanyContent = new CreateCompany()
+            CreateCompanyRequestModel newCompanyContent = new CreateCompanyRequestModel()
             {
                 Name = Company.Name
             };
-            CompanySlim response = await _api.CreateCompany(newCompanyContent);
+            CompanyResponseModel response = await _api.CreateCompany(newCompanyContent);
 
             if (response.Success)
             {

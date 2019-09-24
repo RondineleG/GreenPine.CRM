@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using UintaPine.CRM.Model.Shared;
+using UintaPine.CRM.Model.Database;
+using UintaPine.CRM.Logic.Server.Utility;
 
 namespace UintaPine.CRM.Api.Controllers
 {
@@ -23,29 +25,33 @@ namespace UintaPine.CRM.Api.Controllers
         [Route("api/v1/company")]
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateCompany([FromBody]CreateCompany model)
+        public async Task<IActionResult> CreateCompany([FromBody]CreateCompanyRequestModel model)
         {
             UserSlim user = await _userLogic.GetUserSlimByIdAsync(User.Identity.Name);
             
             //TODO: Field validation
 
-            var response = await _companyLogic.CreateCompanyAsync(model.Name, user.Id);
-            if (response == null)
-                return BadRequest(new CompanySlim() { Message = "A company is already associated with this user", Success = false });
-            else
-                return Ok(response);
+            Company result = await _companyLogic.CreateCompanyAsync(model.Name, user.Id);
+            if (result == null)
+                return BadRequest(new CompanyResponseModel() { Message = "A company is already associated with this user", Success = false });
+
+            CompanyResponseModel response = TypeConverter.ConvertObject<CompanyResponseModel>(result);
+            return Ok(response);
         }
 
-        [Route("api/v1/company/user/current")]
+        [Route("api/v1/company/user/{userId}")]
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetCompanyCurrentUser()
+        public async Task<IActionResult> GetCompanyByUser(string userId)
         {
             UserSlim user = await _userLogic.GetUserSlimByIdAsync(User.Identity.Name);
+            if (user.Id != userId)
+                return BadRequest(new CompanyResponseModel() { Success = false, Message = "Unauthorized User" });
 
-            var companies = await _companyLogic.GetCompanyByUser(user.Id);
+            var result = await _companyLogic.GetCompanyByUser(user.Id);
+            CompanyResponseModel response = TypeConverter.ConvertObject<CompanyResponseModel>(result);
 
-            return Ok(companies);
+            return Ok(response);
         }
 
     }

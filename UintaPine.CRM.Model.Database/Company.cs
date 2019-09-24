@@ -1,19 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using UintaPine.CRM.Model.Shared;
 
 namespace UintaPine.CRM.Model.Database
 {
     public class Company
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
-        public List<string> Owners { get; set; } = new List<string>();
-        public List<string> Authorized { get; set; } = new List<string>();
-
         public string Name { get; set; }
-        public List<Customer> Customers { get; set; } = new List<Customer>();
 
+        public List<AuthorizedUser> Users { get; set; } = new List<AuthorizedUser>();
+        public List<Customer> Customers { get; set; } = new List<Customer>();
         public List<string> Tags { get; set; } = new List<string>();
+    }
+
+    public class AuthorizedUser
+    {
+        public string Email { get; set; }
+        public bool Authorized { get; set; } = true;
+        public bool Owner { get; set; } = false;
     }
 
     public class Customer

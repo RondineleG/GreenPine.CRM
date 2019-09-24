@@ -15,6 +15,7 @@ namespace UintaPine.CRM.App.Services
             set
             {
                 _user = value;
+                IsInitialized = true;
                 NotifyStateChanged();
             }
         }
@@ -29,7 +30,6 @@ namespace UintaPine.CRM.App.Services
             set
             {
                 _isInitialized = value;
-                NotifyStateChanged();
             }
         }
 

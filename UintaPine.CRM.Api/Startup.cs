@@ -70,10 +70,11 @@ namespace UintaPine.CRM.Api
                 {
                     NoStore = true,
                 });
+                options.EnableEndpointRouting = false;
             })
             .AddJsonOptions(options =>
             {
-                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
             });
 
             services.AddSingleton<MongoContext>();

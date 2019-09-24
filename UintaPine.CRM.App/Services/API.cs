@@ -79,14 +79,14 @@ namespace UintaPine.CRM.App.Services
         }
 
 
-        public async Task<CompanySlim> CreateCompany(CreateCompany content)
+        public async Task<CompanyResponseModel> CreateCompany(CreateCompanyRequestModel content)
         {
-            return await Post<CompanySlim>("api/v1/company", content);
+            return await Post<CompanyResponseModel>("api/v1/company", content);
         }
 
-        public async Task<CompanySlim> GetCompanyCurrentUser()
+        public async Task<CompanyResponseModel> GetCompanyByUser(string userId)
         {
-            return await GetAsAsync<CompanySlim>("api/v1/company/user/current");
+            return await GetAsAsync<CompanyResponseModel>($"api/v1/company/user/{userId}");
         }
 
 

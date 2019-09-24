@@ -4,33 +4,38 @@ using System.Text;
 
 namespace UintaPine.CRM.Model.Shared
 {
-    /*
-     * What is a "Slim" class? A smaller version of the same class, usually found in the database model.
-     */
-
-
-    public class CreateCompany
+    #region Request Models
+    public class CreateCompanyRequestModel
     {
         public string Name { get; set; }
     }
+    #endregion
 
-    
 
-    public class CompanySlim : ApiResponse
+
+    #region Response Models
+    public class CompanyResponseModel : ApiResponse
     {
         public string Id { get; set; }
-        public List<string> Owners { get; set; } = new List<string>();
-        public List<string> Authorized { get; set; } = new List<string>();
         public string Name { get; set; }
+        public List<AuthorizedUserResponseModel> Users { get; set; } = new List<AuthorizedUserResponseModel>();
+        public List<string> Tags { get; set; } = new List<string>();
     }
-
-    public class CustomerSlim
+    
+    public class AuthorizedUserResponseModel
+    {
+        public string Email { get; set; }
+        public bool Authorized { get; set; } = true;
+        public bool Owner { get; set; } = false;
+    }
+    
+    public class CustomerResponseModel : ApiResponse    
     {
         public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime? DateOfBirth { get; set; }
-        public GenderSlim Gender { get; set; }
+        public GenderViewModel Gender { get; set; }
         public string City { get; set; }
         public string State { get; set; }
         public string Postal { get; set; }
@@ -38,9 +43,10 @@ namespace UintaPine.CRM.Model.Shared
         public string Email { get; set; }
     }
 
-    public enum GenderSlim
+    public enum GenderViewModel
     {
         Male = 1,
         Female = 2
     }
+    #endregion
 }
