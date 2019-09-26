@@ -1,0 +1,46 @@
+﻿@using UintaPine.CRM.App.Services
+@using UintaPine.CRM.Model.Shared
+
+@inject API _api
+@inject AppState _appState
+@inject IToastService toastService
+
+<h3>You don't have a company setup, lets take care of that.</h3>
+<p>Create a company name. All customers must be part of a company. This company name can be changed at any time.</p>
+<div class="mt-1">
+    <input type="text" placeholder="Company Name" class="form-control" @bind="Company.Name" />
+</div>
+<div class="mt-1">
+    <input type="button" class="btn btn-info" value="Create Company" @onclick="SaveCompany" />
+</div>
+
+@code {
+    [Parameter]
+    public CompanyResponseModel Company { get; set; }
+
+    public async Task SaveCompany()
+    {
+        if (Company.Id == null)
+        {
+            //Create a company
+            CreateCompanyRequestModel newCompanyContent = new CreateCompanyRequestModel()
+            {
+                Name = Company.Name
+            };
+            CompanyResponseModel response = await _api.CreateCompany(newCompanyContent);
+
+            if (response.Success)
+            {
+                Company = response;
+            }
+            else
+            {
+                toastService.ShowError(response.Message);
+            }
+        }
+        else
+        {
+            //Update a company
+        }
+    }
+}

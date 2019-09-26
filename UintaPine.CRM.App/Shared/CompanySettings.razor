@@ -1,0 +1,87 @@
+﻿@using UintaPine.CRM.App.Services
+@using UintaPine.CRM.Model.Shared
+
+@inject API _api
+@inject AppState _appState
+@inject IToastService toastService
+
+<h3 class="d-inline">@Company.Name</h3> <i class="ml-2 d-inline btn btn-link far fa-edit pointer"></i>
+<div class="btn btn-link btn-lg pointer float-right" data-toggle="collapse" href="#settingsCollapse" role="button" aria-expanded="false" aria-controls="settingsCollapse"><i class="fas fa-cog"></i></div>
+<div class="collapse mt-3 mb-5" id="settingsCollapse">
+    <div class="card card-body border-info text-info">
+        <h3 class="card-subtitle mb-2 text-muted">Manage Tags</h3>
+        <p class="card-text">
+            Add or Remove tags. "Tags" are synonymous to a status or folder.
+        </p>
+        <p class="card-text">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="New Tag Name" aria-label="New Tag Name" aria-describedby="button-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button" id="button-addon2">Add Tag</button>
+                </div>
+            </div>
+        </p>
+        <p class="card-text">
+            <span class="badge badge-pill badge-info px-2 py-1">Pending Sale<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
+            <span class="badge badge-pill badge-info px-2 py-1">Needs Review<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
+            <span class="badge badge-pill badge-info px-2 py-1">Need To Contact<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
+            <span class="badge badge-pill badge-info px-2 py-1">Approved<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
+            <span class="badge badge-pill badge-info px-2 py-1">Denied <i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
+            <span class="badge badge-pill badge-info px-2 py-1">Pending Approval<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
+        </p>
+        <h3 class="card-subtitle mb-2 text-muted mt-5">Manage Authorized Users/Owners</h3>
+        <p class="card-text">
+            Add or remove users who should have access to this company data. Add the email address of the user - be sure to spell it correctly.
+        </p>
+        <div class="card-text">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="User's Email Address" aria-label="User's Email Address" aria-describedby="button-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button" id="button-addon2">Add User</button>
+                </div>
+            </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Email Address</th>
+                        <th scope="col">Owner</th>
+                        <th scope="col">Authorized</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">someone@@uintapine.com</th>
+                        <td><input type="checkbox" /></td>
+                        <td><input type="checkbox" /></td>
+                        <td>
+                            <div class="btn btn-danger"><i class="fas fa-trash-alt"></i></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">someone1@@uintapine.com</th>
+                        <td><input type="checkbox" /></td>
+                        <td><input type="checkbox" /></td>
+                        <td>
+                            <div class="btn btn-danger"><i class="fas fa-trash-alt"></i></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">someone2@@uintapine.com</th>
+                        <td><input type="checkbox" /></td>
+                        <td><input type="checkbox" /></td>
+                        <td>
+                            <div class="btn btn-danger"><i class="fas fa-trash-alt"></i></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public CompanyResponseModel Company { get; set; }
+}

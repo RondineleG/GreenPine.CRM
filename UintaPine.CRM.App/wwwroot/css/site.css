@@ -3,6 +3,10 @@ html {
     font-family: 'Segoe UI';
 }
 
+.loading {
+    color: mediumseagreen;
+}
+
 .navbar {
     font-weight: 100 !important;
 }
