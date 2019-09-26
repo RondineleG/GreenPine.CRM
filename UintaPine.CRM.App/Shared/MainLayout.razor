@@ -7,6 +7,8 @@
 @inject AppState _appState
 @inject API _api
 @inject NavigationManager _navigationManager
+@inject Blazored.LocalStorage.ISyncLocalStorageService localStorage
+
 
 <BlazoredToasts Position="ToastPosition.TopRight"
                 Timeout="10"
@@ -26,7 +28,7 @@
         </ul>
         @if (_appState.IsInitialized == true)
         {
-            @if (_appState?.User != null)
+            @if (_appState?.User?.Email != null)
             {
                 <div class="navbar-text">
                     <ul class="navbar-nav mr-auto">
@@ -69,14 +71,26 @@
     protected override void OnInitialized()
     {
         _appState.OnChange += StateHasChanged;
+
+        _appState.User = new UserSlim()
+        {
+            Id = localStorage.GetItem<string>("user")
+        };
+
     }
 
     async protected override Task OnInitializedAsync()
     {
-        UserSlim user = await _api.GetUserCurrent().ConfigureAwait(false);
+
+        UserSlim user = await _api.GetUserCurrent();
         if (user?.Success == true)
         {
             _appState.User = user;
+            localStorage.SetItem("user", user.Id);
+        }
+        else
+        {
+            localStorage.RemoveItem("user");
         }
         _appState.IsInitialized = true;
     }
@@ -84,6 +98,8 @@
     async public Task SignOut()
     {
         await _api.Logout();
+        localStorage.RemoveItem("user");
+
         _appState.User = null;
 
         _navigationManager.NavigateTo("signin");

@@ -125,7 +125,6 @@ else if (Company?.Id != null)
         </tbody>
     </table>
 }
-<h2>Nonconditional markup</h2>
 
 @code {
 
@@ -134,17 +133,9 @@ else if (Company?.Id != null)
 
     async protected override Task OnInitializedAsync()
     {
-        if (_appState.IsInitialized)
-            await LoadCompanyData();
-     
-        _appState.OnChange += async () => await LoadCompanyData();
-    }
-
-    private async Task AppState_OnChange()
-    {
         await LoadCompanyData();
     }
-
+    
     private async Task LoadCompanyData()
     {
         var loadCompanyResponse = await _api.GetCompanyByUser(_appState.User.Id);
