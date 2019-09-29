@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\UintaPine.CRM.Database\UintaPine.CRM.Database.csproj" />
-    <ProjectReference Include="..\UintaPine.CRM.Model.Shared\UintaPine.CRM.Model.Shared.csproj" />
+    <ProjectReference Include="..\UintaPine.CRM.Model.Server\UintaPine.CRM.Model.Server.csproj" />
   </ItemGroup>
 
 </Project>

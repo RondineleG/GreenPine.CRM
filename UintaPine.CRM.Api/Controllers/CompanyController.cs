@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using UintaPine.CRM.Model.Shared;
 using UintaPine.CRM.Model.Database;
-using UintaPine.CRM.Logic.Server.Utility;
+using UintaPine.CRM.Model.Shared.Requests;
+using UintaPine.CRM.Model.Server;
 
 namespace UintaPine.CRM.Api.Controllers
 {
@@ -25,18 +26,17 @@ namespace UintaPine.CRM.Api.Controllers
         [Route("api/v1/company")]
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateCompany([FromBody]CreateCompanyRequestModel model)
+        public async Task<IActionResult> CreateCompany([FromBody]CreateCompany model)
         {
-            UserSlim user = await _userLogic.GetUserSlimByIdAsync(User.Identity.Name);
+            User user = await _userLogic.GetUserByIdAsync(User.Identity.Name);
             
             //TODO: Field validation
 
             Company result = await _companyLogic.CreateCompanyAsync(model.Name, user.Id);
             if (result == null)
-                return BadRequest(new CompanyResponseModel() { Message = "A company is already associated with this user", Success = false });
+                return BadRequest("A company is already associated with this user");
 
-            CompanyResponseModel response = TypeConverter.ConvertObject<CompanyResponseModel>(result);
-            return Ok(response);
+            return Ok(result.ToSharedResponseCompany());
         }
 
         [Route("api/v1/company/user/{userId}")]
@@ -44,14 +44,15 @@ namespace UintaPine.CRM.Api.Controllers
         [Authorize]
         public async Task<IActionResult> GetCompanyByUser(string userId)
         {
-            UserSlim user = await _userLogic.GetUserSlimByIdAsync(User.Identity.Name);
+            User user = await _userLogic.GetUserByIdAsync(User.Identity.Name);
             if (user.Id != userId)
-                return BadRequest(new CompanyResponseModel() { Success = false, Message = "Unauthorized User" });
+                return BadRequest("Unauthorized User");
 
             var result = await _companyLogic.GetCompanyByUser(user.Id);
-            CompanyResponseModel response = TypeConverter.ConvertObject<CompanyResponseModel>(result);
+            if (result == null)
+                return BadRequest("Company not found");
 
-            return Ok(response);
+            return Ok(result.ToSharedResponseCompany());
         }
 
     }

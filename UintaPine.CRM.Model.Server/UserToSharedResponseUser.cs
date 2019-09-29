@@ -4,13 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace UintaPine.CRM.Logic.Server.Utility
+namespace UintaPine.CRM.Model.Server
 {
-    public static class UserToUserSlim
+    public static class UserToSharedResponseUser
     {
-        public static UserSlim ToUserSlim(this User user)
+        public static Shared.Responses.User ToSharedResponseUser(this User user)
         {
-            return new UserSlim()
+            return new Shared.Responses.User()
             {
                 Id = user.Id,
                 Email = user.Email,

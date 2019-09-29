@@ -1,13 +1,11 @@
 ﻿using UintaPine.CRM.Database;
-using UintaPine.CRM.Logic.Server.Utility;
 using UintaPine.CRM.Model.Database;
-using UintaPine.CRM.Model.Shared;
-using model.UintaPine.Utility;
 using MongoDB.Driver;
 using System;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using UintaPine.CRM.Model.Server;
 
 namespace UintaPine.CRM.Logic.Server
 {
@@ -21,21 +19,8 @@ namespace UintaPine.CRM.Logic.Server
             _utilityLogic = utilityLogic;
         }
 
-        /// <summary>
-        /// Retrieve user by ID
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        async public Task<UserSlim> GetUserSlimByIdAsync(string id)
-        {
-            User user = await _db.Users.Find(u => u.Id == id).FirstOrDefaultAsync();
-            if (user != null)
-                return user.ToUserSlim();
-            else
-                return default(UserSlim);
-        }
 
-        async internal Task<User> GetUserByIdAsync(string id)
+        async public Task<User> GetUserByIdAsync(string id)
         {
             User user = await _db.Users.Find(u => u.Id == id).FirstOrDefaultAsync();
             if (user != null)
@@ -49,13 +34,13 @@ namespace UintaPine.CRM.Logic.Server
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-        async public Task<UserSlim> GetUserByEmailAsync(string email)
+        async public Task<User> GetUserByEmailAsync(string email)
         {
             User user = await _db.Users.Find(u => u.Email == email).FirstOrDefaultAsync();
             if (user != null)
-                return user.ToUserSlim();
+                return user;
             else
-                return default(UserSlim);
+                return default(User);
         }
 
         /// <summary>
@@ -63,12 +48,12 @@ namespace UintaPine.CRM.Logic.Server
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        async public Task<UserSlim> CreateUserAsync(string email, string password)
+        async public Task<User> CreateUserAsync(string email, string password)
         {
             if (await GetUserByEmailAsync(email) != null) //User email address must be unique
-                return default(UserSlim);
+                return default(User);
             else if (!IsValidPassword(password)) //User password must meet complexity requirements
-                return default(UserSlim);
+                return default(User);
 
             User user = new User();
             user.Email = email.ToLower();
@@ -77,7 +62,7 @@ namespace UintaPine.CRM.Logic.Server
 
             await _db.Users.InsertOneAsync(user);
 
-            return user.ToUserSlim();
+            return user;
         }
 
         async public Task UpdateUserAsync(string id, string email)
@@ -143,7 +128,7 @@ namespace UintaPine.CRM.Logic.Server
                     return new UserValidation()
                     {
                         Code = UserValidationResponseCode.Validated,
-                        User = user.ToUserSlim()
+                        User = user
                     };
                 }
 
@@ -165,7 +150,7 @@ namespace UintaPine.CRM.Logic.Server
                     return new UserValidation()
                     {
                         Code = UserValidationResponseCode.Validated,
-                        User = user.ToUserSlim()
+                        User = user
                     };
                 }
             }
@@ -269,7 +254,7 @@ namespace UintaPine.CRM.Logic.Server
             }
         }
 
-        async public Task<UserSlim> ValidateRecoveryToken(string token)
+        async public Task<User> ValidateRecoveryToken(string token)
         {
             User user = await _db.Users.Find(u => u.RecoveryToken == token).FirstOrDefaultAsync();
             if (user != null && user.RecoveryToken == token && user.RecoveryTokenExpiration >= DateTime.Now.ToUniversalTime())
@@ -279,7 +264,7 @@ namespace UintaPine.CRM.Logic.Server
                     .Set(u => u.RecoveryTokenExpiration, null);
 
                 await _db.Users.UpdateOneAsync(u => u.Id == user.Id, update);
-                return user.ToUserSlim();
+                return user;
             }
 
             if (user != null)
@@ -290,7 +275,7 @@ namespace UintaPine.CRM.Logic.Server
 
                 await _db.Users.UpdateOneAsync(u => u.Id == user.Id, cleanUp);
             }
-            return default(UserSlim);
+            return default(User);
         }
         async public Task UpdateUserPasswordByUserIdAsync(string userId, string password)
         {

@@ -1,6 +1,7 @@
-﻿using UintaPine.CRM.Model.Shared;
+﻿using UintaPine.CRM.Model.Database;
+using UintaPine.CRM.Model.Shared;
 
-namespace model.UintaPine.Utility
+namespace UintaPine.CRM.Model.Server
 {
     public enum UserValidationResponseCode
     {
@@ -12,7 +13,7 @@ namespace model.UintaPine.Utility
 
     public class UserValidation
     {
-        public UserSlim User { get; set; }
+        public User User { get; set; }
         public UserValidationResponseCode Code { get; set; }
     }
 }

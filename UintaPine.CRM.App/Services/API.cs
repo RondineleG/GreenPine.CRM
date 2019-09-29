@@ -9,26 +9,30 @@ using System.Text;
 using System.Threading.Tasks;
 using Blazored.Toast;
 using Blazored.Toast.Services;
+using Blazored.Toast.Configuration;
 using UintaPine.CRM.Model.Shared;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Blazor.Http;
+using UintaPine.CRM.Model.Shared.Responses;
+using UintaPine.CRM.Model.Shared.Requests;
 
 namespace UintaPine.CRM.App.Services
 {
     public class API
     {
-        [Inject]
         private AppState _appState { get; set; }
 
-        [Inject]
         private NavigationManager _navigationManager { get; set; }
+
+        private IToastService _toastService { get; set; }
         
         private HttpClient _client;
         
-        public API(AppState appState, NavigationManager navigationManager)
+        public API(AppState appState, NavigationManager navigationManager, IToastService toastService)
         {
             _appState = appState;
             _navigationManager = navigationManager;
+            _toastService = toastService;
 
             _client = new HttpClient();
             DetectDomainAndSetRootApi(_navigationManager.Uri);
@@ -45,7 +49,7 @@ namespace UintaPine.CRM.App.Services
         }
 
 
-        public async Task<UserSlim> RegisterUser(string email, string password, string confirmPassword)
+        public async Task<User> RegisterUser(string email, string password, string confirmPassword)
         {
             Register content = new Register()
             {
@@ -54,10 +58,10 @@ namespace UintaPine.CRM.App.Services
                 ConfirmPassword = confirmPassword
             };
 
-            return await Post<UserSlim>("api/v1/user", content);
+            return await Post<User>("api/v1/user", content);
         }
 
-        public async Task<UserSlim> AuthenticateUser(string username, string password)
+        public async Task<User> AuthenticateUser(string username, string password)
         {
             Authenticate content = new Authenticate()
             {
@@ -65,7 +69,7 @@ namespace UintaPine.CRM.App.Services
                 Password = password
             };
             
-            return await Post<UserSlim>("api/v1/authenticate", content);
+            return await Post<User>("api/v1/authenticate", content);
         }
 
         public async Task Logout()
@@ -73,20 +77,20 @@ namespace UintaPine.CRM.App.Services
             await Get("api/v1/logout");
         }
 
-        public async Task<UserSlim> GetUserCurrent()
+        public async Task<User> GetUserCurrent()
         {
-            return await GetAsAsync<UserSlim>("api/v1/user/me");
+            return await GetAsAsync<User>("api/v1/user/me");
         }
 
 
-        public async Task<CompanyResponseModel> CreateCompany(CreateCompanyRequestModel content)
+        public async Task<Company> CreateCompany(CreateCompany content)
         {
-            return await Post<CompanyResponseModel>("api/v1/company", content);
+            return await Post<Company>("api/v1/company", content);
         }
 
-        public async Task<CompanyResponseModel> GetCompanyByUser(string userId)
+        public async Task<Company> GetCompanyByUser(string userId)
         {
-            return await GetAsAsync<CompanyResponseModel>($"api/v1/company/user/{userId}");
+            return await GetAsAsync<Company>($"api/v1/company/user/{userId}");
         }
 
 
@@ -126,15 +130,10 @@ namespace UintaPine.CRM.App.Services
             }
             else
             {
-                try
-                {
-                    string responseContent = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<T>(responseContent);
-                }
-                catch
-                {
-                    return default(T);
-                }
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrEmpty(responseContent) == false)
+                    _appState.GlobalToast = responseContent;
+                return default(T);
             }
         }
 
@@ -158,18 +157,14 @@ namespace UintaPine.CRM.App.Services
             }
             else
             {
-                try
-                {
-                    string responseContent = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<T>(responseContent);
-                }
-                catch 
-                {
-                    return default(T);
-                }
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if(string.IsNullOrEmpty(responseContent) == false)
+                    _appState.GlobalToast = responseContent;
+                return default(T);
             }
         }
 
+        
         private async Task<T> Put<T>(string path, object content)
         {
             string json = JsonConvert.SerializeObject(content);
@@ -190,15 +185,10 @@ namespace UintaPine.CRM.App.Services
             }
             else
             {
-                try
-                {
-                    string responseContent = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<T>(responseContent);
-                }
-                catch
-                {
-                    return default(T);
-                }
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrEmpty(responseContent) == false)
+                    _appState.GlobalToast = responseContent;
+                return default(T);
             }
         }
 
@@ -218,15 +208,10 @@ namespace UintaPine.CRM.App.Services
             }
             else
             {
-                try
-                {
-                    string responseContent = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<T>(responseContent);
-                }
-                catch
-                {
-                    return default(T);
-                }
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrEmpty(responseContent) == false)
+                    _appState.GlobalToast = responseContent;
+                return default(T);
             }
         }
 #endregion

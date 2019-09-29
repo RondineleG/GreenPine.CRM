@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using UintaPine.CRM.Model.Shared;
+using UintaPine.CRM.Model.Shared.Enumerations;
 
 namespace UintaPine.CRM.Model.Database
 {
@@ -37,11 +38,5 @@ namespace UintaPine.CRM.Model.Database
         public string Email { get; set; }
 
         public List<string> Tags { get; set; } = new List<string>();
-    }
-
-    public enum Gender
-    {
-        Male = 1,
-        Female = 2
     }
 }

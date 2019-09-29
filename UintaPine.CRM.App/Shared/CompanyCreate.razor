@@ -1,5 +1,6 @@
 ﻿@using UintaPine.CRM.App.Services
-@using UintaPine.CRM.Model.Shared
+@using UintaPine.CRM.Model.Shared.Responses
+@using UintaPine.CRM.Model.Shared.Requests
 
 @inject API _api
 @inject AppState _appState
@@ -16,26 +17,22 @@
 
 @code {
     [Parameter]
-    public CompanyResponseModel Company { get; set; }
+    public Company Company { get; set; }
 
     public async Task SaveCompany()
     {
         if (Company.Id == null)
         {
             //Create a company
-            CreateCompanyRequestModel newCompanyContent = new CreateCompanyRequestModel()
+            CreateCompany newCompanyContent = new CreateCompany()
             {
                 Name = Company.Name
             };
-            CompanyResponseModel response = await _api.CreateCompany(newCompanyContent);
+            Company response = await _api.CreateCompany(newCompanyContent);
 
-            if (response.Success)
+            if (response != null)
             {
                 Company = response;
-            }
-            else
-            {
-                toastService.ShowError(response.Message);
             }
         }
         else

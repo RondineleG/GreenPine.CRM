@@ -2,11 +2,12 @@
 
 @using Blazored.Toast.Configuration
 @using UintaPine.CRM.App.Services
-@using UintaPine.CRM.Model.Shared
+@using UintaPine.CRM.Model.Shared.Responses
 
 @inject AppState _appState
 @inject API _api
 @inject NavigationManager _navigationManager
+@inject IToastService toastService
 @inject Blazored.LocalStorage.ISyncLocalStorageService localStorage
 
 
@@ -71,19 +72,29 @@
     protected override void OnInitialized()
     {
         _appState.OnChange += StateHasChanged;
+        _appState.OnChange += AppStateChangeCustomHandler;
 
-        _appState.User = new UserSlim()
+        _appState.User = new User()
         {
             Id = localStorage.GetItem<string>("user")
         };
 
     }
 
+    private void AppStateChangeCustomHandler()
+    {
+        if (_appState.GlobalToast != null)
+        {
+            toastService.ShowError(_appState.GlobalToast);
+            _appState.GlobalToast = null;
+        }
+    }
+
     async protected override Task OnInitializedAsync()
     {
 
-        UserSlim user = await _api.GetUserCurrent();
-        if (user?.Success == true)
+        User user = await _api.GetUserCurrent();
+        if (user != null)
         {
             _appState.User = user;
             localStorage.SetItem("user", user.Id);

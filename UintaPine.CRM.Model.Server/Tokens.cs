@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace UintaPine.CRM.Logic.Server.Utility
+namespace UintaPine.CRM.Model.Server
 {
     public interface IToken
     {

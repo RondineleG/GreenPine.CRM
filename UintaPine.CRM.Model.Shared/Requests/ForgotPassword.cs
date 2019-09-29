@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace UintaPine.CRM.Model.Shared
+namespace UintaPine.CRM.Model.Shared.Requests
 {
-    public class Authenticate
+    public class ForgotPassword
     {
         public string Email { get; set; }
-        public string Password { get; set; }
     }
 }

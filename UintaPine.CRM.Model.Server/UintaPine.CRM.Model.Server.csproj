@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UintaPine.CRM.Model.Database\UintaPine.CRM.Model.Database.csproj" />
+    <ProjectReference Include="..\UintaPine.CRM.Model.Shared\UintaPine.CRM.Model.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

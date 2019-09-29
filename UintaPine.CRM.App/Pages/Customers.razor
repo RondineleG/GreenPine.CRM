@@ -1,7 +1,7 @@
 ﻿@page "/customers"
 
 @using UintaPine.CRM.App.Services
-@using UintaPine.CRM.Model.Shared
+@using UintaPine.CRM.Model.Shared.Responses
 
 @inject API _api
 @inject AppState _appState
@@ -47,7 +47,7 @@ else if (Company?.Id != null)
 
 @code {
 
-    CompanyResponseModel Company { get; set; }
+    Company Company { get; set; }
 
     async protected override Task OnInitializedAsync()
     {
@@ -58,7 +58,7 @@ else if (Company?.Id != null)
     {
         var loadCompanyResponse = await _api.GetCompanyByUser(_appState.User.Id);
         if (loadCompanyResponse == null)
-            Company = new CompanyResponseModel();
+            Company = new Company();
         else
             Company = loadCompanyResponse;
     }

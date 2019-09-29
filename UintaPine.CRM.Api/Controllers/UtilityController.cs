@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using UintaPine.CRM.Logic.Server;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using model.UintaPine.Utility;
 using Microsoft.Extensions.Configuration;
 
 namespace UintaPine.CRM.Api.Controllers

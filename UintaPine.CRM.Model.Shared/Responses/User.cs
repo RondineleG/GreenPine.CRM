@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace UintaPine.CRM.Model.Shared
+namespace UintaPine.CRM.Model.Shared.Responses
 {
-    public class UserSlim : ApiResponse
+    public class User
     {
         public string Id { get; set; }
         public string Email { get; set; }

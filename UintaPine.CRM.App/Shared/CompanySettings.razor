@@ -1,5 +1,5 @@
 ﻿@using UintaPine.CRM.App.Services
-@using UintaPine.CRM.Model.Shared
+@using UintaPine.CRM.Model.Shared.Responses
 
 @inject API _api
 @inject AppState _appState
@@ -83,5 +83,5 @@
 @code {
 
     [Parameter]
-    public CompanyResponseModel Company { get; set; }
+    public Company Company { get; set; }
 }

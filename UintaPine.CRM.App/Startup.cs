@@ -15,12 +15,14 @@ namespace UintaPine.CRM.App
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddSingleton<AppState>();
+            services.AddSingleton<API>();
+
             services.AddBlazoredLocalStorage();
             services.AddBlazoredToast();
             services.AddLoadingBar();
 
-            services.AddSingleton<AppState>();
-            services.AddSingleton<API>();
         }
 
         public void Configure(IComponentsApplicationBuilder app)

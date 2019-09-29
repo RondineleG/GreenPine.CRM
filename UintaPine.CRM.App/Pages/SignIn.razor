@@ -70,14 +70,9 @@
     async Task RegisterUser()
     {
         var response = await _api.RegisterUser(EmailRegister, PasswordRegister, ConfirmPasswordRegister);
-        if (response.Success)
+        if (response != null)
         {
             await Authenticate(EmailRegister, PasswordRegister);
-
-        }
-        else
-        {
-            toastService.ShowError(response.Message);
         }
     }
 
@@ -89,15 +84,11 @@
     async Task Authenticate(string email, string password)
     {
         var response = await _api.AuthenticateUser(email, password);
-        if (response?.Success == true)
+        if (response != null)
         {
             _appState.User = response;
             localStorage.SetItem("user", response.Id);
             _navigationManger.NavigateTo("customers");
-        }
-        else
-        {
-            toastService.ShowError(response.Message);
         }
     }
 }

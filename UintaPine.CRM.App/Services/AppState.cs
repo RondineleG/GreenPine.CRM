@@ -1,12 +1,12 @@
-﻿using UintaPine.CRM.Model.Shared;
-using System;
+﻿using System;
+using UintaPine.CRM.Model.Shared.Responses;
 
 namespace UintaPine.CRM.App.Services
 {
     public class AppState
     {
-        private UserSlim _user { get; set; }
-        public UserSlim User
+        private User _user { get; set; }
+        public User User
         {
             get
             {
@@ -30,6 +30,20 @@ namespace UintaPine.CRM.App.Services
             set
             {
                 _isInitialized = value;
+            }
+        }
+
+        private string _globalToast { get; set; }
+        public string GlobalToast
+        {
+            get
+            {
+                return _globalToast;
+            }
+            set
+            {
+                _globalToast = value;
+                NotifyStateChanged();
             }
         }
 

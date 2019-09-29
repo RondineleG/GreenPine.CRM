@@ -1,11 +1,9 @@
 ﻿using JWT;
 using JWT.Algorithms;
 using JWT.Serializers;
-using UintaPine.CRM.Logic.Server.Utility;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
-using UintaPine.CRM.Model.Shared;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -13,6 +11,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using UintaPine.CRM.Model.Server;
+using UintaPine.CRM.Model.Database;
 
 namespace UintaPine.CRM.Logic.Server
 {
@@ -51,7 +51,7 @@ namespace UintaPine.CRM.Logic.Server
 			return recoveryToken;
 		}
 
-		async public Task<string> BuildJwtAuthorizationToken(UserSlim user, TokenProviderOptions options)
+		async public Task<string> BuildJwtAuthorizationToken(User user, TokenProviderOptions options)
 		{
 			var now = DateTime.UtcNow;
 			// Specifically add the jti (nonce), iat (issued timestamp), and sub (subject/user) claims.
