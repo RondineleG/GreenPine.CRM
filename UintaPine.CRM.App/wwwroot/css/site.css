@@ -24,7 +24,7 @@ html {
 
 /*Mobile View*/
 @media (max-width: 767.98px) {
-
+    
 }
 
 
@@ -58,4 +58,82 @@ html {
 
 .deleteTagButton:hover {
     color: red;
+}
+
+.tag-font {
+    color: black;
+}
+
+.maroon_background {
+    background-color: maroon;
+}
+
+.red_background {
+    background-color: red;
+}
+
+.orange_background {
+    background-color: orange;
+}
+
+.yellow_background {
+    background-color: yellow;
+}
+
+.olive_background {
+    background-color: olive;
+}
+
+.green_background {
+    background-color: green;
+}
+
+.purple_background {
+    background-color: purple;
+}
+
+.fuchsia_background {
+    background-color: fuchsia;
+}
+
+.lime_background {
+    background-color: lime;
+}
+
+.teal_background {
+    background-color: teal;
+}
+
+.aqua_background {
+    background-color: aqua;
+}
+
+.blue_background {
+    background-color: blue;
+}
+
+.navy_background {
+    background-color: navy;
+}
+
+.black_background {
+    background-color: black;
+}
+
+.gray_background {
+    background-color: gray;
+}
+
+.silver_background {
+    background-color: silver;
+}
+
+
+
+.black_font {
+    color: black;
+}
+
+.white_font {
+    color: white;
 }

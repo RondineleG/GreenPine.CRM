@@ -25,20 +25,54 @@
             Add or Remove tags. "Tags" are synonymous to a status or folder.
         </p>
         <p class="card-text">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="New Tag Name" aria-label="New Tag Name" aria-describedby="button-addon2">
-                <div class="input-group-append">
-                    <button class="btn btn-primary" type="button" id="button-addon2">Add Tag</button>
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input type="text" class="form-control" aria-label="New Tag Name" @bind="NewTagName" />
+                    <div class="input-group-append">
+                        <select @bind="NewTagBackgroundColor">
+                            <option value="">--Background Color--</option>
+                            <option value="maroon">Maroon</option>
+                            <option value="red">Red</option>
+                            <option value="orange">Orange</option>
+                            <option value="yellow">Yellow</option>
+                            <option value="olive">Olive</option>
+                            <option value="green">Green</option>
+                            <option value="purple">Purple</option>
+                            <option value="fuchsia">Fuchsia</option>
+                            <option value="lime">Lime</option>
+                            <option value="teal">Teal</option>
+                            <option value="aqua">Aqua</option>
+                            <option value="blue">Blue</option>
+                            <option value="navy">Navy</option>
+                            <option value="black">Black</option>
+                            <option value="gray">Gray</option>
+                            <option value="silver">Silver</option>
+                        </select>
+                    </div>
+                    <div class="input-group-append">
+                        <select @bind="NewTagFontColor">
+                            <option value="">--Font Color--</option>
+                            <option value="black">Black</option>
+                            <option value="white">White</option>
+                        </select>
+                    </div>
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button" id="button-addon2" @onclick="CreateTag">Add Tag</button>
+                    </div>
                 </div>
+                <span class="badge badge-pill px-2 py-1 tag-font float-right mt-1 @($"{NewTagBackgroundColor}_background") @($"{NewTagFontColor}_font")">@NewTagName</span>
             </div>
         </p>
         <p class="card-text">
-            <span class="badge badge-pill badge-info px-2 py-1">Pending Sale<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
-            <span class="badge badge-pill badge-info px-2 py-1">Needs Review<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
+            @foreach (var tag in Company.Tags)
+            {
+                <span class="badge badge-pill px-2 py-1 tag-font @($"{tag.BackgroundColor}_background") @($"{tag.FontColor}_font")">@tag.Name<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
+            }
+            @*<span class="badge badge-pill badge-info px-2 py-1">Needs Review<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
             <span class="badge badge-pill badge-info px-2 py-1">Need To Contact<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
             <span class="badge badge-pill badge-info px-2 py-1">Approved<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
             <span class="badge badge-pill badge-info px-2 py-1">Denied <i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
-            <span class="badge badge-pill badge-info px-2 py-1">Pending Approval<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
+            <span class="badge badge-pill badge-info px-2 py-1">Pending Approval<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>*@
         </p>
         <h3 class="card-subtitle mb-2 text-muted mt-5">Manage Authorized Users/Owners</h3>
         <p class="card-text">
@@ -95,4 +129,28 @@
 
     [Parameter]
     public Company Company { get; set; }
+
+    public string NewTagName { get; set; }
+    public string NewTagBackgroundColor { get; set; }
+    public string NewTagFontColor { get; set; }
+
+    public async Task CreateTag()
+    {
+        if (string.IsNullOrEmpty(NewTagName))
+            toastService.ShowWarning("Tag Name is Required");
+        else if (string.IsNullOrEmpty(NewTagBackgroundColor))
+            toastService.ShowWarning("Tag Background Color is Required");
+        else if (string.IsNullOrEmpty(NewTagFontColor))
+            toastService.ShowWarning("Tag Font Color is Required");
+        else
+        {
+            CustomerTag newTag = await _api.CreateTagByCompanyId(Company.Id, NewTagName, NewTagBackgroundColor, NewTagFontColor);
+
+            Company.Tags.Add(newTag);
+
+            NewTagName = string.Empty;
+            NewTagBackgroundColor = string.Empty;
+            NewTagFontColor = string.Empty;
+        }
+    }
 }

@@ -13,7 +13,7 @@ namespace UintaPine.CRM.Model.Database
 
         public List<AuthorizedUser> Users { get; set; } = new List<AuthorizedUser>();
         public List<Customer> Customers { get; set; } = new List<Customer>();
-        public List<string> Tags { get; set; } = new List<string>();
+        public List<CustomerTag> Tags { get; set; } = new List<CustomerTag>();
     }
 
     public class AuthorizedUser
@@ -38,5 +38,12 @@ namespace UintaPine.CRM.Model.Database
         public string Email { get; set; }
 
         public List<string> Tags { get; set; } = new List<string>();
+    }
+
+    public class CustomerTag
+    {
+        public string Name { get; set; }
+        public string BackgroundColor { get; set; }
+        public string FontColor { get; set; }
     }
 }

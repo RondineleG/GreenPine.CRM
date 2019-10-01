@@ -53,5 +53,18 @@ namespace UintaPine.CRM.Api.Controllers
             return Ok(result.Select(c => c.ToSharedResponseCompany()).ToList());
         }
 
+        [Route("api/v1/company/{companyId}/tag")]
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> CreateTagByCompanyId([FromBody]CreateTag model, string companyId)
+        {
+            User user = await _userLogic.GetUserByIdAsync(User.Identity.Name);
+
+            //TODO: Validation
+
+            await _companyLogic.CreateTag(companyId, model.Name, model.BackgroundColor, model.FontColor);
+
+            return Ok();
+        }
     }
 }

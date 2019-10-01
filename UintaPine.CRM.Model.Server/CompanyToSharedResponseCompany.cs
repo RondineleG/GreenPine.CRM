@@ -15,7 +15,12 @@ namespace UintaPine.CRM.Model.Server
             {
                 Id = company.Id,
                 Name = company.Name,
-                Tags = company.Tags,
+                Tags = company.Tags.Select(t => new Shared.Responses.CustomerTag()
+                {
+                    Name = t.Name,
+                    BackgroundColor = t.BackgroundColor,
+                    FontColor = t.FontColor
+                }).ToList(),
                 Users = company.Users.Select(c => new Shared.Responses.AuthorizedUser()
                 {
                     Email = c.Email,

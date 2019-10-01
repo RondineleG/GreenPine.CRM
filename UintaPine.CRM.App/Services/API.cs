@@ -93,6 +93,26 @@ namespace UintaPine.CRM.App.Services
             return await GetAsAsync<List<Company>>($"api/v1/company/user/{userId}");
         }
 
+        public async Task<CustomerTag> CreateTagByCompanyId(string companyId, string name, string backgroundColor, string fontColor)
+        {
+            CreateTag content = new CreateTag()
+            {
+                Name = name,
+                BackgroundColor = backgroundColor,
+                FontColor = fontColor
+            };
+            await Post($"api/v1/company/{companyId}/tag", content);
+
+            CustomerTag tag = new CustomerTag()
+            {
+                Name = content.Name,
+                BackgroundColor = content.BackgroundColor,
+                FontColor = content.FontColor
+            };
+
+            return tag;
+        }
+
 
 #region HttpClient Methods
         private async Task<bool> Get(string path)
@@ -134,6 +154,31 @@ namespace UintaPine.CRM.App.Services
                 if (string.IsNullOrEmpty(responseContent) == false)
                     _appState.GlobalToast = responseContent;
                 return default(T);
+            }
+        }
+
+        private async Task Post(string path, object content)
+        {
+            string json = JsonConvert.SerializeObject(content);
+            StringContent postContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
+
+            var httpWebRequest = new HttpRequestMessage(HttpMethod.Post, path);
+            httpWebRequest.Content = postContent;
+            httpWebRequest.Properties[WebAssemblyHttpMessageHandler.FetchArgs] = new
+            {
+                credentials = "include"
+            };
+            var response = await _client.SendAsync(httpWebRequest);
+
+            if (response.IsSuccessStatusCode)
+            {
+                //Do nothing
+            }
+            else
+            {
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrEmpty(responseContent) == false)
+                    _appState.GlobalToast = responseContent;
             }
         }
 
