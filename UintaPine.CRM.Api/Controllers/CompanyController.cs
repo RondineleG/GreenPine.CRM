@@ -42,17 +42,15 @@ namespace UintaPine.CRM.Api.Controllers
         [Route("api/v1/company/user/{userId}")]
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetCompanyByUser(string userId)
+        public async Task<IActionResult> GetCompaniesByUser(string userId)
         {
             User user = await _userLogic.GetUserByIdAsync(User.Identity.Name);
             if (user.Id != userId)
                 return BadRequest("Unauthorized User");
 
-            var result = await _companyLogic.GetCompanyByUser(user.Id);
-            if (result == null)
-                return BadRequest("Company not found");
+            var result = await _companyLogic.GetCompaniesByUser(user.Id);
 
-            return Ok(result.ToSharedResponseCompany());
+            return Ok(result.Select(c => c.ToSharedResponseCompany()).ToList());
         }
 
     }

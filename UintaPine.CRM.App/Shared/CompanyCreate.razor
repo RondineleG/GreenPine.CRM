@@ -12,32 +12,25 @@
     <input type="text" placeholder="Company Name" class="form-control" @bind="Company.Name" />
 </div>
 <div class="mt-1">
-    <input type="button" class="btn btn-info" value="Create Company" @onclick="SaveCompany" />
+    <input type="button" class="btn btn-info" value="Create Company" @onclick="CreateCompany" />
 </div>
 
 @code {
     [Parameter]
-    public Company Company { get; set; }
+    public Company Company { get; set; } = new Company();
 
-    public async Task SaveCompany()
+    public async Task CreateCompany()
     {
-        if (Company.Id == null)
+        //Create a company
+        CreateCompany newCompanyContent = new CreateCompany()
         {
-            //Create a company
-            CreateCompany newCompanyContent = new CreateCompany()
-            {
-                Name = Company.Name
-            };
-            Company response = await _api.CreateCompany(newCompanyContent);
+            Name = Company.Name
+        };
+        Company response = await _api.CreateCompany(newCompanyContent);
 
-            if (response != null)
-            {
-                Company = response;
-            }
-        }
-        else
+        if (response != null)
         {
-            //Update a company
+            Company = response;
         }
     }
 }

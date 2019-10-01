@@ -17,10 +17,6 @@ namespace UintaPine.CRM.Logic.Server
 
         async public Task<Company> CreateCompanyAsync(string companyName, string email)
         {
-            var existingCompany = await GetCompanyByUser(email);
-            if (existingCompany != null)
-                return default(Company);
-
             Company company = new Company()
             {
                 Name = companyName,
@@ -32,10 +28,10 @@ namespace UintaPine.CRM.Logic.Server
             return company;
         }
 
-        async public Task<Company> GetCompanyByUser(string email)
+        async public Task<List<Company>> GetCompaniesByUser(string email)
         {
-            var company = await _db.Companies.Find(c => c.Users.Any(u => u.Email == email)).FirstOrDefaultAsync();
-            return company;
+            var companies = await _db.Companies.Find(c => c.Users.Any(u => u.Email == email)).ToListAsync();
+            return companies;
         }
 
         async public Task CreateTag(string companyId, string tag)

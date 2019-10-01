@@ -5,7 +5,18 @@
 @inject AppState _appState
 @inject IToastService toastService
 
-<h3 class="d-inline">@Company.Name</h3> <i class="ml-2 d-inline btn btn-link far fa-edit pointer"></i>
+<div class="btn-group">
+    <button class="btn btn-outline-dark btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        @Company.Name
+    </button>
+    <div class="dropdown-menu">
+        <a class="dropdown-item" href="#">First Company</a>
+        <a class="dropdown-item" href="#">My Second Company</a>
+        <a class="dropdown-item" href="#">Third Company</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#">Create New Company</a>
+    </div>
+</div>
 <div class="btn btn-link btn-lg pointer float-right" data-toggle="collapse" href="#settingsCollapse" role="button" aria-expanded="false" aria-controls="settingsCollapse"><i class="fas fa-cog"></i></div>
 <div class="collapse mt-3 mb-5" id="settingsCollapse">
     <div class="card card-body border-info text-info">
