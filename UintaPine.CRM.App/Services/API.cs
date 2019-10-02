@@ -113,6 +113,11 @@ namespace UintaPine.CRM.App.Services
             return tag;
         }
 
+        public async Task DeleteTagByCompanyIdTagId(string companyId, string tagId)
+        {
+            await Delete($"api/v1/company/{companyId}/tag/{tagId}");
+        }
+
 
 #region HttpClient Methods
         private async Task<bool> Get(string path)
@@ -237,7 +242,7 @@ namespace UintaPine.CRM.App.Services
             }
         }
 
-        private async Task<T> Delete<T>(string path)
+        private async Task Delete(string path)
         {
             var httpWebRequest = new HttpRequestMessage(HttpMethod.Delete, path);
             httpWebRequest.Properties[WebAssemblyHttpMessageHandler.FetchArgs] = new
@@ -245,18 +250,16 @@ namespace UintaPine.CRM.App.Services
                 credentials = "include"
             };
             var response = await _client.SendAsync(httpWebRequest);
-            
+
             if (response.IsSuccessStatusCode)
             {
-                string responseContent = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<T>(responseContent);
+                //Do Nothing
             }
             else
             {
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (string.IsNullOrEmpty(responseContent) == false)
                     _appState.GlobalToast = responseContent;
-                return default(T);
             }
         }
 #endregion

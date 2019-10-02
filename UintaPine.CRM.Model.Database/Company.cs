@@ -42,6 +42,7 @@ namespace UintaPine.CRM.Model.Database
 
     public class CustomerTag
     {
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; }
         public string BackgroundColor { get; set; }
         public string FontColor { get; set; }

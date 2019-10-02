@@ -21,6 +21,7 @@ namespace UintaPine.CRM.Model.Shared.Responses
 
     public class CustomerTag
     {
+        public string Id { get; set; }
         public string Name { get; set; }
         public string BackgroundColor { get; set; }
         public string FontColor { get; set; }

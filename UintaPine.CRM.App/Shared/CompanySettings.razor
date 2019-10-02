@@ -66,7 +66,7 @@
         <p class="card-text">
             @foreach (var tag in Company.Tags)
             {
-                <span class="badge badge-pill px-2 py-1 tag-font @($"{tag.BackgroundColor}_background") @($"{tag.FontColor}_font")">@tag.Name<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
+                <span class="badge badge-pill px-2 py-1 tag-font @($"{tag.BackgroundColor}_background") @($"{tag.FontColor}_font")">@tag.Name<i @onclick="@(() => DeleteTag(tag.Id))" class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
             }
             @*<span class="badge badge-pill badge-info px-2 py-1">Needs Review<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
             <span class="badge badge-pill badge-info px-2 py-1">Need To Contact<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
@@ -152,5 +152,12 @@
             NewTagBackgroundColor = string.Empty;
             NewTagFontColor = string.Empty;
         }
+    }
+
+    public async Task DeleteTag(string id)
+    {
+        await _api.DeleteTagByCompanyIdTagId(Company.Id, id);
+
+        Company.Tags = Company.Tags.Where(t => t.Id != id).ToList();
     }
 }

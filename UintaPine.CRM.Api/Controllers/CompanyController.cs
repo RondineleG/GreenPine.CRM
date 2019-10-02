@@ -66,5 +66,17 @@ namespace UintaPine.CRM.Api.Controllers
 
             return Ok();
         }
+
+        [Route("api/v1/company/{companyId}/tag/{tagId}")]
+        [HttpDelete]
+        [Authorize]
+        public async Task<IActionResult> DeleteTagByCompanyIdTagId(string companyId, string tagId)
+        {
+            User user = await _userLogic.GetUserByIdAsync(User.Identity.Name);
+
+            await _companyLogic.DeleteTag(companyId, tagId);
+
+            return Ok();
+        }
     }
 }
