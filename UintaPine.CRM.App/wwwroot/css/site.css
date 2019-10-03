@@ -137,3 +137,8 @@ html {
 .white_font {
     color: white;
 }
+
+
+.createTagName {
+    width: 150px;
+}

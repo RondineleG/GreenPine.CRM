@@ -27,7 +27,7 @@
         <p class="card-text">
             <div class="col-md-6">
                 <div class="input-group">
-                    <input type="text" class="form-control" aria-label="New Tag Name" @bind="NewTagName" />
+                    <input type="text" class="form-control createTagName" aria-label="New Tag Name" @bind="NewTagName" />
                     <div class="input-group-append">
                         <select @bind="NewTagBackgroundColor">
                             <option value="">--Background Color--</option>
@@ -150,7 +150,7 @@
 
             NewTagName = string.Empty;
             NewTagBackgroundColor = string.Empty;
-            NewTagFontColor = string.Empty;
+            NewTagFontColor = "black";
         }
     }
 

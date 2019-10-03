@@ -63,7 +63,7 @@ namespace UintaPine.CRM.Logic.Server
         async public Task DeleteTag(string companyId, string tagId)
         {
             var company = await GetCompanyById(companyId);
-            var update = Builders<Company>.Update.Pull(c => c.Tags, company.Tags.FirstOrDefault(c => c.Id == tagId));
+            var update = Builders<Company>.Update.PullFilter(c => c.Tags, t => t.Id == tagId);
             await _db.Companies.UpdateOneAsync(c => c.Id == companyId, update);
         }
 
