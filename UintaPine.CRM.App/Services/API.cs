@@ -88,6 +88,11 @@ namespace UintaPine.CRM.App.Services
             return await Post<Company>("api/v1/company", content);
         }
 
+        public async Task<Company> GetCompanyById(string companyId)
+        {
+            return await GetAsAsync<Company>($"api/v1/company/{companyId}");
+        }
+
         public async Task<List<Company>> GetCompaniesByUser(string userId)
         {
             return await GetAsAsync<List<Company>>($"api/v1/company/user/{userId}");

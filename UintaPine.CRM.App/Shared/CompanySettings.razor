@@ -5,19 +5,6 @@
 @inject AppState _appState
 @inject IToastService toastService
 
-<div class="btn-group">
-    <button class="btn btn-outline-dark btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        @Company.Name
-    </button>
-    <div class="dropdown-menu">
-        <a class="dropdown-item" href="#">First Company</a>
-        <a class="dropdown-item" href="#">My Second Company</a>
-        <a class="dropdown-item" href="#">Third Company</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#">Create New Company</a>
-    </div>
-</div>
-<div class="btn btn-link btn-lg pointer float-right" data-toggle="collapse" href="#settingsCollapse" role="button" aria-expanded="false" aria-controls="settingsCollapse"><i class="fas fa-cog"></i></div>
 <div class="collapse mt-3 mb-5" id="settingsCollapse">
     <div class="card card-body border-info text-info">
         <h3 class="card-subtitle mb-2 text-muted">Manage Tags</h3>
@@ -68,11 +55,6 @@
             {
                 <span class="badge badge-pill px-2 py-1 tag-font @($"{tag.BackgroundColor}_background") @($"{tag.FontColor}_font")">@tag.Name<i @onclick="@(() => DeleteTag(tag.Id))" class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
             }
-            @*<span class="badge badge-pill badge-info px-2 py-1">Needs Review<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
-            <span class="badge badge-pill badge-info px-2 py-1">Need To Contact<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
-            <span class="badge badge-pill badge-info px-2 py-1">Approved<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
-            <span class="badge badge-pill badge-info px-2 py-1">Denied <i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
-            <span class="badge badge-pill badge-info px-2 py-1">Pending Approval<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>*@
         </p>
         <h3 class="card-subtitle mb-2 text-muted mt-5">Manage Authorized Users/Owners</h3>
         <p class="card-text">
@@ -160,4 +142,6 @@
 
         Company.Tags = Company.Tags.Where(t => t.Id != id).ToList();
     }
+
+     
 }

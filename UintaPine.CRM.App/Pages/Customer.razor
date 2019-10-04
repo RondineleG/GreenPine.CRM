@@ -1,9 +1,8 @@
-﻿@page "/customer"
-@page "/customer/{Id}"
+﻿@page "/customer/{Id}"
 
 <h3>CustomerDetails</h3>
 <h5>@Id</h5>
 @code {
     [Parameter]
-    public string Id { get; set; }
+    public string Id { get; set; } //If Id=="Create", then do not get the customer details
 }

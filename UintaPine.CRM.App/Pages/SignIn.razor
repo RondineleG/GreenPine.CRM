@@ -88,7 +88,12 @@
         {
             _appState.User = response;
             localStorage.SetItem("user", response.Id);
-            _navigationManger.NavigateTo("customers");
+
+            var companies = await _api.GetCompaniesByUser(response.Id);
+            if(companies.Count > 0)
+                _navigationManger.NavigateTo($"customer");
+            else
+                _navigationManger.NavigateTo("company/create");
         }
     }
 }

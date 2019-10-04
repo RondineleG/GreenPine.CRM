@@ -39,6 +39,18 @@ namespace UintaPine.CRM.Api.Controllers
             return Ok(result.ToSharedResponseCompany());
         }
 
+        [Route("api/v1/company/{companyId}")]
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetCompanyById(string companyId)
+        {
+            User user = await _userLogic.GetUserByIdAsync(User.Identity.Name);
+
+            Company company = await _companyLogic.GetCompanyById(companyId);
+
+            return Ok(company.ToSharedResponseCompany());
+        }
+
         [Route("api/v1/company/user/{userId}")]
         [HttpGet]
         [Authorize]

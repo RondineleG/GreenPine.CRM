@@ -1,0 +1,98 @@
+﻿@page "/customer"
+
+@using UintaPine.CRM.App.Services
+@using UintaPine.CRM.Model.Shared.Responses
+
+@inject API _api
+@inject AppState _appState
+@inject IToastService toastService
+@inject Blazored.LocalStorage.ISyncLocalStorageService localStorage
+@inject NavigationManager _navigationManger
+
+
+@if (Company != null)
+{
+    <div class="btn-group">
+        <button class="btn btn-outline-dark btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            @Company.Name
+        </button>
+        <div class="dropdown-menu">
+            @foreach (var company in Companies)
+            {
+                <a class="dropdown-item pointer" @onclick="(() => SelectCompany(company))">@company.Name</a>
+            }
+            <div class="dropdown-divider"></div>
+            <NavLink class="dropdown-item pointer" href="company/create">
+                Create New Company
+            </NavLink>
+        </div>
+    </div>
+    <div class="btn btn-link btn-lg pointer float-right" data-toggle="collapse" href="#settingsCollapse" role="button" aria-expanded="false" aria-controls="settingsCollapse"><i class="fas fa-cog"></i></div>
+
+
+    <CompanySettings Company="@Company" />
+    <table class="table table-hover mt-3">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">First</th>
+                <th scope="col">Last</th>
+                <th scope="col">Handle</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@@mdo</td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@@fat</td>
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <td colspan="2">Larry the Bird</td>
+                <td>@@twitter</td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+@code {
+    List<Company> Companies { get; set; } = new List<Company>();
+
+    Company Company { get; set; }
+
+    async protected override Task OnInitializedAsync()
+    {
+        await LoadCompanyData();
+    }
+
+    private async Task LoadCompanyData()
+    {
+        //Get the
+        Companies = await _api.GetCompaniesByUser(_appState.User.Id);
+
+        string companyIdFromStorage = localStorage.GetItem<string>("company");
+        if (companyIdFromStorage != null && Companies.Count > 0)
+            Company = Companies.FirstOrDefault(c => c.Id == companyIdFromStorage);
+        else if (Companies.Count > 0)
+            Company = Companies.FirstOrDefault();
+        else
+            _navigationManger.NavigateTo("company/create");
+}
+
+    private void SelectCompany(Company company)
+    {
+        //Only change the company if the selected company is different from the current company
+        if (company.Id != Company.Id)
+        {
+            Company = company;
+            toastService.ShowSuccess($"Switched to {company.Name}");
+        }
+    }
+}
