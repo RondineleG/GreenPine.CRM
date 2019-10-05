@@ -12,7 +12,7 @@
 
 
 <BlazoredToasts Position="ToastPosition.TopRight"
-                Timeout="10"
+                Timeout="4"
                 SuccessClass="success-toast-override"
                 SuccessIconClass="fa fa-thumbs-up"
                 ErrorIconClass="fas fa-exclamation-circle" />
@@ -72,23 +72,13 @@
     protected override void OnInitialized()
     {
         _appState.OnChange += StateHasChanged;
-        _appState.OnChange += AppStateChangeCustomHandler;
 
         _appState.User = new User()
         {
             Id = localStorage.GetItem<string>("user")
         };
-
     }
 
-    private void AppStateChangeCustomHandler()
-    {
-        if (_appState.GlobalToast != null)
-        {
-            toastService.ShowError(_appState.GlobalToast);
-            _appState.GlobalToast = null;
-        }
-    }
 
     async protected override Task OnInitializedAsync()
     {

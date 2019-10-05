@@ -162,7 +162,7 @@ namespace UintaPine.CRM.App.Services
             {
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (string.IsNullOrEmpty(responseContent) == false)
-                    _appState.GlobalToast = responseContent;
+                    _toastService.ShowError(responseContent);
                 return default(T);
             }
         }
@@ -188,7 +188,7 @@ namespace UintaPine.CRM.App.Services
             {
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (string.IsNullOrEmpty(responseContent) == false)
-                    _appState.GlobalToast = responseContent;
+                    _toastService.ShowError(responseContent);
             }
         }
 
@@ -214,7 +214,7 @@ namespace UintaPine.CRM.App.Services
             {
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if(string.IsNullOrEmpty(responseContent) == false)
-                    _appState.GlobalToast = responseContent;
+                    _toastService.ShowError(responseContent);
                 return default(T);
             }
         }
@@ -242,7 +242,7 @@ namespace UintaPine.CRM.App.Services
             {
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (string.IsNullOrEmpty(responseContent) == false)
-                    _appState.GlobalToast = responseContent;
+                    _toastService.ShowError(responseContent);
                 return default(T);
             }
         }
@@ -264,7 +264,7 @@ namespace UintaPine.CRM.App.Services
             {
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (string.IsNullOrEmpty(responseContent) == false)
-                    _appState.GlobalToast = responseContent;
+                    _toastService.ShowError(responseContent);
             }
         }
 #endregion

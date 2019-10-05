@@ -33,20 +33,6 @@ namespace UintaPine.CRM.App.Services
             }
         }
 
-        private string _globalToast { get; set; }
-        public string GlobalToast
-        {
-            get
-            {
-                return _globalToast;
-            }
-            set
-            {
-                _globalToast = value;
-                NotifyStateChanged();
-            }
-        }
-
         public event Action OnChange;
         private void NotifyStateChanged() => OnChange?.Invoke();
     }

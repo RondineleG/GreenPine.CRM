@@ -17,7 +17,7 @@ namespace UintaPine.CRM.App
         {
 
             services.AddSingleton<AppState>();
-            services.AddSingleton<API>();
+            services.AddScoped<API>();
 
             services.AddBlazoredLocalStorage();
             services.AddBlazoredToast();
@@ -30,8 +30,6 @@ namespace UintaPine.CRM.App
             app.UseLoadingBar();
 
             //https://github.com/aspnet/AspNetCore/issues/9894
-            //WebAssemblyHttpMessageHandler.DefaultCredentials = FetchCredentialsOption.Include;
-
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Create("WEBASSEMBLY")))
             {
                 WebAssemblyHttpMessageHandler.DefaultCredentials = FetchCredentialsOption.Include;
