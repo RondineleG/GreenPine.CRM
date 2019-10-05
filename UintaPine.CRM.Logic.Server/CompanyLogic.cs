@@ -28,7 +28,7 @@ namespace UintaPine.CRM.Logic.Server
             return company;
         }
 
-        async public Task<List<Company>> GetCompaniesByUser(string email)
+        async public Task<List<Company>> GetCompaniesByUserEmail(string email)
         {
             var companies = await _db.Companies.Find(c => c.Users.Any(u => u.Email == email)).ToListAsync();
             return companies;
@@ -51,18 +51,12 @@ namespace UintaPine.CRM.Logic.Server
             var update = Builders<Company>.Update.Push(c => c.Tags, tag);
             await _db.Companies.UpdateOneAsync(c => c.Id == companyId, update);
             
-            //        var filter = Builders<Company>.Filter.And(Builders<Company>.Filter.Eq(x => x.Id, companyId),
-            //        Builders<Company>.Filter.ElemMatch(x => x.Products, p => p.Id == productId));
-
-            //        var update = Builders<Company>.Update
-            //                    .Set(model => model.Products[-1].Approved, true);
-            //        await _db.Companies.UpdateOneAsync(filter, update);
+            
         }
 
 
         async public Task DeleteTag(string companyId, string tagId)
         {
-            var company = await GetCompanyById(companyId);
             var update = Builders<Company>.Update.PullFilter(c => c.Tags, t => t.Id == tagId);
             await _db.Companies.UpdateOneAsync(c => c.Id == companyId, update);
         }
@@ -71,6 +65,52 @@ namespace UintaPine.CRM.Logic.Server
         {
             var tags = await _db.Companies.Find(c => c.Id == companyId).Project(c => c.Tags).FirstOrDefaultAsync();
             return tags;
+        }
+
+        async public Task<AuthorizedUser> AddAuthorizedUserToCompany(string companyId, string email)
+        {
+            //Do not allow a duplicate email address to be added as an authorized user.
+            var company = await GetCompanyById(companyId);
+            if (company.Users.FirstOrDefault(c => c.Email == email) != null)
+                return default(AuthorizedUser);
+
+            AuthorizedUser user = new AuthorizedUser()
+            {
+                Email = email.ToLower().Trim(),
+                Authorized = true,
+                Owner = false
+            };
+    
+            var update = Builders<Company>.Update.Push(c => c.Users, user);
+            await _db.Companies.UpdateOneAsync(c => c.Id == companyId, update);
+
+            return user;
+        }
+
+        async public Task RemovedAuthorizedUserFromCompany(string companyId, string email)
+        {
+            var update = Builders<Company>.Update.PullFilter(c => c.Users, t => t.Email == email);
+            await _db.Companies.UpdateOneAsync(c => c.Id == companyId, update);
+        }
+
+        async public Task AuthorizedUserToggleAuthorized(string companyId, string email, bool enabled)
+        {
+            var filter = Builders<Company>.Filter.And(Builders<Company>.Filter.Eq(x => x.Id, companyId),
+            Builders<Company>.Filter.ElemMatch(x => x.Users, p => p.Email == email));
+
+            var update = Builders<Company>.Update
+                        .Set(model => model.Users[-1].Authorized, enabled);
+            await _db.Companies.UpdateOneAsync(filter, update);
+        }
+
+        async public Task AuthorizedUserToggleOwner(string companyId, string email, bool enabled)
+        {
+            var filter = Builders<Company>.Filter.And(Builders<Company>.Filter.Eq(x => x.Id, companyId),
+            Builders<Company>.Filter.ElemMatch(x => x.Users, p => p.Email == email));
+
+            var update = Builders<Company>.Update
+                        .Set(model => model.Users[-1].Owner, enabled);
+            await _db.Companies.UpdateOneAsync(filter, update);
         }
     }
 }

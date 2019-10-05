@@ -62,45 +62,42 @@
         </p>
         <div class="card-text">
             <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="User's Email Address" aria-label="User's Email Address" aria-describedby="button-addon2">
+                <input type="text" class="form-control" @bind="NewAuthorizedUserEmail" placeholder="User's Email Address" aria-label="User's Email Address" aria-describedby="button-addon2" />
                 <div class="input-group-append">
-                    <button class="btn btn-primary" type="button" id="button-addon2">Add User</button>
+                    <button class="btn btn-primary" type="button" id="button-addon2" @onclick="AddAuthorizedUser">Add User</button>
                 </div>
             </div>
             <table class="table table-hover">
                 <thead>
                     <tr>
                         <th scope="col">Email Address</th>
-                        <th scope="col">Owner</th>
-                        <th scope="col">Authorized</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">someone@@uintapine.com</th>
-                        <td><input type="checkbox" /></td>
-                        <td><input type="checkbox" /></td>
-                        <td>
-                            <div class="btn btn-danger"><i class="fas fa-trash-alt"></i></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">someone1@@uintapine.com</th>
-                        <td><input type="checkbox" /></td>
-                        <td><input type="checkbox" /></td>
-                        <td>
-                            <div class="btn btn-danger"><i class="fas fa-trash-alt"></i></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">someone2@@uintapine.com</th>
-                        <td><input type="checkbox" /></td>
-                        <td><input type="checkbox" /></td>
-                        <td>
-                            <div class="btn btn-danger"><i class="fas fa-trash-alt"></i></div>
-                        </td>
-                    </tr>
+                    @foreach (var user in Company.Users)
+                    {
+                        <tr>
+                            <th scope="row">@user.Email</th>
+                            <td>
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="@($"authorized_{@user.Email}")" checked="@(user.Authorized ? "checked" : null )" @onchange="(() => ToggleAuthorizedRole(user))" />
+                                    <label class="custom-control-label" for="@($"authorized_{@user.Email}")">Authorized</label>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="@($"owner_{@user.Email}")" checked="@(user.Owner ? "checked" : null )" @onchange="(() => ToggleOwnerRole(user))" />
+                                    <label class="custom-control-label" for="@($"owner_{@user.Email}")">Owner</label>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="btn btn-danger" @onclick="(() => RemoveAuthorizedUser(user))"><i class="fas fa-trash-alt"></i></div>
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
@@ -115,6 +112,8 @@
     public string NewTagName { get; set; }
     public string NewTagBackgroundColor { get; set; }
     public string NewTagFontColor { get; set; }
+
+    public string NewAuthorizedUserEmail { get; set; }
 
     public async Task CreateTag()
     {
@@ -143,5 +142,39 @@
         Company.Tags = Company.Tags.Where(t => t.Id != id).ToList();
     }
 
-     
+    public async Task AddAuthorizedUser()
+    {
+        var result = await _api.AddAuthorizedUserToCompany(Company.Id, NewAuthorizedUserEmail);
+        if (result != null)
+        {
+            Company.Users.Add(result);
+            NewAuthorizedUserEmail = string.Empty;
+        }
+    }
+
+    public async Task RemoveAuthorizedUser(AuthorizedUser user)
+    {
+        await _api.RemoveAuthorizedUserFromCompany(Company.Id, user.Email);
+        Company.Users = Company.Users.Where(u => u.Email != user.Email).ToList();
+    }
+
+    public async Task ToggleAuthorizedRole(AuthorizedUser user)
+    {
+        //See comment in ToggleOwnerRole
+        user.Authorized = !user.Authorized;
+        await _api.ToggleAuthorizeRole(Company.Id, user.Email, user.Authorized);
+    }
+
+    public async Task ToggleOwnerRole(AuthorizedUser user)
+    {
+        //Bit flip.  Blazor does not allow a @bind and @onchange to both exist, so we needed a work around:
+        //Instead of @bind="user.Owner" and @onchange="(() => ToggleOwnerRole(user))" we are doing: 
+        //checked="@(user.Authorized ? "checked" : null )" @onchange="(() => ToggleOwnerRole(user))"
+        //Using @bind is preferred.  Because we can't use the @bind, we need to do the bit flip on the boolean.
+        //This same logic applies to the ToggleAuthorizedRole.
+        user.Owner = !user.Owner;
+        await _api.ToggleOwnerRole(Company.Id, user.Email, user.Owner);
+    }
+
+
 }

@@ -123,8 +123,46 @@ namespace UintaPine.CRM.App.Services
             await Delete($"api/v1/company/{companyId}/tag/{tagId}");
         }
 
+        public async Task<AuthorizedUser> AddAuthorizedUserToCompany(string companyId, string email)
+        {
+            AddRemoveCompanyAuthorizedUser content = new AddRemoveCompanyAuthorizedUser()
+            {
+                Email = email
+            };
+            return await Post<AuthorizedUser>($"api/v1/company/{companyId}/user", content);
+        }
 
-#region HttpClient Methods
+        public async Task RemoveAuthorizedUserFromCompany(string companyId, string email)
+        {
+            AddRemoveCompanyAuthorizedUser content = new AddRemoveCompanyAuthorizedUser()
+            {
+                Email = email
+            };
+            await Delete($"api/v1/company/{companyId}/user", content);
+        }
+
+        public async Task ToggleAuthorizeRole(string companyId, string email, bool enabled)
+        {
+            ToggleUserRole content = new ToggleUserRole()
+            {
+                Email = email,
+                Enabled = enabled
+            };
+            await Put<AuthorizedUser>($"api/v1/company/{companyId}/user/authorized", content);
+        }
+
+        public async Task ToggleOwnerRole(string companyId, string email, bool enabled)
+        {
+            ToggleUserRole content = new ToggleUserRole()
+            {
+                Email = email,
+                Enabled = enabled
+            };
+            await Put<AuthorizedUser>($"api/v1/company/{companyId}/user/owner", content);
+        }
+
+
+        #region HttpClient Methods
         private async Task<bool> Get(string path)
         {
             var httpWebRequest = new HttpRequestMessage(HttpMethod.Get, path);
@@ -247,6 +285,30 @@ namespace UintaPine.CRM.App.Services
             }
         }
 
+        private async Task Put(string path, object content)
+        {
+            string json = JsonConvert.SerializeObject(content);
+            StringContent postContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
+
+            var httpWebRequest = new HttpRequestMessage(HttpMethod.Put, path);
+            httpWebRequest.Content = postContent;
+            httpWebRequest.Properties[WebAssemblyHttpMessageHandler.FetchArgs] = new
+            {
+                credentials = "include"
+            };
+            var response = await _client.SendAsync(httpWebRequest);
+
+            if (response.IsSuccessStatusCode)
+            {
+            }
+            else
+            {
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrEmpty(responseContent) == false)
+                    _toastService.ShowError(responseContent);
+            }
+        }
+
         private async Task Delete(string path)
         {
             var httpWebRequest = new HttpRequestMessage(HttpMethod.Delete, path);
@@ -267,6 +329,25 @@ namespace UintaPine.CRM.App.Services
                     _toastService.ShowError(responseContent);
             }
         }
-#endregion
+
+        private async Task Delete(string path, object content)
+        {
+            string json = JsonConvert.SerializeObject(content);
+            StringContent postContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
+
+            var httpWebRequest = new HttpRequestMessage(HttpMethod.Delete, path);
+            httpWebRequest.Content = postContent;
+            httpWebRequest.Properties[WebAssemblyHttpMessageHandler.FetchArgs] = new
+            {
+                credentials = "include"
+            };
+            var response = await _client.SendAsync(httpWebRequest);
+
+            if (response.IsSuccessStatusCode)
+            {
+                //Do Nothing
+            }
+        }
+        #endregion
     }
 }

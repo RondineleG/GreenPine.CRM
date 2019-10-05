@@ -32,7 +32,7 @@ namespace UintaPine.CRM.Api.Controllers
             
             //TODO: Field validation
 
-            Company result = await _companyLogic.CreateCompanyAsync(model.Name, user.Id);
+            Company result = await _companyLogic.CreateCompanyAsync(model.Name, user.Email);
             if (result == null)
                 return BadRequest("A company is already associated with this user");
 
@@ -60,7 +60,7 @@ namespace UintaPine.CRM.Api.Controllers
             if (user.Id != userId)
                 return BadRequest("Unauthorized User");
 
-            var result = await _companyLogic.GetCompaniesByUser(user.Id);
+            var result = await _companyLogic.GetCompaniesByUserEmail(user.Email);
 
             return Ok(result.Select(c => c.ToSharedResponseCompany()).ToList());
         }
@@ -88,6 +88,42 @@ namespace UintaPine.CRM.Api.Controllers
 
             await _companyLogic.DeleteTag(companyId, tagId);
 
+            return Ok();
+        }
+
+        [Route("api/v1/company/{companyId}/user")]
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> AddAuthorizedUserToCompany([FromBody]AddRemoveCompanyAuthorizedUser model, string companyId)
+        {
+            AuthorizedUser newAuthorizedUser = await _companyLogic.AddAuthorizedUserToCompany(companyId, model.Email);
+            return Ok(newAuthorizedUser);
+        }
+
+        [Route("api/v1/company/{companyId}/user")]
+        [HttpDelete]
+        [Authorize]
+        public async Task<IActionResult> RemoveAuthorizedUserFromCompany([FromBody]AddRemoveCompanyAuthorizedUser model, string companyId)
+        {
+            await _companyLogic.RemovedAuthorizedUserFromCompany(companyId, model.Email);
+            return Ok();
+        }
+
+        [Route("api/v1/company/{companyId}/user/authorized")]
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> AuthorizedUserToggleAuthorizedRole([FromBody]ToggleUserRole model, string companyId)
+        {
+            await _companyLogic.AuthorizedUserToggleAuthorized(companyId, model.Email, model.Enabled);
+            return Ok();
+        }
+
+        [Route("api/v1/company/{companyId}/user/owner")]
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> AuthorizedUserToggleOwnerdRole([FromBody]ToggleUserRole model, string companyId)
+        {
+            await _companyLogic.AuthorizedUserToggleOwner(companyId, model.Email, model.Enabled);
             return Ok();
         }
     }
