@@ -58,7 +58,7 @@ namespace UintaPine.CRM.App.Services
                 ConfirmPassword = confirmPassword
             };
 
-            return await Post<User>("api/v1/user", content);
+            return await PostAsync<User>("api/v1/user", content);
         }
 
         public async Task<User> AuthenticateUser(string username, string password)
@@ -69,33 +69,33 @@ namespace UintaPine.CRM.App.Services
                 Password = password
             };
             
-            return await Post<User>("api/v1/authenticate", content);
+            return await PostAsync<User>("api/v1/authenticate", content);
         }
 
         public async Task Logout()
         {
-            await Get("api/v1/logout");
+            await GetAsync("api/v1/logout");
         }
 
         public async Task<User> GetUserCurrent()
         {
-            return await GetAsAsync<User>("api/v1/user/me");
+            return await GetAsync<User>("api/v1/user/me");
         }
 
 
         public async Task<Company> CreateCompany(CreateCompany content)
         {
-            return await Post<Company>("api/v1/company", content);
+            return await PostAsync<Company>("api/v1/company", content);
         }
 
         public async Task<Company> GetCompanyById(string companyId)
         {
-            return await GetAsAsync<Company>($"api/v1/company/{companyId}");
+            return await GetAsync<Company>($"api/v1/company/{companyId}");
         }
 
         public async Task<List<Company>> GetCompaniesByUser(string userId)
         {
-            return await GetAsAsync<List<Company>>($"api/v1/company/user/{userId}");
+            return await GetAsync<List<Company>>($"api/v1/company/user/{userId}");
         }
 
         public async Task<CustomerTag> CreateTagByCompanyId(string companyId, string name, string backgroundColor, string fontColor)
@@ -106,7 +106,7 @@ namespace UintaPine.CRM.App.Services
                 BackgroundColor = backgroundColor,
                 FontColor = fontColor
             };
-            await Post($"api/v1/company/{companyId}/tag", content);
+            await PostAsync($"api/v1/company/{companyId}/tag", content);
 
             CustomerTag tag = new CustomerTag()
             {
@@ -120,7 +120,7 @@ namespace UintaPine.CRM.App.Services
 
         public async Task DeleteTagByCompanyIdTagId(string companyId, string tagId)
         {
-            await Delete($"api/v1/company/{companyId}/tag/{tagId}");
+            await DeleteAsync($"api/v1/company/{companyId}/tag/{tagId}");
         }
 
         public async Task<AuthorizedUser> AddAuthorizedUserToCompany(string companyId, string email)
@@ -129,7 +129,7 @@ namespace UintaPine.CRM.App.Services
             {
                 Email = email
             };
-            return await Post<AuthorizedUser>($"api/v1/company/{companyId}/user", content);
+            return await PostAsync<AuthorizedUser>($"api/v1/company/{companyId}/user", content);
         }
 
         public async Task RemoveAuthorizedUserFromCompany(string companyId, string email)
@@ -138,7 +138,7 @@ namespace UintaPine.CRM.App.Services
             {
                 Email = email
             };
-            await Delete($"api/v1/company/{companyId}/user", content);
+            await DeleteAsysnc($"api/v1/company/{companyId}/user", content);
         }
 
         public async Task ToggleAuthorizeRole(string companyId, string email, bool enabled)
@@ -148,7 +148,7 @@ namespace UintaPine.CRM.App.Services
                 Email = email,
                 Enabled = enabled
             };
-            await Put<AuthorizedUser>($"api/v1/company/{companyId}/user/authorized", content);
+            await PutAsync<AuthorizedUser>($"api/v1/company/{companyId}/user/authorized", content);
         }
 
         public async Task ToggleOwnerRole(string companyId, string email, bool enabled)
@@ -158,39 +158,87 @@ namespace UintaPine.CRM.App.Services
                 Email = email,
                 Enabled = enabled
             };
-            await Put<AuthorizedUser>($"api/v1/company/{companyId}/user/owner", content);
+            await PutAsync<AuthorizedUser>($"api/v1/company/{companyId}/user/owner", content);
         }
 
 
         #region HttpClient Methods
-        private async Task<bool> Get(string path)
+        private async Task GetAsync(string path)
         {
-            var httpWebRequest = new HttpRequestMessage(HttpMethod.Get, path);
-            httpWebRequest.Properties[WebAssemblyHttpMessageHandler.FetchArgs] = new
-            {
-                credentials = "include"
-            };
-            var response = await _client.SendAsync(httpWebRequest);
-
-            if (response.IsSuccessStatusCode)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            Console.WriteLine("GetAsync");
+            await Send(HttpMethod.Get, path);
+        }
+        private async Task<T> GetAsync<T>(string path)
+        {
+            Console.WriteLine("GetAsync<T>");
+            var response = await Send(HttpMethod.Get, path);
+            T result = await ParseResponseObject<T>(response);
+            return result;
         }
 
-        private async Task<T> GetAsAsync<T>(string path)
+
+        private async Task PostAsync(string path, object content)
         {
-            var httpWebRequest = new HttpRequestMessage(HttpMethod.Get, path);
+            await Send(HttpMethod.Post, path, content);
+        }
+        private async Task<T> PostAsync<T>(string path, object content)
+        {
+            var response = await Send(HttpMethod.Post, path, content);
+            return await ParseResponseObject<T>(response);
+        }
+
+
+        private async Task PutAsync(string path, object content)
+        {
+            await Send(HttpMethod.Put, path, content);
+        }
+        private async Task<T> PutAsync<T>(string path, object content)
+        {
+            var response = await Send(HttpMethod.Put, path, content);
+            return await ParseResponseObject<T>(response);
+        }
+
+
+        private async Task DeleteAsync(string path)
+        {
+            await Send(HttpMethod.Delete, path);
+        }
+        private async Task DeleteAsysnc(string path, object content)
+        {
+            await Send(HttpMethod.Delete, path, content);
+        }
+
+
+
+        private async Task<HttpResponseMessage> Send(HttpMethod method, string path, object content = null)
+        {
+            var httpWebRequest = new HttpRequestMessage(method, path);
+
+            if (content != null)
+            {
+                string json = JsonConvert.SerializeObject(content);
+                StringContent postContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
+
+                httpWebRequest.Content = postContent;
+            }
+
             httpWebRequest.Properties[WebAssemblyHttpMessageHandler.FetchArgs] = new
             {
                 credentials = "include"
             };
-            var response = await _client.SendAsync(httpWebRequest);
-            
+            HttpResponseMessage response = await _client.SendAsync(httpWebRequest);
+
+            if (response.IsSuccessStatusCode == false)
+            {
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrEmpty(responseContent) == false)
+                    _toastService.ShowError(responseContent);
+            }
+            return response;
+        }
+
+        private async Task<T> ParseResponseObject<T>(HttpResponseMessage response)
+        {
             if (response.IsSuccessStatusCode)
             {
                 string responseContent = await response.Content.ReadAsStringAsync();
@@ -198,156 +246,10 @@ namespace UintaPine.CRM.App.Services
             }
             else
             {
-                string responseContent = await response.Content.ReadAsStringAsync();
-                if (string.IsNullOrEmpty(responseContent) == false)
-                    _toastService.ShowError(responseContent);
                 return default(T);
             }
         }
 
-        private async Task Post(string path, object content)
-        {
-            string json = JsonConvert.SerializeObject(content);
-            StringContent postContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
-
-            var httpWebRequest = new HttpRequestMessage(HttpMethod.Post, path);
-            httpWebRequest.Content = postContent;
-            httpWebRequest.Properties[WebAssemblyHttpMessageHandler.FetchArgs] = new
-            {
-                credentials = "include"
-            };
-            var response = await _client.SendAsync(httpWebRequest);
-
-            if (response.IsSuccessStatusCode)
-            {
-                //Do nothing
-            }
-            else
-            {
-                string responseContent = await response.Content.ReadAsStringAsync();
-                if (string.IsNullOrEmpty(responseContent) == false)
-                    _toastService.ShowError(responseContent);
-            }
-        }
-
-        private async Task<T> Post<T>(string path, object content)
-        {
-            string json = JsonConvert.SerializeObject(content);
-            StringContent postContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
-
-            var httpWebRequest = new HttpRequestMessage(HttpMethod.Post, path);
-            httpWebRequest.Content = postContent;
-            httpWebRequest.Properties[WebAssemblyHttpMessageHandler.FetchArgs] = new
-            {
-                credentials = "include"
-            };
-            var response = await _client.SendAsync(httpWebRequest);
-
-            if (response.IsSuccessStatusCode)
-            {
-                string responseContent = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<T>(responseContent);
-            }
-            else
-            {
-                string responseContent = await response.Content.ReadAsStringAsync();
-                if(string.IsNullOrEmpty(responseContent) == false)
-                    _toastService.ShowError(responseContent);
-                return default(T);
-            }
-        }
-
-        
-        private async Task<T> Put<T>(string path, object content)
-        {
-            string json = JsonConvert.SerializeObject(content);
-            StringContent postContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
-
-            var httpWebRequest = new HttpRequestMessage(HttpMethod.Put, path);
-            httpWebRequest.Content = postContent;
-            httpWebRequest.Properties[WebAssemblyHttpMessageHandler.FetchArgs] = new
-            {
-                credentials = "include"
-            };
-            var response = await _client.SendAsync(httpWebRequest);
-
-            if (response.IsSuccessStatusCode)
-            {
-                string responseContent = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<T>(responseContent);
-            }
-            else
-            {
-                string responseContent = await response.Content.ReadAsStringAsync();
-                if (string.IsNullOrEmpty(responseContent) == false)
-                    _toastService.ShowError(responseContent);
-                return default(T);
-            }
-        }
-
-        private async Task Put(string path, object content)
-        {
-            string json = JsonConvert.SerializeObject(content);
-            StringContent postContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
-
-            var httpWebRequest = new HttpRequestMessage(HttpMethod.Put, path);
-            httpWebRequest.Content = postContent;
-            httpWebRequest.Properties[WebAssemblyHttpMessageHandler.FetchArgs] = new
-            {
-                credentials = "include"
-            };
-            var response = await _client.SendAsync(httpWebRequest);
-
-            if (response.IsSuccessStatusCode)
-            {
-            }
-            else
-            {
-                string responseContent = await response.Content.ReadAsStringAsync();
-                if (string.IsNullOrEmpty(responseContent) == false)
-                    _toastService.ShowError(responseContent);
-            }
-        }
-
-        private async Task Delete(string path)
-        {
-            var httpWebRequest = new HttpRequestMessage(HttpMethod.Delete, path);
-            httpWebRequest.Properties[WebAssemblyHttpMessageHandler.FetchArgs] = new
-            {
-                credentials = "include"
-            };
-            var response = await _client.SendAsync(httpWebRequest);
-
-            if (response.IsSuccessStatusCode)
-            {
-                //Do Nothing
-            }
-            else
-            {
-                string responseContent = await response.Content.ReadAsStringAsync();
-                if (string.IsNullOrEmpty(responseContent) == false)
-                    _toastService.ShowError(responseContent);
-            }
-        }
-
-        private async Task Delete(string path, object content)
-        {
-            string json = JsonConvert.SerializeObject(content);
-            StringContent postContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
-
-            var httpWebRequest = new HttpRequestMessage(HttpMethod.Delete, path);
-            httpWebRequest.Content = postContent;
-            httpWebRequest.Properties[WebAssemblyHttpMessageHandler.FetchArgs] = new
-            {
-                credentials = "include"
-            };
-            var response = await _client.SendAsync(httpWebRequest);
-
-            if (response.IsSuccessStatusCode)
-            {
-                //Do Nothing
-            }
-        }
         #endregion
     }
 }

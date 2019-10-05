@@ -61,10 +61,14 @@
             Add or remove users who should have access to this company data. Add the email address of the user - be sure to spell it correctly.
         </p>
         <div class="card-text">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" @bind="NewAuthorizedUserEmail" placeholder="User's Email Address" aria-label="User's Email Address" aria-describedby="button-addon2" />
-                <div class="input-group-append">
-                    <button class="btn btn-primary" type="button" id="button-addon2" @onclick="AddAuthorizedUser">Add User</button>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" @bind="NewAuthorizedUserEmail" placeholder="User's Email Address" aria-label="User's Email Address" aria-describedby="button-addon2" />
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" id="button-addon2" @onclick="AddAuthorizedUser">Add User</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <table class="table table-hover">
