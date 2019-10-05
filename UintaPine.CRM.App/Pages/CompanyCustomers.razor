@@ -27,10 +27,31 @@
             </NavLink>
         </div>
     </div>
+    <NavLink class="btn btn-success btn-lg pointer" href="customer/create">
+        <i class="fas fa-plus mr-2"></i><span>Customer</span>
+    </NavLink>
     <div class="btn btn-link btn-lg pointer float-right" data-toggle="collapse" href="#settingsCollapse" role="button" aria-expanded="false" aria-controls="settingsCollapse"><i class="fas fa-cog"></i></div>
 
-
     <CompanySettings Company="@Company" />
+
+    <div class="input-group">
+        <input type="text" class="form-control" aria-label="Text input with dropdown button" />
+        @if (Company.Tags.Count > 0)
+        {
+            <div class="input-group-prepend">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tags</button>
+                <div class="dropdown-menu">
+                    @foreach (var tag in Company.Tags)
+                    {
+                        <a class="dropdown-item">@tag.Name</a>
+                    }
+                </div>
+            </div>
+        }
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button">Search</button>
+        </div>
+    </div>
     <table class="table table-hover mt-3">
         <thead>
             <tr>
@@ -84,7 +105,7 @@
             Company = Companies.FirstOrDefault();
         else
             _navigationManger.NavigateTo("company/create");
-}
+    }
 
     private void SelectCompany(Company company)
     {
