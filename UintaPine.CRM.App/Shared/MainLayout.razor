@@ -33,11 +33,14 @@
             {
                 <div class="navbar-text">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <NavLink class="nav-link" href="customer">
-                                Customer
-                            </NavLink>
-                        </li>
+                        @if (Companies.Count > 0)
+                        {
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="@($"company/{Companies.FirstOrDefault().Id}")">
+                                    Customers
+                                </NavLink>
+                            </li>
+                        }
                         <li class="nav-item">
                             <NavLink class="nav-link" href="account">
                                 Account | @_appState.User.Email
@@ -69,6 +72,8 @@
 
 @code {
 
+    List<Company> Companies { get; set; } = new List<Company>();
+
     protected override void OnInitialized()
     {
         _appState.OnChange += StateHasChanged;
@@ -88,6 +93,8 @@
         {
             _appState.User = user;
             localStorage.SetItem("user", user.Id);
+
+            Companies = await _api.GetCompaniesByUser(_appState.User.Id);
         }
         else
         {

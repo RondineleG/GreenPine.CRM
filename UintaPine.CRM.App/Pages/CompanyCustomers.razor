@@ -1,4 +1,4 @@
-﻿@page "/customer"
+﻿@page "/company/{id}"
 
 @using UintaPine.CRM.App.Services
 @using UintaPine.CRM.Model.Shared.Responses
@@ -17,11 +17,9 @@
             @Company.Name
         </button>
         <div class="dropdown-menu">
-            @foreach (var company in Companies)
-            {
-                <a class="dropdown-item pointer" @onclick="(() => SelectCompany(company))">@company.Name</a>
-            }
-            <div class="dropdown-divider"></div>
+            <NavLink class="dropdown-item pointer" href="@($"company/{Company.Id}/settings")">
+                Company Settings
+            </NavLink>
             <NavLink class="dropdown-item pointer" href="company/create">
                 Create New Company
             </NavLink>
@@ -30,28 +28,32 @@
     <NavLink class="btn btn-success btn-lg pointer" href="customer/create">
         <i class="fas fa-plus mr-2"></i><span>Customer</span>
     </NavLink>
-    <div class="btn btn-link btn-lg pointer float-right" data-toggle="collapse" href="#settingsCollapse" role="button" aria-expanded="false" aria-controls="settingsCollapse"><i class="fas fa-cog"></i></div>
-
-    <CompanySettings Company="@Company" />
-
-    <div class="input-group">
-        <input type="text" class="form-control" aria-label="Text input with dropdown button" />
-        @if (Company.Tags.Count > 0)
-        {
-            <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tags</button>
-                <div class="dropdown-menu">
-                    @foreach (var tag in Company.Tags)
-                    {
-                        <a class="dropdown-item">@tag.Name</a>
-                    }
+    <div class="row mt-2">
+        <div class="col-md-4">
+            <div class="input-group">
+                <input type="text" class="form-control" aria-label="Text input with dropdown button" />
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button">Search</button>
                 </div>
             </div>
-        }
-        <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button">Search</button>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                @foreach (var tag in Company.Tags)
+                {
+                    <span class="badge badge-pill px-2 py-1 tag-font @($"{tag.BackgroundColor}_background") @($"{tag.FontColor}_font")">@tag.Name<i @onclick="@(() => DeleteSearchTag(tag))" class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
+                }
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
     <table class="table table-hover mt-3">
         <thead>
             <tr>
@@ -84,36 +86,25 @@
 }
 
 @code {
-    List<Company> Companies { get; set; } = new List<Company>();
+    [Parameter]
+    public string Id { get; set; }
 
     Company Company { get; set; }
+    List<CustomerTag> SearchTags { get; set; } = new List<CustomerTag>();
 
     async protected override Task OnInitializedAsync()
     {
-        await LoadCompanyData();
+        Company = await _api.GetCompanyById(Id);
     }
 
-    private async Task LoadCompanyData()
+    private void SearchTagSelectedEvent(ChangeEventArgs e)
     {
-        //Get the
-        Companies = await _api.GetCompaniesByUser(_appState.User.Id);
-
-        string companyIdFromStorage = localStorage.GetItem<string>("company");
-        if (companyIdFromStorage != null && Companies.Count > 0)
-            Company = Companies.FirstOrDefault(c => c.Id == companyIdFromStorage);
-        else if (Companies.Count > 0)
-            Company = Companies.FirstOrDefault();
-        else
-            _navigationManger.NavigateTo("company/create");
+        string selectedTagId = e.Value.ToString();
+        SearchTags.Add(Company.Tags.FirstOrDefault(t => t.Id == selectedTagId));
     }
 
-    private void SelectCompany(Company company)
+    private void DeleteSearchTag(CustomerTag tag)
     {
-        //Only change the company if the selected company is different from the current company
-        if (company.Id != Company.Id)
-        {
-            Company = company;
-            toastService.ShowSuccess($"Switched to {company.Name}");
-        }
+        SearchTags = SearchTags.Where(t => t.Id != tag.Id).ToList();
     }
 }

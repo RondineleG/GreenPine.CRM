@@ -23,4 +23,12 @@
     <ProjectReference Include="..\UintaPine.CRM.Model.Shared\UintaPine.CRM.Model.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Watch Include="..\**\*.html" />
+    <Watch Include="..\**\*.razor" />
+    <Watch Include="..\**\*.scss" />
+    <Watch Include="..\**\*.css" />
+    <Watch Include="..\**\*.cs" />
+  </ItemGroup>
+
 </Project>

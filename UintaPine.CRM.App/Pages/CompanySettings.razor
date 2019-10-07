@@ -1,11 +1,14 @@
-﻿@using UintaPine.CRM.App.Services
+﻿@page  "/company/{id}/settings"
+
+@using UintaPine.CRM.App.Services
 @using UintaPine.CRM.Model.Shared.Responses
 
 @inject API _api
 @inject AppState _appState
 @inject IToastService toastService
 
-<div class="collapse mt-3 mb-5" id="settingsCollapse">
+@if (Company != null)
+{
     <div class="card card-body border-info text-info">
         <h3 class="card-subtitle mb-2 text-muted">Manage Tags</h3>
         <p class="card-text">
@@ -106,11 +109,13 @@
             </table>
         </div>
     </div>
-</div>
+}
 
 @code {
 
     [Parameter]
+    public string Id { get; set; }
+
     public Company Company { get; set; }
 
     public string NewTagName { get; set; }
@@ -118,6 +123,12 @@
     public string NewTagFontColor { get; set; }
 
     public string NewAuthorizedUserEmail { get; set; }
+
+
+    async protected override Task OnInitializedAsync()
+    {
+        Company = await _api.GetCompanyById(Id);
+    }
 
     public async Task CreateTag()
     {
