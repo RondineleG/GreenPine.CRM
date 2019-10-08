@@ -17,7 +17,7 @@
                 SuccessIconClass="fa fa-thumbs-up"
                 ErrorIconClass="fas fa-exclamation-circle" />
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <NavLink class="navbar-brand nav-link" href="/">
         <i class="fas fa-tree mr-1"></i> <span>Uinta Pine</span>
     </NavLink>
@@ -33,12 +33,28 @@
             {
                 <div class="navbar-text">
                     <ul class="navbar-nav mr-auto">
-                        @if (Companies.Count > 0)
+                        @if (SelectedCompany != null)
                         {
                             <li class="nav-item">
-                                <NavLink class="nav-link" href="@($"company/{Companies.FirstOrDefault().Id}")">
+                                <NavLink class="nav-link" href="@($"company/{SelectedCompany}")">
                                     Customers
                                 </NavLink>
+                            </li>
+                        }
+                        @if (Companies.Count > 1)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle pointer" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Switch Company
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    @foreach (var company in Companies)
+                                    {
+                                        <NavLink class="nav-link" href="@($"company/{company.Id}")" >
+                                            @company.Name
+                                        </NavLink>
+                                    }
+                                </div>
                             </li>
                         }
                         <li class="nav-item">
@@ -73,6 +89,7 @@
 @code {
 
     List<Company> Companies { get; set; } = new List<Company>();
+    private string SelectedCompany { get; set; }
 
     protected override void OnInitialized()
     {
@@ -95,6 +112,10 @@
             localStorage.SetItem("user", user.Id);
 
             Companies = await _api.GetCompaniesByUser(_appState.User.Id);
+
+            SelectedCompany = localStorage.GetItem<string>("SelectedCompany");
+            if (SelectedCompany == null && Companies.Count > 0)
+                SelectedCompany = Companies.FirstOrDefault().Id;
         }
         else
         {

@@ -89,9 +89,11 @@
             _appState.User = response;
             localStorage.SetItem("user", response.Id);
 
-            var companies = await _api.GetCompaniesByUser(response.Id);
-            if(companies.Count > 0)
-                _navigationManger.NavigateTo($"customer");
+            var companies = await _api.GetCompaniesByUser(_appState.User.Id);
+            
+            string selectedCompany = localStorage.GetItem<string>("SelectedCompany");
+            if (selectedCompany == null && companies.Count > 0)
+                _navigationManger.NavigateTo($"company/{selectedCompany}");
             else
                 _navigationManger.NavigateTo("company/create");
         }

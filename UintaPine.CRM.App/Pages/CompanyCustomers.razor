@@ -86,6 +86,7 @@
 }
 
 @code {
+
     [Parameter]
     public string Id { get; set; }
 
@@ -93,6 +94,21 @@
     List<CustomerTag> SearchTags { get; set; } = new List<CustomerTag>();
 
     async protected override Task OnInitializedAsync()
+    {
+        await LoadCompanyData();
+    }
+
+    //public override async Task SetParametersAsync(ParameterView parameters)
+    //{
+    //    await base.SetParametersAsync(parameters);
+    //}
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadCompanyData();
+    }
+
+    private async Task LoadCompanyData()
     {
         Company = await _api.GetCompanyById(Id);
     }
