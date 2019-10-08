@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UintaPine.CRM.Model.Shared.Responses;
 
 namespace UintaPine.CRM.App.Services
@@ -16,6 +17,20 @@ namespace UintaPine.CRM.App.Services
             {
                 _user = value;
                 IsInitialized = true;
+                NotifyStateChanged();
+            }
+        }
+
+        private List<Company> _companies { get; set; } = new List<Company>();
+        public List<Company> Companies
+        {
+            get
+            {
+                return _companies;
+            }
+            set
+            {
+                _companies = value;
                 NotifyStateChanged();
             }
         }

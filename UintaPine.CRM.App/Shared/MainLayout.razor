@@ -33,29 +33,36 @@
             {
                 <div class="navbar-text">
                     <ul class="navbar-nav mr-auto">
-                        @if (SelectedCompany != null)
+                        @if (_appState.Companies.Count > 0)
                         {
                             <li class="nav-item">
-                                <NavLink class="nav-link" href="@($"company/{SelectedCompany}")">
-                                    Customers
+                                <NavLink class="nav-link" href="@($"company")">
+                                    <i class="fas fa-users mr-2"></i>Customers
                                 </NavLink>
                             </li>
-                        }
-                        @if (Companies.Count > 1)
-                        {
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle pointer" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Switch Company
+                                    Company
                                 </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    @foreach (var company in Companies)
+                                <div class="dropdown-menu company-dropdown-menu" aria-labelledby="navbarDropdown">
+                                    @foreach (var company in _appState.Companies)
                                     {
-                                        <NavLink class="nav-link" href="@($"company/{company.Id}")" >
-                                            @company.Name
+                                        <NavLink class="nav-link" href="@($"company/{company.Id}")">
+                                            <i class="fas fa-exchange-alt mr-2"></i> @company.Name
                                         </NavLink>
                                     }
+                                    <div class="dropdown-divider"></div>
+                                    <NavLink class="nav-link" href="company/create">
+                                        <i class="fas fa-plus mr-2"></i>New Company
+                                    </NavLink>
                                 </div>
                             </li>
+                        }
+                        else
+                        {
+                            <NavLink class="nav-link" href="company/create">
+                                <i class="fas fa-plus mr-2"></i>New Company
+                            </NavLink>
                         }
                         <li class="nav-item">
                             <NavLink class="nav-link" href="account">
@@ -88,9 +95,6 @@
 
 @code {
 
-    List<Company> Companies { get; set; } = new List<Company>();
-    private string SelectedCompany { get; set; }
-
     protected override void OnInitialized()
     {
         _appState.OnChange += StateHasChanged;
@@ -101,7 +105,6 @@
         };
     }
 
-
     async protected override Task OnInitializedAsync()
     {
 
@@ -111,11 +114,7 @@
             _appState.User = user;
             localStorage.SetItem("user", user.Id);
 
-            Companies = await _api.GetCompaniesByUser(_appState.User.Id);
-
-            SelectedCompany = localStorage.GetItem<string>("SelectedCompany");
-            if (SelectedCompany == null && Companies.Count > 0)
-                SelectedCompany = Companies.FirstOrDefault().Id;
+            _appState.Companies = await _api.GetCompaniesByUser(_appState.User.Id);
         }
         else
         {

@@ -142,3 +142,8 @@ html {
 .createTagName {
     width: 300px !important`;
 }
+
+
+.company-dropdown-menu {
+    min-width: 20em !important;
+}

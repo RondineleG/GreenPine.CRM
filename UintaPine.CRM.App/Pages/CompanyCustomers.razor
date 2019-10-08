@@ -1,4 +1,5 @@
-﻿@page "/company/{id}"
+﻿@page "/company"
+@page "/company/{id}"
 
 @using UintaPine.CRM.App.Services
 @using UintaPine.CRM.Model.Shared.Responses
@@ -18,11 +19,9 @@
         </button>
         <div class="dropdown-menu">
             <NavLink class="dropdown-item pointer" href="@($"company/{Company.Id}/settings")">
-                Company Settings
+                <i class="fas fa-cogs mr-2"></i> Company Settings
             </NavLink>
-            <NavLink class="dropdown-item pointer" href="company/create">
-                Create New Company
-            </NavLink>
+
         </div>
     </div>
     <NavLink class="btn btn-success btn-lg pointer" href="customer/create">
@@ -37,22 +36,13 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="row">
-                @foreach (var tag in Company.Tags)
-                {
-                    <span class="badge badge-pill px-2 py-1 tag-font @($"{tag.BackgroundColor}_background") @($"{tag.FontColor}_font")">@tag.Name<i @onclick="@(() => DeleteSearchTag(tag))" class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
-                }
-            </div>
+        <div class="col-md-8">
+            @foreach (var tag in Company.Tags)
+            {
+                <span class="badge badge-pill px-2 py-1 tag-font @($"{tag.BackgroundColor}_background") @($"{tag.FontColor}_font")">@tag.Name<i @onclick="@(() => DeleteSearchTag(tag))" class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
+            }
         </div>
     </div>
-
-
-
-
-
 
     <table class="table table-hover mt-3">
         <thead>
@@ -93,15 +83,24 @@
     Company Company { get; set; }
     List<CustomerTag> SearchTags { get; set; } = new List<CustomerTag>();
 
+    /// <summary>
+    /// Id for local storage. Last company loaded is stored in local storage. Will be retrieved and used if no Id is specified on the ULR parameter.
+    /// </summary>
+    private const string LastCompanyId = "LastCompanyId";
+
     async protected override Task OnInitializedAsync()
     {
-        await LoadCompanyData();
-    }
 
-    //public override async Task SetParametersAsync(ParameterView parameters)
-    //{
-    //    await base.SetParametersAsync(parameters);
-    //}
+        var lastCompany = localStorage.GetItem<string>(LastCompanyId);
+        if (Id == null && lastCompany != null)
+        {
+            _navigationManger.NavigateTo($"company/{lastCompany}");
+        }
+        else
+        {
+            await LoadCompanyData();
+        }
+    }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -110,7 +109,11 @@
 
     private async Task LoadCompanyData()
     {
-        Company = await _api.GetCompanyById(Id);
+        if (Id != null)
+        {
+            Company = await _api.GetCompanyById(Id);
+            localStorage.SetItem(LastCompanyId, Id);
+        }
     }
 
     private void SearchTagSelectedEvent(ChangeEventArgs e)

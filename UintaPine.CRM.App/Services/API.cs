@@ -165,12 +165,10 @@ namespace UintaPine.CRM.App.Services
         #region HttpClient Methods
         private async Task GetAsync(string path)
         {
-            Console.WriteLine("GetAsync");
             await Send(HttpMethod.Get, path);
         }
         private async Task<T> GetAsync<T>(string path)
         {
-            Console.WriteLine("GetAsync<T>");
             var response = await Send(HttpMethod.Get, path);
             T result = await ParseResponseObject<T>(response);
             return result;

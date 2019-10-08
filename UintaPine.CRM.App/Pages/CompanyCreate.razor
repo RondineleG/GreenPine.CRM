@@ -36,8 +36,8 @@
 
         if (response != null)
         {
-            localStorage.SetItem("company", response.Id);
-            _navigationManger.NavigateTo($"customer");
+            _appState.Companies.Add(response);
+            _navigationManger.NavigateTo($"company/{response.Id}");
         }
     }
 }

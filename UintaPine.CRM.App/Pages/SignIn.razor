@@ -86,14 +86,15 @@
         var response = await _api.AuthenticateUser(email, password);
         if (response != null)
         {
+            //Add current user to AppState. Invokes Onchange.
             _appState.User = response;
             localStorage.SetItem("user", response.Id);
 
-            var companies = await _api.GetCompaniesByUser(_appState.User.Id);
+            //Add current user's companies to AppState. Invokes Onchange.
+            _appState.Companies = await _api.GetCompaniesByUser(_appState.User.Id);
             
-            string selectedCompany = localStorage.GetItem<string>("SelectedCompany");
-            if (selectedCompany == null && companies.Count > 0)
-                _navigationManger.NavigateTo($"company/{selectedCompany}");
+            if (_appState.Companies.Count > 0)
+                _navigationManger.NavigateTo($"company");
             else
                 _navigationManger.NavigateTo("company/create");
         }
