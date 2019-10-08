@@ -10,7 +10,27 @@
 @if (Company != null)
 {
     <div class="card card-body border-info text-info">
-        <h3 class="card-subtitle mb-2 text-muted">Manage Tags</h3>
+        <h5 class="card-subtitle mb-2 text-muted">
+            <NavLink href="@($"company/{Id}")">
+                &lt;&lt; Back to Customers
+            </NavLink>
+        </h5>
+
+        <h3 class="card-subtitle mb-2 text-muted mt-5">Company Name</h3>
+        <div class="card-text">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="input-group input-group-lg">
+                        <input type="text" class="form-control" @bind="Company.Name" placeholder="Company Name" aria-label="Company Name" aria-describedby="button-addon2" />
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-dark" type="button" id="button-addon2">Change Company Name</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="card-subtitle mb-2 text-muted mt-5">Manage Tags</h3>
         <p class="card-text">
             Add or Remove tags. "Tags" are synonymous to a status or folder.
         </p>
@@ -20,7 +40,7 @@
                     <input type="text" class="form-control createTagName" aria-label="New Tag Name" @bind="NewTagName" />
                     <div class="input-group-append">
                         <select @bind="NewTagBackgroundColor">
-                            <option value="">--Background Color--</option>
+                            <option value=""></option>
                             <option value="maroon">Maroon</option>
                             <option value="red">Red</option>
                             <option value="orange">Orange</option>
@@ -41,7 +61,7 @@
                     </div>
                     <div class="input-group-append">
                         <select @bind="NewTagFontColor">
-                            <option value="">--Font Color--</option>
+                            <option value=""></option>
                             <option value="black">Black</option>
                             <option value="white">White</option>
                         </select>
@@ -108,6 +128,16 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="card-text">
+            <h3 class="card-subtitle mb-2 text-muted mt-5">Delete Company</h3>
+            <p>
+                Click the button below to delete your company. This will delete all company data, customers, owners and authorized users. This action cannot be undone! Your account will remain active, but your company will be deleted.
+            </p>
+            <div class="mt-1">
+                <input type="button" class="btn btn-danger" value="Delete Company" />
+            </div>
+        </div>
     </div>
 }
 
@@ -146,7 +176,7 @@
 
             NewTagName = string.Empty;
             NewTagBackgroundColor = string.Empty;
-            NewTagFontColor = "black";
+            NewTagFontColor = string.Empty;
         }
     }
 

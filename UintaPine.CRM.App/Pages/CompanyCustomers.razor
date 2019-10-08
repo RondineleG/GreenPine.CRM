@@ -24,24 +24,25 @@
 
         </div>
     </div>
-    <NavLink class="btn btn-success btn-lg pointer" href="customer/create">
+    <NavLink class="btn btn-success btn-lg pointer float-right" href="customer/create">
         <i class="fas fa-plus mr-2"></i><span>Customer</span>
     </NavLink>
     <div class="row mt-2">
-        <div class="col-md-4">
-            <div class="input-group">
-                <input type="text" class="form-control" aria-label="Text input with dropdown button" />
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button">Search</button>
-                </div>
-            </div>
-        </div>
         <div class="col-md-8">
             @foreach (var tag in Company.Tags)
             {
-                <span class="badge badge-pill px-2 py-1 tag-font @($"{tag.BackgroundColor}_background") @($"{tag.FontColor}_font")">@tag.Name<i @onclick="@(() => DeleteSearchTag(tag))" class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
+                <span class="badge badge-pill px-2 py-1 ml-1 float-right tag-font @($"{tag.BackgroundColor}_background") @($"{tag.FontColor}_font")">@tag.Name<i @onclick="@(() => DeleteSearchTag(tag))" class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
             }
         </div>
+        <div class="col-md-4">
+            <div class="input-group float-right">
+                <input type="text" class="form-control" aria-label="Text input with dropdown button" />
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search mr-2"></i>Search</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <table class="table table-hover mt-3">

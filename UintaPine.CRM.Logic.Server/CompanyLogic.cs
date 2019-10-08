@@ -20,7 +20,7 @@ namespace UintaPine.CRM.Logic.Server
             Company company = new Company()
             {
                 Name = companyName,
-                Users = new List<AuthorizedUser>() { new AuthorizedUser() { Email = email } }
+                Users = new List<AuthorizedUser>() { new AuthorizedUser() { Email = email, Owner = true } }
             };
 
             await _db.Companies.InsertOneAsync(company);
