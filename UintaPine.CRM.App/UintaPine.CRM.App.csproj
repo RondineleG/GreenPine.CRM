@@ -31,4 +31,8 @@
     <Watch Include="..\**\*.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Watch Remove="Pages\CompanyFields.razor" />
+  </ItemGroup>
+
 </Project>
