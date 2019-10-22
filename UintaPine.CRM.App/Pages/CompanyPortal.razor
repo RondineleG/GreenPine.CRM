@@ -1,5 +1,5 @@
-﻿@page "/company"
-@page "/company/{id}"
+﻿@page "/portal"
+@page "/portal/{id}"
 
 @using UintaPine.CRM.App.Services
 @using UintaPine.CRM.Model.Shared.Responses
@@ -33,7 +33,7 @@
         <div class="col-md-8">
             @foreach (var tag in Company.Tags)
             {
-                <span class="badge badge-pill px-2 py-1 ml-1 float-right tag-font @($"{tag.BackgroundColor}_background") @($"{tag.FontColor}_font")">@tag.Name<i @onclick="@(() => DeleteSearchTag(tag))" class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
+                <span class="badge badge-pill px-2 py-1 ml-1 float-right tag-font @($"{tag.BackgroundColor}_background") @($"{tag.FontColor}_font")">@tag.Name<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
             }
         </div>
         <div class="col-md-4">
@@ -97,7 +97,7 @@
         var lastCompany = localStorage.GetItem<string>(LastCompanyId);
         if (Id == null && lastCompany != null)
         {
-            _navigationManger.NavigateTo($"company/{lastCompany}");
+            _navigationManger.NavigateTo($"portal/{lastCompany}");
         }
         else
         {
@@ -119,14 +119,14 @@
         }
     }
 
-    private void SearchTagSelectedEvent(ChangeEventArgs e)
-    {
-        string selectedTagId = e.Value.ToString();
-        SearchTags.Add(Company.Tags.FirstOrDefault(t => t.Id == selectedTagId));
-    }
+    //private void SearchTagSelectedEvent(ChangeEventArgs e)
+    //{
+    //    string selectedTagId = e.Value.ToString();
+    //    SearchTags.Add(Company.Tags.FirstOrDefault(t => t.Id == selectedTagId));
+    //}
 
-    private void DeleteSearchTag(CustomerTag tag)
-    {
-        SearchTags = SearchTags.Where(t => t.Id != tag.Id).ToList();
-    }
+    //private void DeleteSearchTag(CustomerTag tag)
+    //{
+    //    SearchTags = SearchTags.Where(t => t.Id != tag.Id).ToList();
+    //}
 }

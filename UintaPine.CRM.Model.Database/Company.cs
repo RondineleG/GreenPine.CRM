@@ -12,8 +12,8 @@ namespace UintaPine.CRM.Model.Database
         public string Name { get; set; }
 
         public List<AuthorizedUser> Users { get; set; } = new List<AuthorizedUser>();
-        public List<Customer> Customers { get; set; } = new List<Customer>();
         public List<CustomerTag> Tags { get; set; } = new List<CustomerTag>();
+        public List<Field> Fields { get; set; } = new List<Field>();
     }
 
     public class AuthorizedUser
@@ -46,5 +46,18 @@ namespace UintaPine.CRM.Model.Database
         public string Name { get; set; }
         public string BackgroundColor { get; set; }
         public string FontColor { get; set; }
+    }
+
+    public class Field
+    {
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string Name { get; set; }
+        public FieldType Type { get; set; }
+        public int Row { get; set; }
+        public int Column { get; set; }
+        public int ColumnSpan { get; set; }
+        public List<string> Options { get; set; } = new List<string>();
+        public string CSS { get; set; }
+        public bool Optional { get; set; } = true;
     }
 }

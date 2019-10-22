@@ -161,6 +161,22 @@ namespace UintaPine.CRM.App.Services
             await PutAsync<AuthorizedUser>($"api/v1/company/{companyId}/user/owner", content);
         }
 
+        public async Task<Field> CreateField(string companyId, Field field)
+        {
+            CreateField content = new CreateField()
+            {
+                Name = field.Name,
+                Row = field.Row,
+                Column = field.Column,
+                ColumnSpan = field.ColumnSpan,
+                CSS = field.CSS,
+                Optional = field.Optional,
+                Options = field.Options,
+                Type = field.Type
+            };
+            return await PostAsync<Field>($"api/v1/company/{companyId}/field", content);
+        }
+
 
         #region HttpClient Methods
         private async Task GetAsync(string path)

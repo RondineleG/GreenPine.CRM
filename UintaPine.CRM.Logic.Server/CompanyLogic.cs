@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using UintaPine.CRM.Model.Database;
 using MongoDB.Driver;
 using System.Linq;
+using UintaPine.CRM.Model.Shared.Enumerations;
 
 namespace UintaPine.CRM.Logic.Server
 {
@@ -111,6 +112,36 @@ namespace UintaPine.CRM.Logic.Server
             var update = Builders<Company>.Update
                         .Set(model => model.Users[-1].Owner, enabled);
             await _db.Companies.UpdateOneAsync(filter, update);
+        }
+
+        async public Task<Field> CreateField(string companyId, string name, FieldType type, int row, int col, int colSpan, List<string>options, string css, bool optional)
+        {
+            Field newField = new Field()
+            {
+                Name = name,
+                Type = type,
+                Row = row,
+                Column = col,
+                ColumnSpan = colSpan,
+                Options = options,
+                CSS = css,
+                Optional = optional
+            };
+
+            var update = Builders<Company>.Update.Push(c => c.Fields, newField);
+            await _db.Companies.UpdateOneAsync(c => c.Id == companyId, update);
+
+            return newField;
+        }
+
+        async public Task UpdateField()
+        {
+
+        }
+
+        async public Task DeleteField(string companyId, string fieldId)
+        {
+
         }
     }
 }

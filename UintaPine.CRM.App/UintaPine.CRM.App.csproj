@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <Watch Remove="Pages\CompanyFields.razor" />
+    <Watch Remove="Pages\CompanyPortal.razor" />
   </ItemGroup>
 
 </Project>

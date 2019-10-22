@@ -126,5 +126,14 @@ namespace UintaPine.CRM.Api.Controllers
             await _companyLogic.AuthorizedUserToggleOwner(companyId, model.Email, model.Enabled);
             return Ok();
         }
+
+        [Route("api/v1/company/{companyId}/field")]
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> CreateField([FromBody]CreateField model, string companyId)
+        {
+            Field newField = await _companyLogic.CreateField(companyId, model.Name, model.Type, model.Row, model.Column, model.ColumnSpan, model.Options, model.CSS, model.Optional);
+            return Ok(newField.ToSharedResponseField());
+        }
     }
 }

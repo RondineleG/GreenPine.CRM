@@ -36,27 +36,26 @@
                         @if (_appState.Companies.Count > 0)
                         {
                             <li class="nav-item">
-                                <NavLink class="nav-link" href="@($"company")">
-                                    <i class="fas fa-users mr-2"></i>Customers
+                                <NavLink class="nav-link" href="@($"portal")">
+                                    <i class="fas fa-users mr-2"></i>Portal
                                 </NavLink>
                             </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle pointer" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Company
-                                </a>
-                                <div class="dropdown-menu company-dropdown-menu" aria-labelledby="navbarDropdown">
-                                    @foreach (var company in _appState.Companies)
-                                    {
-                                        <NavLink class="nav-link" href="@($"company/{company.Id}")">
-                                            <i class="fas fa-exchange-alt mr-2"></i> @company.Name
-                                        </NavLink>
-                                    }
-                                    <div class="dropdown-divider"></div>
-                                    <NavLink class="nav-link" href="company/create">
-                                        <i class="fas fa-plus mr-2"></i>New Company
-                                    </NavLink>
-                                </div>
-                            </li>
+                            @if (_appState.Companies.Count > 1)
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle pointer" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Switch Company
+                                    </a>
+                                    <div class="dropdown-menu company-dropdown-menu" aria-labelledby="navbarDropdown">
+                                        @foreach (var company in _appState.Companies)
+                                        {
+                                            <NavLink class="nav-link" href="@($"portal/{company.Id}")">
+                                                <i class="fas fa-exchange-alt mr-2"></i> @company.Name
+                                            </NavLink>
+                                        }
+                                    </div>
+                                </li>
+                            }
                         }
                         else
                         {
