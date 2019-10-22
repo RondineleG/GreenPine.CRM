@@ -128,7 +128,7 @@ namespace UintaPine.CRM.Api.Controllers
         }
 
         [Route("api/v1/company/{companyId}/field")]
-        [HttpPut]
+        [HttpPost]
         [Authorize]
         public async Task<IActionResult> CreateField([FromBody]CreateField model, string companyId)
         {

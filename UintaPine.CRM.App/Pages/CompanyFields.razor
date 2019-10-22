@@ -1,4 +1,8 @@
 ﻿@page "/company/{Id}/fields"
+@using UintaPine.CRM.App.Services
+@using UintaPine.CRM.Model.Shared.Responses
+
+@inject API _api
 
 <h5>
     <NavLink href="@($"portal/{Id}")">
@@ -32,13 +36,13 @@
                     <th scope="col"></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="new-field">
                 <tr>
                     <td>
-                        <input type="text" class="form-control" />
+                        <input type="text" class="form-control" @bind="NewField.Name" />
                     </td>
                     <td>
-                        <select class="form-control">
+                        <select class="form-control" @bind="NewField.Type">
                             <option></option>
                             <option>Text</option>
                             <option>TextArea</option>
@@ -50,16 +54,16 @@
                         </select>
                     </td>
                     <td>
-                        <input type="number" class="form-control" />
+                        <input type="number" class="form-control" @bind="NewField.Row" />
                     </td>
                     <td>
-                        <input type="number" class="form-control" />
+                        <input type="number" class="form-control" @bind="NewField.Column" />
                     </td>
                     <td>
-                        <input type="number" class="form-control" />
+                        <input type="number" class="form-control" @bind="NewField.ColumnSpan" />
                     </td>
                     <td>
-                        <button class="form-control">
+                        <button class="form-control btn btn-danger">
                             <i class="fas fa-trash-alt"></i>
                         </button>
                     </td>
@@ -67,103 +71,124 @@
                 <tr>
                     <td>Options:</td>
                     <td colspan="4">
-                        <input type="text" class="form-control" />
+                        <input type="text" class="form-control" @bind="NewField.Options" />
                     </td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>Special CSS:</td>
                     <td colspan="4">
-                        <input type="text" class="form-control" />
+                        <input type="text" class="form-control" @bind="NewField.CSS" />
                     </td>
                     <td></td>
                 </tr>
-            </tbody>
-            <tbody>
                 <tr>
-                    <td>
-                        <input type="text" class="form-control" />
+                    <td>Optional:</td>
+                    <td colspan="4">
+                        <input type="checkbox" @bind="NewField.Optional" />
                     </td>
-                    <td>
-                        <select class="form-control">
-                            <option></option>
-                            <option>Text</option>
-                            <option>TextArea</option>
-                            <option>Number</option>
-                            <option>Date/Time</option>
-                            <option>Boolean</option>
-                            <option>Enum</option>
-                            <option>Linked</option>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="number" class="form-control" />
-                    </td>
-                    <td>
-                        <input type="number" class="form-control" />
-                    </td>
-                    <td>
-                        <input type="number" class="form-control" />
-                    </td>
+                    <td></td>
                 </tr>
                 <tr>
-                    <td>Options:</td>
-                    <td colspan="4">
-                        <input type="text" class="form-control" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>Special CSS:</td>
-                    <td colspan="4">
-                        <input type="text" class="form-control" />
+                    <td colspan="6">
+                        <input type="button" class="btn btn-success float-right" value="Create Field" @onclick="CreateField" />
                     </td>
                 </tr>
             </tbody>
-            <tbody>
-                <tr>
-                    <td>
-                        <input type="text" class="form-control" />
-                    </td>
-                    <td>
-                        <select class="form-control">
-                            <option></option>
-                            <option>Text</option>
-                            <option>TextArea</option>
-                            <option>Number</option>
-                            <option>Date/Time</option>
-                            <option>Boolean</option>
-                            <option>Enum</option>
-                            <option>Linked</option>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="number" class="form-control" />
-                    </td>
-                    <td>
-                        <input type="number" class="form-control" />
-                    </td>
-                    <td>
-                        <input type="number" class="form-control" />
+            @foreach (var field in Company.Fields)
+            {
+                <tbody class="fields">
+                    <tr>
+                        <td>
+                            <input type="text" class="form-control" @bind="field.Name" />
+                        </td>
+                        <td>
+                            <select class="form-control" @bind="field.Type">
+                                <option></option>
+                                <option>Text</option>
+                                <option>TextArea</option>
+                                <option>Number</option>
+                                <option>Date/Time</option>
+                                <option>Boolean</option>
+                                <option>Enum</option>
+                                <option>Linked</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" @bind="field.Row" />
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" @bind="field.Column" />
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" @bind="field.ColumnSpan" />
+                        </td>
+                        <td>
+                            <button class="form-control btn btn-danger">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Options:</td>
+                        <td colspan="4">
+                            <input type="text" class="form-control" @bind="field.Options" />
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Special CSS:</td>
+                        <td colspan="4">
+                            <input type="text" class="form-control" @bind="field.CSS" />
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Optional:</td>
+                        <td colspan="4">
+                            <input type="checkbox" @bind="field.Optional" />
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                    <td colspan="6">
+                        <input type="button" class="btn btn-success float-right" value="Update Existing Field" @onclick="CreateField" />
                     </td>
                 </tr>
-                <tr>
-                    <td>Options:</td>
-                    <td colspan="4">
-                        <input type="text" class="form-control" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>Special CSS:</td>
-                    <td colspan="4">
-                        <input type="text" class="form-control" />
-                    </td>
-                </tr>
-            </tbody>
+                </tbody>
+            }
         </table>
     </div>
 </div>
 
 @code {
     [Parameter]
-    public string Id { get; set; } //If Id=="Create", then do not get the customer details
+    public string Id { get; set; }
+
+    public Company Company { get; set; } = new Company();
+    public Field NewField { get; set; } = new Field();
+
+    async protected override Task OnInitializedAsync()
+    {
+        Company = await _api.GetCompanyById(Id);
+    }
+
+    async private Task CreateField()
+    {
+        var result = await _api.CreateField(Company.Id, NewField);
+        if (result != null)
+        {
+            Company.Fields.Add(result);
+        }
+    }
+
+    async private Task DeleteField()
+    {
+
+    }
+
+    async private Task UpdateField()
+    {
+
+    }
 }

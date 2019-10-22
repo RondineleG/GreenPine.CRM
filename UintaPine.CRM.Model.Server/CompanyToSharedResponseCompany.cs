@@ -27,6 +27,18 @@ namespace UintaPine.CRM.Model.Server
                     Email = c.Email,
                     Authorized = c.Authorized,
                     Owner = c.Owner
+                }).ToList(),
+                Fields = company.Fields.Select(f => new Shared.Responses.Field()
+                {
+                    Id = f.Id,
+                    Name = f.Name,
+                    Type = f.Type,
+                    Row = f.Row,
+                    Column = f.Column,
+                    ColumnSpan = f.ColumnSpan,
+                    CSS = f.CSS,
+                    Optional = f.Optional,
+                    Options = f.Options
                 }).ToList()
             };
         }

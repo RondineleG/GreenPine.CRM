@@ -114,7 +114,7 @@ namespace UintaPine.CRM.Logic.Server
             await _db.Companies.UpdateOneAsync(filter, update);
         }
 
-        async public Task<Field> CreateField(string companyId, string name, FieldType type, int row, int col, int colSpan, List<string>options, string css, bool optional)
+        async public Task<Field> CreateField(string companyId, string name, FieldType type, int row, int col, int colSpan, string options, string css, bool optional)
         {
             Field newField = new Field()
             {

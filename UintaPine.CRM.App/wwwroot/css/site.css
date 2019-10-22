@@ -147,3 +147,11 @@ html {
 .company-dropdown-menu {
     min-width: 20em !important;
 }
+
+.fields {
+    border-top: 2px solid black !important;
+}
+
+.new-field {
+    background-color: lightgray;
+}
