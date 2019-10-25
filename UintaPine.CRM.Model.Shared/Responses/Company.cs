@@ -11,7 +11,6 @@ namespace UintaPine.CRM.Model.Shared.Responses
         public string Name { get; set; }
         public List<AuthorizedUser> Users { get; set; } = new List<AuthorizedUser>();
         public List<CustomerTag> Tags { get; set; } = new List<CustomerTag>();
-        public List<Field> Fields { get; set; } = new List<Field>();
     }
 
     public class AuthorizedUser
@@ -27,6 +26,13 @@ namespace UintaPine.CRM.Model.Shared.Responses
         public string Name { get; set; }
         public string BackgroundColor { get; set; }
         public string FontColor { get; set; }
+    }
+
+    public class DataType
+    {
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string Name { get; set; }
+        public List<Field> Fields { get; set; } = new List<Field>();
     }
 
     public class Field

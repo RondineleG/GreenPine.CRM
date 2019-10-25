@@ -6,6 +6,7 @@ using UintaPine.CRM.Model.Shared.Enumerations;
 
 namespace UintaPine.CRM.Model.Database
 {
+    //Company Collection
     public class Company
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
@@ -13,16 +14,13 @@ namespace UintaPine.CRM.Model.Database
 
         public List<AuthorizedUser> Users { get; set; } = new List<AuthorizedUser>();
         public List<CustomerTag> Tags { get; set; } = new List<CustomerTag>();
-        public List<Field> Fields { get; set; } = new List<Field>();
     }
-
     public class AuthorizedUser
     {
         public string Email { get; set; }
         public bool Authorized { get; set; } = true;
         public bool Owner { get; set; } = false;
     }
-
     public class Customer
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
@@ -39,7 +37,6 @@ namespace UintaPine.CRM.Model.Database
 
         public List<string> Tags { get; set; } = new List<string>();
     }
-
     public class CustomerTag
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
@@ -48,6 +45,14 @@ namespace UintaPine.CRM.Model.Database
         public string FontColor { get; set; }
     }
 
+    //DataType Collection
+    public class DataType
+    {
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string CompanyId { get; set; }
+        public string Name { get; set; }
+        public List<Field> Fields { get; set; } = new List<Field>();
+    }
     public class Field
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();

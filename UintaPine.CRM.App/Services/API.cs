@@ -161,7 +161,21 @@ namespace UintaPine.CRM.App.Services
             await PutAsync<AuthorizedUser>($"api/v1/company/{companyId}/user/owner", content);
         }
 
-        public async Task<Field> CreateField(string companyId, Field field)
+        public async Task<DataType> CreateDataType(string companyId, string name)
+        {
+            CreateDataType content = new CreateDataType()
+            {
+                Name = name
+            };
+            return await PostAsync<DataType>($"api/v1/company/{companyId}/datatype", content);
+        }
+
+        public async Task<List<DataType>> GetDataTypeByCompanyId(string companyId)
+        {
+            return await GetAsync<List<DataType>>($"api/v1/company/{companyId}/datatype");
+        }
+
+        public async Task<Field> CreateField(string companyId, string typeId, Field field)
         {
             CreateField content = new CreateField()
             {
@@ -174,8 +188,23 @@ namespace UintaPine.CRM.App.Services
                 Options = field.Options,
                 Type = field.Type
             };
-            return await PostAsync<Field>($"api/v1/company/{companyId}/field", content);
+            return await PostAsync<Field>($"api/v1/company/{companyId}/datatype/{typeId}/field", content);
         }
+
+        //public async Task EditField(string companyId, Field field)
+        //{
+        //    EditField content = new EditField()
+        //    {
+        //        Name = field.Name,
+        //        Row = field.Row,
+        //        Column = field.Column,
+        //        ColumnSpan = field.ColumnSpan,
+        //        CSS = field.CSS,
+        //        Optional = field.Optional,
+        //        Options = field.Options
+        //    };
+        //    await PutAsync($"api/v1/company/{companyId}/field/{field.Id}", content);
+        //}
 
 
         #region HttpClient Methods

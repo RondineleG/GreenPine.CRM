@@ -127,13 +127,50 @@ namespace UintaPine.CRM.Api.Controllers
             return Ok();
         }
 
-        [Route("api/v1/company/{companyId}/field")]
+        [Route("api/v1/company/{companyId}/datatype")]
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateField([FromBody]CreateField model, string companyId)
+        public async Task<IActionResult> CreateDataType([FromBody]CreateDataType model, string companyId)
         {
-            Field newField = await _companyLogic.CreateField(companyId, model.Name, model.Type, model.Row, model.Column, model.ColumnSpan, model.Options, model.CSS, model.Optional);
+            var result = await _companyLogic.CreateDataType(companyId, model.Name);
+            return Ok(result.ToSharedResponseDataType());
+        }
+
+        [Route("api/v1/company/{companyId}/datatype")]
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetDataType(string companyId)
+        {
+            var result = await _companyLogic.GetDataTypesByCompanyId(companyId);
+            var response = result.Select(t => t.ToSharedResponseDataType()).ToList();
+            return Ok(response);
+        }
+
+        //[Route("api/v1/company/{companyId}/datatype/{typeId}")]
+        //[HttpDelete]
+        //[Authorize]
+        //public async Task<IActionResult> DeleteDataType(string companyId, string typeId)
+        //{
+        //    return Ok();
+        //}
+
+
+        [Route("api/v1/company/{companyId}/datatype/{typeId}/field")]
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> CreateField([FromBody]CreateField model, string companyId, string typeId)
+        {
+            Field newField = await _companyLogic.CreateField(companyId, typeId, model.Name, model.Type, model.Row, model.Column, model.ColumnSpan, model.Options, model.CSS, model.Optional);
             return Ok(newField.ToSharedResponseField());
         }
+
+        //[Route("api/v1/company/{companyId}/datatype/{typeid/field/{fieldId}")]
+        //[HttpPut]
+        //[Authorize]
+        //public async Task<IActionResult> CreateField([FromBody]EditField model, string companyId, string fieldId)
+        //{
+        //    //await _companyLogic.UpdateField(companyId, fieldId, model.Name, model.Row, model.Column, model.ColumnSpan, model.Options, model.CSS, model.Optional);
+        //    return Ok();
+        //}
     }
 }

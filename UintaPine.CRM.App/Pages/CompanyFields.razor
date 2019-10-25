@@ -10,100 +10,61 @@
     </NavLink>
 </h5>
 
-<h3 class="mt-5">Company Fields</h3>
+<h3 class="mt-5">Data Types</h3>
 
 <div class="row">
-    <div class="col-md-3">
-        <select class="form-control">
-            <option value="asdf">Customer</option>
-            <option value="asdf">Sale</option>
-            <option value="asdf">Inventory</option>
+    <div class="col-md-4">
+        <div class="input-group mb-3 float-right">
+            <input type="text" class="form-control" placeholder="New Data Type" aria-label="New Data Type" aria-describedby="button-addon2" @bind="NewDataTypeName" />
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="button-addon2" @onclick="(() => CreateDataType(NewDataTypeName))">Create New Type</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <select class="form-control float-right" @bind="SelectedType">
+            <option value="">---Select Type---</option>
+            @foreach (var type in Types)
+            {
+                <option value="@type.Id">@type.Name</option>
+            }
         </select>
     </div>
 </div>
 
-<div class="row mt-3">
-    <div class="col-md-12">
-        <h4>Customers</h4>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Row</th>
-                    <th scope="col">Col</th>
-                    <th scope="col">ColSpan</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody class="new-field">
-                <tr>
-                    <td>
-                        <input type="text" class="form-control" @bind="NewField.Name" />
-                    </td>
-                    <td>
-                        <select class="form-control" @bind="NewField.Type">
-                            <option></option>
-                            <option>Text</option>
-                            <option>TextArea</option>
-                            <option>Number</option>
-                            <option>Date/Time</option>
-                            <option>Boolean</option>
-                            <option>Enum</option>
-                            <option>Linked</option>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="number" class="form-control" @bind="NewField.Row" />
-                    </td>
-                    <td>
-                        <input type="number" class="form-control" @bind="NewField.Column" />
-                    </td>
-                    <td>
-                        <input type="number" class="form-control" @bind="NewField.ColumnSpan" />
-                    </td>
-                    <td>
-                        <button class="form-control btn btn-danger">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Options:</td>
-                    <td colspan="4">
-                        <input type="text" class="form-control" @bind="NewField.Options" />
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Special CSS:</td>
-                    <td colspan="4">
-                        <input type="text" class="form-control" @bind="NewField.CSS" />
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Optional:</td>
-                    <td colspan="4">
-                        <input type="checkbox" @bind="NewField.Optional" />
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td colspan="6">
-                        <input type="button" class="btn btn-success float-right" value="Create Field" @onclick="CreateField" />
-                    </td>
-                </tr>
-            </tbody>
-            @foreach (var field in Company.Fields)
-            {
-                <tbody class="fields">
+@if (SelectedType != null)
+{
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <h4>Data Fields in Type</h4>
+        </div>
+        <div class="col-md-6">
+            <input type="button" class="btn btn-primary float-right" value="Save Changes" />
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Row</th>
+                        <th scope="col">Col</th>
+                        <th scope="col">ColSpan</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody class="new-field">
                     <tr>
                         <td>
-                            <input type="text" class="form-control" @bind="field.Name" />
+                            <input type="text" class="form-control" @bind="NewField.Name" />
                         </td>
                         <td>
-                            <select class="form-control" @bind="field.Type">
+                            <select class="form-control" @bind="NewField.Type">
                                 <option></option>
                                 <option>Text</option>
                                 <option>TextArea</option>
@@ -115,13 +76,13 @@
                             </select>
                         </td>
                         <td>
-                            <input type="number" class="form-control" @bind="field.Row" />
+                            <input type="number" class="form-control" @bind="NewField.Row" />
                         </td>
                         <td>
-                            <input type="number" class="form-control" @bind="field.Column" />
+                            <input type="number" class="form-control" @bind="NewField.Column" />
                         </td>
                         <td>
-                            <input type="number" class="form-control" @bind="field.ColumnSpan" />
+                            <input type="number" class="form-control" @bind="NewField.ColumnSpan" />
                         </td>
                         <td>
                             <button class="form-control btn btn-danger">
@@ -132,63 +93,149 @@
                     <tr>
                         <td>Options:</td>
                         <td colspan="4">
-                            <input type="text" class="form-control" @bind="field.Options" />
+                            <input type="text" class="form-control" @bind="NewField.Options" />
                         </td>
                         <td></td>
                     </tr>
                     <tr>
                         <td>Special CSS:</td>
                         <td colspan="4">
-                            <input type="text" class="form-control" @bind="field.CSS" />
+                            <input type="text" class="form-control" @bind="NewField.CSS" />
                         </td>
                         <td></td>
                     </tr>
                     <tr>
                         <td>Optional:</td>
                         <td colspan="4">
-                            <input type="checkbox" @bind="field.Optional" />
+                            <input type="checkbox" @bind="NewField.Optional" />
                         </td>
                         <td></td>
                     </tr>
                     <tr>
-                    <td colspan="6">
-                        <input type="button" class="btn btn-success float-right" value="Update Existing Field" @onclick="CreateField" />
-                    </td>
-                </tr>
+                        <td colspan="6">
+                            <input type="button" class="btn btn-success float-right" value="Create New Field" @onclick="CreateField" />
+                        </td>
+                    </tr>
                 </tbody>
-            }
-        </table>
+                @if (SelectedType != null)
+                {
+                    @foreach (var field in Types.Where(t => t.Id == SelectedType).FirstOrDefault().Fields)
+                    {
+                        <tbody class="fields">
+                            <tr>
+                                <td>
+                                    <input type="text" class="form-control" @bind="field.Name" />
+                                </td>
+                                <td>
+                                    <select class="form-control" @bind="field.Type">
+                                        <option></option>
+                                        <option>Text</option>
+                                        <option>TextArea</option>
+                                        <option>Number</option>
+                                        <option>Date/Time</option>
+                                        <option>Boolean</option>
+                                        <option>Enum</option>
+                                        <option>Linked</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" @bind="field.Row" />
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" @bind="field.Column" />
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" @bind="field.ColumnSpan" />
+                                </td>
+                                <td>
+                                    <button class="form-control btn btn-danger">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Options:</td>
+                                <td colspan="4">
+                                    <input type="text" class="form-control" @bind="field.Options" />
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Special CSS:</td>
+                                <td colspan="4">
+                                    <input type="text" class="form-control" @bind="field.CSS" />
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Optional:</td>
+                                <td colspan="4">
+                                    <input type="checkbox" @bind="field.Optional" />
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                        </tr>
+                        </tbody>
+                    }
+                }
+            </table>
+        </div>
     </div>
-</div>
+}
 
 @code {
     [Parameter]
     public string Id { get; set; }
 
+    //Loaded from API
     public Company Company { get; set; } = new Company();
+    public List<DataType> Types { get; set; } = new List<DataType>();
+
+    //Creation Fields
     public Field NewField { get; set; } = new Field();
+    public string NewDataTypeName { get; set; }
+
+    //Selection
+    public string SelectedType { get; set; }
 
     async protected override Task OnInitializedAsync()
+    {
+        await GetCompany();
+        await GetDataTypes();
+    }
+
+    private void SelectedTypeChanged(string typeId)
+    {
+        SelectedType = typeId;
+    }
+
+
+    async private Task GetCompany()
     {
         Company = await _api.GetCompanyById(Id);
     }
 
+    async private Task GetDataTypes()
+    {
+        Types = await _api.GetDataTypeByCompanyId(Id);
+    }
+
+    async private Task CreateDataType(string name)
+    {
+        await _api.CreateDataType(Company.Id, name);
+        await GetDataTypes();
+    }
+
     async private Task CreateField()
     {
-        var result = await _api.CreateField(Company.Id, NewField);
+        var result = await _api.CreateField(Company.Id, SelectedType, NewField);
         if (result != null)
         {
-            Company.Fields.Add(result);
+            DataType type = Types.FirstOrDefault(t => t.Id == SelectedType);
+            type.Fields.Add(result);
         }
     }
 
-    async private Task DeleteField()
-    {
 
-    }
-
-    async private Task UpdateField()
-    {
-
-    }
 }

@@ -114,7 +114,25 @@ namespace UintaPine.CRM.Logic.Server
             await _db.Companies.UpdateOneAsync(filter, update);
         }
 
-        async public Task<Field> CreateField(string companyId, string name, FieldType type, int row, int col, int colSpan, string options, string css, bool optional)
+        async public Task<DataType> CreateDataType(string companyId, string name)
+        {
+            DataType newDataType = new DataType()
+            {
+                Name = name,
+                CompanyId = companyId
+            };
+            await _db.Types.InsertOneAsync(newDataType);
+
+            return newDataType;
+        }
+
+        async public Task<List<DataType>> GetDataTypesByCompanyId(string companyId)
+        {
+            var type = await _db.Types.Find(t => t.CompanyId == companyId).ToListAsync();
+            return type;
+        }
+
+        async public Task<Field> CreateField(string companyId, string typeId, string name, FieldType type, int row, int col, int colSpan, string options, string css, bool optional)
         {
             Field newField = new Field()
             {
@@ -128,20 +146,31 @@ namespace UintaPine.CRM.Logic.Server
                 Optional = optional
             };
 
-            var update = Builders<Company>.Update.Push(c => c.Fields, newField);
-            await _db.Companies.UpdateOneAsync(c => c.Id == companyId, update);
+            var update = Builders<DataType>.Update.Push(c => c.Fields, newField);
+            await _db.Types.UpdateOneAsync(c => c.CompanyId == companyId && c.Id == typeId, update);
 
             return newField;
         }
 
-        async public Task UpdateField()
+        async public Task UpdateField(string companyId, string fieldId, string name, int row, int col, int colSpan, string options, string css, bool optional)
         {
+            //var filter = Builders<Company>.Filter.And(Builders<Company>.Filter.Eq(x => x.Id, companyId),
+            //Builders<Company>.Filter.ElemMatch(x => x.Fields, p => p.Id == fieldId));
 
+            //var update = Builders<Company>.Update
+            //            .Set(model => model.Fields[-1].Name, name)
+            //            .Set(model => model.Fields[-1].Row, row)
+            //            .Set(model => model.Fields[-1].Column, col)
+            //            .Set(model => model.Fields[-1].ColumnSpan, colSpan)
+            //            .Set(model => model.Fields[-1].Options, options)
+            //            .Set(model => model.Fields[-1].Optional, optional)
+            //            .Set(model => model.Fields[-1].CSS, css);
+            //await _db.Companies.UpdateOneAsync(filter, update);
         }
 
-        async public Task DeleteField(string companyId, string fieldId)
-        {
+        //async public Task DeleteField(string companyId, string fieldId)
+        //{
 
-        }
+        //}
     }
 }

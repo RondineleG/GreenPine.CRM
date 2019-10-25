@@ -26,9 +26,20 @@
             </NavLink>
         </div>
     </div>
-    <NavLink class="btn btn-success btn-lg pointer float-right" href="customer/create">
-        <i class="fas fa-plus mr-2"></i><span>Customer</span>
-    </NavLink>
+    @*<NavLink class="btn btn-success btn-lg pointer float-right" href="customer/create">
+        <i class="fas fa-plus mr-2"></i><span>@SelectedType.Name</span>
+    </NavLink>*@
+    <div class="btn-group float-right">
+        <button class="btn btn-outline-dark btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            asdf @*@SelectedType.Name*@
+        </button>
+        <div class="dropdown-menu">
+            @foreach (var type in Types)
+            {
+                <span class="dropdown-item pointer">@type.Name</span>
+            }
+        </div>
+    </div>
     <div class="row mt-2">
         <div class="col-md-8">
             @foreach (var tag in Company.Tags)
@@ -84,6 +95,8 @@
     public string Id { get; set; }
 
     Company Company { get; set; }
+    List<DataType> Types { get; set; } = new List<DataType>();
+    DataType SelectedType { get; set; }
     List<CustomerTag> SearchTags { get; set; } = new List<CustomerTag>();
 
     /// <summary>
@@ -102,6 +115,7 @@
         else
         {
             await LoadCompanyData();
+            await GetDataTypes();
         }
     }
 
@@ -117,6 +131,11 @@
             Company = await _api.GetCompanyById(Id);
             localStorage.SetItem(LastCompanyId, Id);
         }
+    }
+
+    async private Task GetDataTypes()
+    {
+        Types = await _api.GetDataTypeByCompanyId(Id);
     }
 
     //private void SearchTagSelectedEvent(ChangeEventArgs e)
