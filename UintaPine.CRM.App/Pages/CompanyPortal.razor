@@ -13,33 +13,41 @@
 
 @if (Company != null)
 {
-    <div class="btn-group">
-        <button class="btn btn-outline-dark btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            @Company.Name
-        </button>
-        <div class="dropdown-menu">
-            <NavLink class="dropdown-item pointer" href="@($"company/{Company.Id}/settings")">
-                <i class="fas fa-cogs mr-2"></i> Company Settings
-            </NavLink>
-            <NavLink class="dropdown-item pointer" href="@($"company/{Company.Id}/fields")">
-                <i class="fas fa-cogs mr-2"></i> Company Fields
-            </NavLink>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="btn-group">
+                <button class="btn btn-outline-dark btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    @Company.Name
+                </button>
+                <div class="dropdown-menu">
+                    <NavLink class="dropdown-item pointer" href="@($"company/{Company.Id}/settings")">
+                        <i class="fas fa-cogs mr-2"></i> Company Settings
+                    </NavLink>
+                    <NavLink class="dropdown-item pointer" href="@($"company/{Company.Id}/fields")">
+                        <i class="fas fa-cogs mr-2"></i> Company Fields
+                    </NavLink>
+                </div>
+            </div>
         </div>
-    </div>
-    @*<NavLink class="btn btn-success btn-lg pointer float-right" href="customer/create">
-        <i class="fas fa-plus mr-2"></i><span>@SelectedType.Name</span>
-    </NavLink>*@
-    <div class="btn-group float-right">
-        <button class="btn btn-outline-dark btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            asdf @*@SelectedType.Name*@
-        </button>
-        <div class="dropdown-menu">
-            @foreach (var type in Types)
+        <div class="col-md-2">
+            @if (SelectedType != null)
             {
-                <span class="dropdown-item pointer">@type.Name</span>
+                <NavLink class="btn btn-success btn-lg pointer float-right" href="customer/create">
+                    <i class="fas fa-plus mr-2"></i><span>@Types.FirstOrDefault(t => t.Id == SelectedType)?.Name</span>
+                </NavLink>
             }
         </div>
+        <div class="col-md-2">
+            <select class="custom-select custom-select-lg float-right" @bind="SelectedType">
+                <option>---Data Types---</option>
+                @foreach (var type in Types)
+                {
+                    <option value="@type.Id">@type.Name</option>
+                }
+            </select>
+        </div>
     </div>
+
     <div class="row mt-2">
         <div class="col-md-8">
             @foreach (var tag in Company.Tags)
@@ -93,10 +101,13 @@
 
     [Parameter]
     public string Id { get; set; }
-
+    
+    //Loaded from API
     Company Company { get; set; }
     List<DataType> Types { get; set; } = new List<DataType>();
-    DataType SelectedType { get; set; }
+    
+    //Selection
+    private string SelectedType { get; set; }
     List<CustomerTag> SearchTags { get; set; } = new List<CustomerTag>();
 
     /// <summary>
@@ -122,6 +133,7 @@
     protected override async Task OnParametersSetAsync()
     {
         await LoadCompanyData();
+        await GetDataTypes();
     }
 
     private async Task LoadCompanyData()
