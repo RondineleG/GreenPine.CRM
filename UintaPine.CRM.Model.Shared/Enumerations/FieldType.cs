@@ -9,9 +9,12 @@ namespace UintaPine.CRM.Model.Shared.Enumerations
         Text = 1,
         TextArea = 2,
         Number = 3,
-        DateTime = 4,
-        Boolean = 5,
-        Enum = 6,
-        Linked = 7
+        Date = 4,
+        Time = 5,
+        DateTime = 6,
+        Boolean = 7,
+        Enum = 8,
+        File = 9,
+        Linked = 10
     }
 }

@@ -23,9 +23,27 @@
             {
                 foreach (var field in Type.Fields.Where(f => f.Row == row && f.Column == col))
                 {
-                    <div class="col-md-@(field.Column + (field.ColumnSpan - 1))">
-                        <input type="text" class="form-control" />
-                    </div>
+                    @if(field.Type == Model.Shared.Enumerations.FieldType.Text)
+                    {
+                        <div class="form-group col-md-@(field.Column + (field.ColumnSpan - 1))">
+                            <label for="@field.Id">@field.Name</label>
+                            <input id="@field.Id" type="text" class="form-control">
+                        </div>
+                    }
+                    else if(field.Type == Model.Shared.Enumerations.FieldType.TextArea)
+                    {
+                        <div class="form-group col-md-@(field.Column + (field.ColumnSpan - 1))">
+                            <label for="@field.Id" >@field.Name</label>
+                            <textarea id="@field.Id" class="form-control"></textarea>
+                        </div>
+                    }
+                    else if(field.Type == Model.Shared.Enumerations.FieldType.Number)
+                    {
+                        <div class="form-group col-md-@(field.Column + (field.ColumnSpan - 1))">
+                            <label for="@field.Id" >@field.Name</label>
+                            <input id="@field.Id" type="number" class="form-control">
+                        </div>
+                    }
                 }
             }
         </div>
