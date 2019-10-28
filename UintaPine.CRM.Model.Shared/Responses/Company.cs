@@ -5,7 +5,7 @@ using UintaPine.CRM.Model.Shared.Enumerations;
 
 namespace UintaPine.CRM.Model.Shared.Responses
 {
-    public class Company
+    public class Organization
     {
         public string Id { get; set; }
         public string Name { get; set; }
@@ -28,7 +28,7 @@ namespace UintaPine.CRM.Model.Shared.Responses
         public string FontColor { get; set; }
     }
 
-    public class DataType
+    public class InstanceType
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; }

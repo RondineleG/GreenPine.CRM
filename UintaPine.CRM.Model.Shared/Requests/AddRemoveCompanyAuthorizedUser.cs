@@ -4,7 +4,7 @@ using System.Text;
 
 namespace UintaPine.CRM.Model.Shared.Requests
 {
-    public class AddRemoveCompanyAuthorizedUser
+    public class AddRemoveOrganizationAuthorizedUser
     {
         public string Email { get; set; }
     }

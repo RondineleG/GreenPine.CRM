@@ -9,9 +9,9 @@ namespace UintaPine.CRM.Model.Server
 {
     public static class DataTypeToSharedResponseDataType
     {
-        public static Shared.Responses.DataType ToSharedResponseDataType(this DataType dataType)
+        public static Shared.Responses.InstanceType ToSharedResponseDataType(this InstanceType dataType)
         {
-            return new Shared.Responses.DataType()
+            return new Shared.Responses.InstanceType()
             {
                 Id = dataType.Id,
                 Name = dataType.Name,

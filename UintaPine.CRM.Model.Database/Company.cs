@@ -6,8 +6,8 @@ using UintaPine.CRM.Model.Shared.Enumerations;
 
 namespace UintaPine.CRM.Model.Database
 {
-    //Company Collection
-    public class Company
+    //organization Collection
+    public class Organization
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; }
@@ -45,11 +45,11 @@ namespace UintaPine.CRM.Model.Database
         public string FontColor { get; set; }
     }
 
-    //DataType Collection
-    public class DataType
+    //InstanceType Collection
+    public class InstanceType
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
-        public string CompanyId { get; set; }
+        public string OrganizationId { get; set; }
         public string Name { get; set; }
         public List<Field> Fields { get; set; } = new List<Field>();
     }

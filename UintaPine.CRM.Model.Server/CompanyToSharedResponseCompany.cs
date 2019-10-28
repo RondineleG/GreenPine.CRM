@@ -7,22 +7,22 @@ using System.Linq;
 
 namespace UintaPine.CRM.Model.Server
 {
-    public static class CompanyToSharedResponseCompany
+    public static class OrganizationToSharedResponseOrganization
     {
-        public static Shared.Responses.Company ToSharedResponseCompany(this Company company)
+        public static Shared.Responses.Organization ToSharedResponseOrganization(this Organization organization)
         {
-            return new Shared.Responses.Company()
+            return new Shared.Responses.Organization()
             {
-                Id = company.Id,
-                Name = company.Name,
-                Tags = company.Tags.Select(t => new Shared.Responses.CustomerTag()
+                Id = organization.Id,
+                Name = organization.Name,
+                Tags = organization.Tags.Select(t => new Shared.Responses.CustomerTag()
                 {
                     Id = t.Id,
                     Name = t.Name,
                     BackgroundColor = t.BackgroundColor,
                     FontColor = t.FontColor
                 }).ToList(),
-                Users = company.Users.Select(c => new Shared.Responses.AuthorizedUser()
+                Users = organization.Users.Select(c => new Shared.Responses.AuthorizedUser()
                 {
                     Email = c.Email,
                     Authorized = c.Authorized,

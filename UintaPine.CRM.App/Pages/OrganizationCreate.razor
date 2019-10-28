@@ -1,0 +1,43 @@
+﻿@page "/organization/create"
+
+@using UintaPine.CRM.App.Services
+@using UintaPine.CRM.Model.Shared.Responses
+@using UintaPine.CRM.Model.Shared.Requests
+
+@inject API _api
+@inject AppState _appState
+@inject IToastService toastService
+@inject NavigationManager _navigationManger
+@inject Blazored.LocalStorage.ISyncLocalStorageService localStorage
+
+
+
+<h3>Creating a organization? Lets take care of that.</h3>
+<p>Create a organization name. All customers must be part of a organization. This organization name can be changed at any time.</p>
+<div class="mt-1">
+    <input type="text" placeholder="Organization Name" class="form-control" @bind="OrganizationName" />
+</div>
+<div class="mt-1">
+    <input type="button" class="btn btn-info" value="Create Organization" @onclick="CreateOrganization" />
+</div>
+
+@code {
+
+    public string OrganizationName { get; set; }
+
+    public async Task CreateOrganization()
+    {
+        //Create a organization
+        CreateOrganization newOrganizationContent = new CreateOrganization()
+        {
+            Name = OrganizationName
+        };
+        Organization response = await _api.CreateOrganization(newOrganizationContent);
+
+        if (response != null)
+        {
+            _appState.Companies.Add(response);
+            _navigationManger.NavigateTo($"organization/{response.Id}");
+        }
+    }
+}

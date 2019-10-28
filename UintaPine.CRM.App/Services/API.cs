@@ -83,22 +83,22 @@ namespace UintaPine.CRM.App.Services
         }
 
 
-        public async Task<Company> CreateCompany(CreateCompany content)
+        public async Task<Organization> CreateOrganization(CreateOrganization content)
         {
-            return await PostAsync<Company>("api/v1/company", content);
+            return await PostAsync<Organization>("api/v1/organization", content);
         }
 
-        public async Task<Company> GetCompanyById(string companyId)
+        public async Task<Organization> GetOrganizationById(string organizationId)
         {
-            return await GetAsync<Company>($"api/v1/company/{companyId}");
+            return await GetAsync<Organization>($"api/v1/organization/{organizationId}");
         }
 
-        public async Task<List<Company>> GetCompaniesByUser(string userId)
+        public async Task<List<Organization>> GetCompaniesByUser(string userId)
         {
-            return await GetAsync<List<Company>>($"api/v1/company/user/{userId}");
+            return await GetAsync<List<Organization>>($"api/v1/organization/user/{userId}");
         }
 
-        public async Task<CustomerTag> CreateTagByCompanyId(string companyId, string name, string backgroundColor, string fontColor)
+        public async Task<CustomerTag> CreateTagByOrganizationId(string organizationId, string name, string backgroundColor, string fontColor)
         {
             CreateTag content = new CreateTag()
             {
@@ -106,7 +106,7 @@ namespace UintaPine.CRM.App.Services
                 BackgroundColor = backgroundColor,
                 FontColor = fontColor
             };
-            await PostAsync($"api/v1/company/{companyId}/tag", content);
+            await PostAsync($"api/v1/organization/{organizationId}/tag", content);
 
             CustomerTag tag = new CustomerTag()
             {
@@ -118,64 +118,69 @@ namespace UintaPine.CRM.App.Services
             return tag;
         }
 
-        public async Task DeleteTagByCompanyIdTagId(string companyId, string tagId)
+        public async Task DeleteTagByOrganizationIdTagId(string organizationId, string tagId)
         {
-            await DeleteAsync($"api/v1/company/{companyId}/tag/{tagId}");
+            await DeleteAsync($"api/v1/organization/{organizationId}/tag/{tagId}");
         }
 
-        public async Task<AuthorizedUser> AddAuthorizedUserToCompany(string companyId, string email)
+        public async Task<AuthorizedUser> AddAuthorizedUserToOrganization(string organizationId, string email)
         {
-            AddRemoveCompanyAuthorizedUser content = new AddRemoveCompanyAuthorizedUser()
+            AddRemoveOrganizationAuthorizedUser content = new AddRemoveOrganizationAuthorizedUser()
             {
                 Email = email
             };
-            return await PostAsync<AuthorizedUser>($"api/v1/company/{companyId}/user", content);
+            return await PostAsync<AuthorizedUser>($"api/v1/organization/{organizationId}/user", content);
         }
 
-        public async Task RemoveAuthorizedUserFromCompany(string companyId, string email)
+        public async Task RemoveAuthorizedUserFromOrganization(string organizationId, string email)
         {
-            AddRemoveCompanyAuthorizedUser content = new AddRemoveCompanyAuthorizedUser()
+            AddRemoveOrganizationAuthorizedUser content = new AddRemoveOrganizationAuthorizedUser()
             {
                 Email = email
             };
-            await DeleteAsysnc($"api/v1/company/{companyId}/user", content);
+            await DeleteAsysnc($"api/v1/organization/{organizationId}/user", content);
         }
 
-        public async Task ToggleAuthorizeRole(string companyId, string email, bool enabled)
+        public async Task ToggleAuthorizeRole(string organizationId, string email, bool enabled)
         {
             ToggleUserRole content = new ToggleUserRole()
             {
                 Email = email,
                 Enabled = enabled
             };
-            await PutAsync<AuthorizedUser>($"api/v1/company/{companyId}/user/authorized", content);
+            await PutAsync<AuthorizedUser>($"api/v1/organization/{organizationId}/user/authorized", content);
         }
 
-        public async Task ToggleOwnerRole(string companyId, string email, bool enabled)
+        public async Task ToggleOwnerRole(string organizationId, string email, bool enabled)
         {
             ToggleUserRole content = new ToggleUserRole()
             {
                 Email = email,
                 Enabled = enabled
             };
-            await PutAsync<AuthorizedUser>($"api/v1/company/{companyId}/user/owner", content);
+            await PutAsync<AuthorizedUser>($"api/v1/organization/{organizationId}/user/owner", content);
         }
 
-        public async Task<DataType> CreateDataType(string companyId, string name)
+        public async Task<InstanceType> CreateDataType(string organizationId, string name)
         {
             CreateDataType content = new CreateDataType()
             {
                 Name = name
             };
-            return await PostAsync<DataType>($"api/v1/company/{companyId}/datatype", content);
+            return await PostAsync<InstanceType>($"api/v1/organization/{organizationId}/datatype", content);
         }
 
-        public async Task<List<DataType>> GetDataTypeByCompanyId(string companyId)
+        public async Task<List<InstanceType>> GetDataTypeByOrganizationId(string organizationId)
         {
-            return await GetAsync<List<DataType>>($"api/v1/company/{companyId}/datatype");
+            return await GetAsync<List<InstanceType>>($"api/v1/organization/{organizationId}/datatype");
         }
 
-        public async Task<Field> CreateField(string companyId, string typeId, Field field)
+        public async Task<InstanceType> GetDataTypeByOrganizationIdTypeId(string organizationId, string typeId)
+        {
+            return await GetAsync<InstanceType>($"api/v1/organization/{organizationId}/datatype/{typeId}");
+        }
+
+        public async Task<Field> CreateField(string organizationId, string typeId, Field field)
         {
             CreateField content = new CreateField()
             {
@@ -188,10 +193,10 @@ namespace UintaPine.CRM.App.Services
                 Options = field.Options,
                 Type = field.Type
             };
-            return await PostAsync<Field>($"api/v1/company/{companyId}/datatype/{typeId}/field", content);
+            return await PostAsync<Field>($"api/v1/organization/{organizationId}/datatype/{typeId}/field", content);
         }
 
-        //public async Task EditField(string companyId, Field field)
+        //public async Task EditField(string organizationId, Field field)
         //{
         //    EditField content = new EditField()
         //    {
@@ -203,7 +208,7 @@ namespace UintaPine.CRM.App.Services
         //        Optional = field.Optional,
         //        Options = field.Options
         //    };
-        //    await PutAsync($"api/v1/company/{companyId}/field/{field.Id}", content);
+        //    await PutAsync($"api/v1/organization/{organizationId}/field/{field.Id}", content);
         //}
 
 

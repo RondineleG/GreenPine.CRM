@@ -11,20 +11,20 @@
 @inject NavigationManager _navigationManger
 
 
-@if (Company != null)
+@if (Organization != null)
 {
     <div class="row">
         <div class="col-md-8">
             <div class="btn-group">
                 <button class="btn btn-outline-dark btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    @Company.Name
+                    @Organization.Name
                 </button>
                 <div class="dropdown-menu">
-                    <NavLink class="dropdown-item pointer" href="@($"company/{Company.Id}/settings")">
-                        <i class="fas fa-cogs mr-2"></i> Company Settings
+                    <NavLink class="dropdown-item pointer" href="@($"organization/{Organization.Id}/settings")">
+                        <i class="fas fa-cogs mr-2"></i> Organization Settings
                     </NavLink>
-                    <NavLink class="dropdown-item pointer" href="@($"company/{Company.Id}/fields")">
-                        <i class="fas fa-cogs mr-2"></i> Company Fields
+                    <NavLink class="dropdown-item pointer" href="@($"organization/{Organization.Id}/fields")">
+                        <i class="fas fa-cogs mr-2"></i> Organization Fields
                     </NavLink>
                 </div>
             </div>
@@ -32,7 +32,7 @@
         <div class="col-md-2">
             @if (SelectedType != null)
             {
-                <NavLink class="btn btn-success btn-lg pointer float-right" href="customer/create">
+                <NavLink class="btn btn-success btn-lg pointer float-right" href="@($"organization/{Organization.Id}/instance/{SelectedType}")">
                     <i class="fas fa-plus mr-2"></i><span>@Types.FirstOrDefault(t => t.Id == SelectedType)?.Name</span>
                 </NavLink>
             }
@@ -50,7 +50,7 @@
 
     <div class="row mt-2">
         <div class="col-md-8">
-            @foreach (var tag in Company.Tags)
+            @foreach (var tag in Organization.Tags)
             {
                 <span class="badge badge-pill px-2 py-1 ml-1 float-right tag-font @($"{tag.BackgroundColor}_background") @($"{tag.FontColor}_font")">@tag.Name<i class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
             }
@@ -101,59 +101,62 @@
 
     [Parameter]
     public string Id { get; set; }
-    
+
     //Loaded from API
-    Company Company { get; set; }
-    List<DataType> Types { get; set; } = new List<DataType>();
-    
+    Organization Organization { get; set; }
+    List<InstanceType> Types { get; set; } = new List<InstanceType>();
+
     //Selection
     private string SelectedType { get; set; }
     List<CustomerTag> SearchTags { get; set; } = new List<CustomerTag>();
 
     /// <summary>
-    /// Id for local storage. Last company loaded is stored in local storage. Will be retrieved and used if no Id is specified on the ULR parameter.
+    /// Id for local storage. Last organization loaded is stored in local storage. Will be retrieved and used if no Id is specified on the ULR parameter.
     /// </summary>
-    private const string LastCompanyId = "LastCompanyId";
+    private const string LastOrganizationId = "LastOrganizationId";
 
     async protected override Task OnInitializedAsync()
     {
 
-        var lastCompany = localStorage.GetItem<string>(LastCompanyId);
-        if (Id == null && lastCompany != null)
+        var lastOrganization = localStorage.GetItem<string>(LastOrganizationId);
+        if (Id == null && lastOrganization != null)
         {
-            _navigationManger.NavigateTo($"portal/{lastCompany}");
+            _navigationManger.NavigateTo($"portal/{lastOrganization}");
         }
         else
         {
-            await LoadCompanyData();
+            await LoadOrganizationData();
             await GetDataTypes();
         }
     }
 
     protected override async Task OnParametersSetAsync()
     {
-        await LoadCompanyData();
+        await LoadOrganizationData();
         await GetDataTypes();
     }
 
-    private async Task LoadCompanyData()
+    private async Task LoadOrganizationData()
     {
         if (Id != null)
         {
-            Company = await _api.GetCompanyById(Id);
-            localStorage.SetItem(LastCompanyId, Id);
+            Organization = await _api.GetOrganizationById(Id);
+            localStorage.SetItem(LastOrganizationId, Id);
         }
     }
 
     async private Task GetDataTypes()
     {
-        Types = await _api.GetDataTypeByCompanyId(Id);
+        if (Id != null)
+        {
+            Types = await _api.GetDataTypeByOrganizationId(Id);
+        }
     }
 
     //private void SearchTagSelectedEvent(ChangeEventArgs e)
     //{
     //    string selectedTagId = e.Value.ToString();
-    //    SearchTags.Add(Company.Tags.FirstOrDefault(t => t.Id == selectedTagId));
+    //    SearchTags.Add(Organization.Tags.FirstOrDefault(t => t.Id == selectedTagId));
     //}
 
     //private void DeleteSearchTag(CustomerTag tag)

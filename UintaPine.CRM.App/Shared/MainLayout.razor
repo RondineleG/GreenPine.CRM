@@ -44,13 +44,13 @@
                             {
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle pointer" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Switch Company
+                                        Switch Organization
                                     </a>
-                                    <div class="dropdown-menu company-dropdown-menu" aria-labelledby="navbarDropdown">
-                                        @foreach (var company in _appState.Companies)
+                                    <div class="dropdown-menu organization-dropdown-menu" aria-labelledby="navbarDropdown">
+                                        @foreach (var organization in _appState.Companies)
                                         {
-                                            <NavLink class="nav-link" href="@($"portal/{company.Id}")">
-                                                <i class="fas fa-exchange-alt mr-2"></i> @company.Name
+                                            <NavLink class="nav-link" href="@($"portal/{organization.Id}")">
+                                                <i class="fas fa-exchange-alt mr-2"></i> @organization.Name
                                             </NavLink>
                                         }
                                     </div>
@@ -59,8 +59,8 @@
                         }
                         else
                         {
-                            <NavLink class="nav-link" href="company/create">
-                                <i class="fas fa-plus mr-2"></i>New Company
+                            <NavLink class="nav-link" href="organization/create">
+                                <i class="fas fa-plus mr-2"></i>New Organization
                             </NavLink>
                         }
                         <li class="nav-item">

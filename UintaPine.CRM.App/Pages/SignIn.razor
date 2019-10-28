@@ -94,9 +94,9 @@
             _appState.Companies = await _api.GetCompaniesByUser(_appState.User.Id);
             
             if (_appState.Companies.Count > 0)
-                _navigationManger.NavigateTo($"company");
+                _navigationManger.NavigateTo($"organization");
             else
-                _navigationManger.NavigateTo("company/create");
+                _navigationManger.NavigateTo("organization/create");
         }
     }
 }

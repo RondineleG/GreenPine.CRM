@@ -4,7 +4,7 @@ using System.Text;
 
 namespace UintaPine.CRM.Model.Shared.Requests
 {
-    public class CreateCompany
+    public class CreateOrganization
     {
         public string Name { get; set; }
     }

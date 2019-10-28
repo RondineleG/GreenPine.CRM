@@ -13,45 +13,45 @@ using UintaPine.CRM.Model.Server;
 
 namespace UintaPine.CRM.Api.Controllers
 {
-    public class CompanyController : ControllerBase
+    public class OrganizationController : ControllerBase
     {
         private UserLogic _userLogic { get; set; }
-        private CompanyLogic _companyLogic { get; set; }
-        public CompanyController(UserLogic userlogic, CompanyLogic companyLogic)
+        private OrganizationLogic _organizationLogic { get; set; }
+        public OrganizationController(UserLogic userlogic, OrganizationLogic organizationLogic)
         {
             _userLogic = userlogic;
-            _companyLogic = companyLogic;
+            _organizationLogic = organizationLogic;
         }
 
-        [Route("api/v1/company")]
+        [Route("api/v1/organization")]
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateCompany([FromBody]CreateCompany model)
+        public async Task<IActionResult> CreateOrganization([FromBody]CreateOrganization model)
         {
             User user = await _userLogic.GetUserByIdAsync(User.Identity.Name);
             
             //TODO: Field validation
 
-            Company result = await _companyLogic.CreateCompanyAsync(model.Name, user.Email);
+            Organization result = await _organizationLogic.CreateOrganizationAsync(model.Name, user.Email);
             if (result == null)
-                return BadRequest("A company is already associated with this user");
+                return BadRequest("A organization is already associated with this user");
 
-            return Ok(result.ToSharedResponseCompany());
+            return Ok(result.ToSharedResponseOrganization());
         }
 
-        [Route("api/v1/company/{companyId}")]
+        [Route("api/v1/organization/{organizationId}")]
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetCompanyById(string companyId)
+        public async Task<IActionResult> GetOrganizationById(string organizationId)
         {
             User user = await _userLogic.GetUserByIdAsync(User.Identity.Name);
 
-            Company company = await _companyLogic.GetCompanyById(companyId);
+            Organization organization = await _organizationLogic.GetOrganizationById(organizationId);
 
-            return Ok(company.ToSharedResponseCompany());
+            return Ok(organization.ToSharedResponseOrganization());
         }
 
-        [Route("api/v1/company/user/{userId}")]
+        [Route("api/v1/organization/user/{userId}")]
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetCompaniesByUser(string userId)
@@ -60,116 +60,126 @@ namespace UintaPine.CRM.Api.Controllers
             if (user.Id != userId)
                 return BadRequest("Unauthorized User");
 
-            var result = await _companyLogic.GetCompaniesByUserEmail(user.Email);
+            var result = await _organizationLogic.GetCompaniesByUserEmail(user.Email);
 
-            return Ok(result.Select(c => c.ToSharedResponseCompany()).ToList());
+            return Ok(result.Select(c => c.ToSharedResponseOrganization()).ToList());
         }
 
-        [Route("api/v1/company/{companyId}/tag")]
+        [Route("api/v1/organization/{organizationId}/tag")]
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateTagByCompanyId([FromBody]CreateTag model, string companyId)
+        public async Task<IActionResult> CreateTagByOrganizationId([FromBody]CreateTag model, string organizationId)
         {
             User user = await _userLogic.GetUserByIdAsync(User.Identity.Name);
 
             //TODO: Validation
 
-            await _companyLogic.CreateTag(companyId, model.Name, model.BackgroundColor, model.FontColor);
+            await _organizationLogic.CreateTag(organizationId, model.Name, model.BackgroundColor, model.FontColor);
 
             return Ok();
         }
 
-        [Route("api/v1/company/{companyId}/tag/{tagId}")]
+        [Route("api/v1/organization/{organizationId}/tag/{tagId}")]
         [HttpDelete]
         [Authorize]
-        public async Task<IActionResult> DeleteTagByCompanyIdTagId(string companyId, string tagId)
+        public async Task<IActionResult> DeleteTagByOrganizationIdTagId(string organizationId, string tagId)
         {
             User user = await _userLogic.GetUserByIdAsync(User.Identity.Name);
 
-            await _companyLogic.DeleteTag(companyId, tagId);
+            await _organizationLogic.DeleteTag(organizationId, tagId);
 
             return Ok();
         }
 
-        [Route("api/v1/company/{companyId}/user")]
+        [Route("api/v1/organization/{organizationId}/user")]
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> AddAuthorizedUserToCompany([FromBody]AddRemoveCompanyAuthorizedUser model, string companyId)
+        public async Task<IActionResult> AddAuthorizedUserToOrganization([FromBody]AddRemoveOrganizationAuthorizedUser model, string organizationId)
         {
-            AuthorizedUser newAuthorizedUser = await _companyLogic.AddAuthorizedUserToCompany(companyId, model.Email);
+            AuthorizedUser newAuthorizedUser = await _organizationLogic.AddAuthorizedUserToOrganization(organizationId, model.Email);
             return Ok(newAuthorizedUser);
         }
 
-        [Route("api/v1/company/{companyId}/user")]
+        [Route("api/v1/organization/{organizationId}/user")]
         [HttpDelete]
         [Authorize]
-        public async Task<IActionResult> RemoveAuthorizedUserFromCompany([FromBody]AddRemoveCompanyAuthorizedUser model, string companyId)
+        public async Task<IActionResult> RemoveAuthorizedUserFromOrganization([FromBody]AddRemoveOrganizationAuthorizedUser model, string organizationId)
         {
-            await _companyLogic.RemovedAuthorizedUserFromCompany(companyId, model.Email);
+            await _organizationLogic.RemovedAuthorizedUserFromOrganization(organizationId, model.Email);
             return Ok();
         }
 
-        [Route("api/v1/company/{companyId}/user/authorized")]
+        [Route("api/v1/organization/{organizationId}/user/authorized")]
         [HttpPut]
         [Authorize]
-        public async Task<IActionResult> AuthorizedUserToggleAuthorizedRole([FromBody]ToggleUserRole model, string companyId)
+        public async Task<IActionResult> AuthorizedUserToggleAuthorizedRole([FromBody]ToggleUserRole model, string organizationId)
         {
-            await _companyLogic.AuthorizedUserToggleAuthorized(companyId, model.Email, model.Enabled);
+            await _organizationLogic.AuthorizedUserToggleAuthorized(organizationId, model.Email, model.Enabled);
             return Ok();
         }
 
-        [Route("api/v1/company/{companyId}/user/owner")]
+        [Route("api/v1/organization/{organizationId}/user/owner")]
         [HttpPut]
         [Authorize]
-        public async Task<IActionResult> AuthorizedUserToggleOwnerdRole([FromBody]ToggleUserRole model, string companyId)
+        public async Task<IActionResult> AuthorizedUserToggleOwnerdRole([FromBody]ToggleUserRole model, string organizationId)
         {
-            await _companyLogic.AuthorizedUserToggleOwner(companyId, model.Email, model.Enabled);
+            await _organizationLogic.AuthorizedUserToggleOwner(organizationId, model.Email, model.Enabled);
             return Ok();
         }
 
-        [Route("api/v1/company/{companyId}/datatype")]
+        [Route("api/v1/organization/{organizationId}/datatype")]
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateDataType([FromBody]CreateDataType model, string companyId)
+        public async Task<IActionResult> CreateDataType([FromBody]CreateDataType model, string organizationId)
         {
-            var result = await _companyLogic.CreateDataType(companyId, model.Name);
+            var result = await _organizationLogic.CreateDataType(organizationId, model.Name);
             return Ok(result.ToSharedResponseDataType());
         }
 
-        [Route("api/v1/company/{companyId}/datatype")]
+        [Route("api/v1/organization/{organizationId}/datatype")]
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetDataType(string companyId)
+        public async Task<IActionResult> GetDataType(string organizationId)
         {
-            var result = await _companyLogic.GetDataTypesByCompanyId(companyId);
+            var result = await _organizationLogic.GetDataTypesByOrganizationId(organizationId);
             var response = result.Select(t => t.ToSharedResponseDataType()).ToList();
             return Ok(response);
         }
 
-        //[Route("api/v1/company/{companyId}/datatype/{typeId}")]
+        [Route("api/v1/organization/{organizationId}/datatype/{typeId}")]
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetDataType(string organizationId, string typeId)
+        {
+            var result = await _organizationLogic.GetDataTypesByOrganizationIdTypeId(organizationId, typeId);
+            var response = result.ToSharedResponseDataType();
+            return Ok(response);
+        }
+
+        //[Route("api/v1/organization/{organizationId}/datatype/{typeId}")]
         //[HttpDelete]
         //[Authorize]
-        //public async Task<IActionResult> DeleteDataType(string companyId, string typeId)
+        //public async Task<IActionResult> DeleteDataType(string organizationId, string typeId)
         //{
         //    return Ok();
         //}
 
 
-        [Route("api/v1/company/{companyId}/datatype/{typeId}/field")]
+        [Route("api/v1/organization/{organizationId}/datatype/{typeId}/field")]
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateField([FromBody]CreateField model, string companyId, string typeId)
+        public async Task<IActionResult> CreateField([FromBody]CreateField model, string organizationId, string typeId)
         {
-            Field newField = await _companyLogic.CreateField(companyId, typeId, model.Name, model.Type, model.Row, model.Column, model.ColumnSpan, model.Options, model.CSS, model.Optional);
+            Field newField = await _organizationLogic.CreateField(organizationId, typeId, model.Name, model.Type, model.Row, model.Column, model.ColumnSpan, model.Options, model.CSS, model.Optional);
             return Ok(newField.ToSharedResponseField());
         }
 
-        //[Route("api/v1/company/{companyId}/datatype/{typeid/field/{fieldId}")]
+        //[Route("api/v1/organization/{organizationId}/datatype/{typeid/field/{fieldId}")]
         //[HttpPut]
         //[Authorize]
-        //public async Task<IActionResult> CreateField([FromBody]EditField model, string companyId, string fieldId)
+        //public async Task<IActionResult> CreateField([FromBody]EditField model, string organizationId, string fieldId)
         //{
-        //    //await _companyLogic.UpdateField(companyId, fieldId, model.Name, model.Row, model.Column, model.ColumnSpan, model.Options, model.CSS, model.Optional);
+        //    //await _organizationLogic.UpdateField(organizationId, fieldId, model.Name, model.Row, model.Column, model.ColumnSpan, model.Options, model.CSS, model.Optional);
         //    return Ok();
         //}
     }

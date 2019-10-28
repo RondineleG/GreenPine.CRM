@@ -20,8 +20,8 @@ namespace UintaPine.CRM.App.Services
             }
         }
 
-        private List<Company> _companies { get; set; } = new List<Company>();
-        public List<Company> Companies
+        private List<Organization> _companies { get; set; } = new List<Organization>();
+        public List<Organization> Companies
         {
             get
             {

@@ -1,4 +1,4 @@
-﻿@page  "/company/{id}/settings"
+﻿@page  "/organization/{id}/settings"
 
 @using UintaPine.CRM.App.Services
 @using UintaPine.CRM.Model.Shared.Responses
@@ -7,7 +7,7 @@
 @inject AppState _appState
 @inject IToastService toastService
 
-@if (Company != null)
+@if (Organization != null)
 {
     <div class="card card-body border-info text-info">
         <h5 class="card-subtitle mb-2 text-muted">
@@ -16,14 +16,14 @@
             </NavLink>
         </h5>
 
-        <h3 class="card-subtitle mb-2 text-muted mt-5">Company Name</h3>
+        <h3 class="card-subtitle mb-2 text-muted mt-5">Organization Name</h3>
         <div class="card-text">
             <div class="col-md-6">
                 <div class="row">
                     <div class="input-group input-group-lg">
-                        <input type="text" class="form-control" @bind="Company.Name" placeholder="Company Name" aria-label="Company Name" aria-describedby="button-addon2" />
+                        <input type="text" class="form-control" @bind="Organization.Name" placeholder="Organization Name" aria-label="Organization Name" aria-describedby="button-addon2" />
                         <div class="input-group-append">
-                            <button class="btn btn-outline-dark" type="button" id="button-addon2">Change Company Name</button>
+                            <button class="btn btn-outline-dark" type="button" id="button-addon2">Change Organization Name</button>
                         </div>
                     </div>
                 </div>
@@ -74,14 +74,14 @@
             </div>
         </p>
         <p class="card-text">
-            @foreach (var tag in Company.Tags)
+            @foreach (var tag in Organization.Tags)
             {
                 <span class="badge badge-pill px-2 py-1 tag-font @($"{tag.BackgroundColor}_background") @($"{tag.FontColor}_font")">@tag.Name<i @onclick="@(() => DeleteTag(tag.Id))" class="deleteTagButton pointer fas fa-times-circle ml-2"></i></span>
             }
         </p>
         <h3 class="card-subtitle mb-2 text-muted mt-5">Manage Authorized Users/Owners</h3>
         <p class="card-text">
-            Add or remove users who should have access to this company data. Add the email address of the user - be sure to spell it correctly.
+            Add or remove users who should have access to this organization data. Add the email address of the user - be sure to spell it correctly.
         </p>
         <div class="card-text">
             <div class="col-md-6">
@@ -104,7 +104,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var user in Company.Users)
+                    @foreach (var user in Organization.Users)
                     {
                         <tr>
                             <th scope="row">@user.Email</th>
@@ -130,12 +130,12 @@
         </div>
 
         <div class="card-text">
-            <h3 class="card-subtitle mb-2 text-muted mt-5">Delete Company</h3>
+            <h3 class="card-subtitle mb-2 text-muted mt-5">Delete Organization</h3>
             <p>
-                Click the button below to delete your company. This will delete all company data, customers, owners and authorized users. This action cannot be undone! Your account will remain active, but your company will be deleted.
+                Click the button below to delete your organization. This will delete all organization data, customers, owners and authorized users. This action cannot be undone! Your account will remain active, but your organization will be deleted.
             </p>
             <div class="mt-1">
-                <input type="button" class="btn btn-danger" value="Delete Company" />
+                <input type="button" class="btn btn-danger" value="Delete Organization" />
             </div>
         </div>
     </div>
@@ -146,7 +146,7 @@
     [Parameter]
     public string Id { get; set; }
 
-    public Company Company { get; set; }
+    public Organization Organization { get; set; }
 
     public string NewTagName { get; set; }
     public string NewTagBackgroundColor { get; set; }
@@ -157,7 +157,7 @@
 
     async protected override Task OnInitializedAsync()
     {
-        Company = await _api.GetCompanyById(Id);
+        Organization = await _api.GetOrganizationById(Id);
     }
 
     public async Task CreateTag()
@@ -170,9 +170,9 @@
             toastService.ShowWarning("Tag Font Color is Required");
         else
         {
-            CustomerTag newTag = await _api.CreateTagByCompanyId(Company.Id, NewTagName, NewTagBackgroundColor, NewTagFontColor);
+            CustomerTag newTag = await _api.CreateTagByOrganizationId(Organization.Id, NewTagName, NewTagBackgroundColor, NewTagFontColor);
 
-            Company.Tags.Add(newTag);
+            Organization.Tags.Add(newTag);
 
             NewTagName = string.Empty;
             NewTagBackgroundColor = string.Empty;
@@ -182,32 +182,32 @@
 
     public async Task DeleteTag(string id)
     {
-        await _api.DeleteTagByCompanyIdTagId(Company.Id, id);
+        await _api.DeleteTagByOrganizationIdTagId(Organization.Id, id);
 
-        Company.Tags = Company.Tags.Where(t => t.Id != id).ToList();
+        Organization.Tags = Organization.Tags.Where(t => t.Id != id).ToList();
     }
 
     public async Task AddAuthorizedUser()
     {
-        var result = await _api.AddAuthorizedUserToCompany(Company.Id, NewAuthorizedUserEmail);
+        var result = await _api.AddAuthorizedUserToOrganization(Organization.Id, NewAuthorizedUserEmail);
         if (result != null)
         {
-            Company.Users.Add(result);
+            Organization.Users.Add(result);
             NewAuthorizedUserEmail = string.Empty;
         }
     }
 
     public async Task RemoveAuthorizedUser(AuthorizedUser user)
     {
-        await _api.RemoveAuthorizedUserFromCompany(Company.Id, user.Email);
-        Company.Users = Company.Users.Where(u => u.Email != user.Email).ToList();
+        await _api.RemoveAuthorizedUserFromOrganization(Organization.Id, user.Email);
+        Organization.Users = Organization.Users.Where(u => u.Email != user.Email).ToList();
     }
 
     public async Task ToggleAuthorizedRole(AuthorizedUser user)
     {
         //See comment in ToggleOwnerRole
         user.Authorized = !user.Authorized;
-        await _api.ToggleAuthorizeRole(Company.Id, user.Email, user.Authorized);
+        await _api.ToggleAuthorizeRole(Organization.Id, user.Email, user.Authorized);
     }
 
     public async Task ToggleOwnerRole(AuthorizedUser user)
@@ -218,7 +218,7 @@
         //Using @bind is preferred.  Because we can't use the @bind, we need to do the bit flip on the boolean.
         //This same logic applies to the ToggleAuthorizedRole.
         user.Owner = !user.Owner;
-        await _api.ToggleOwnerRole(Company.Id, user.Email, user.Owner);
+        await _api.ToggleOwnerRole(Organization.Id, user.Email, user.Owner);
     }
 
 

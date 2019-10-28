@@ -1,0 +1,14 @@
+﻿@page "/instance/{DataTypeId}/{Id}"
+
+<h3>Instance Details</h3>
+<h5>@DataTypeId</h5>
+<h5>@Id</h5>
+@code {
+    [Parameter]
+    public string DataTypeId { get; set; } //If Id=="Create", then do not get the customer details
+
+    [Parameter]
+    public string Id { get; set; }
+
+    
+}

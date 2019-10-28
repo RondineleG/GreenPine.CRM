@@ -32,8 +32,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Watch Remove="Pages\CompanyFields.razor" />
-    <Watch Remove="Pages\CompanyPortal.razor" />
+    <Watch Remove="Pages\Instance.razor" />
+    <Watch Remove="Pages\InstanceCreate.razor" />
+    <Watch Remove="Pages\OrganizationCreate.razor" />
+    <Watch Remove="Pages\OrganizationFields.razor" />
+    <Watch Remove="Pages\OrganizationPortal.razor" />
+    <Watch Remove="Pages\OrganizationSettings.razor" />
   </ItemGroup>
 
 </Project>

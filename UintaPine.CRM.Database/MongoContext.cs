@@ -35,14 +35,14 @@ namespace UintaPine.CRM.Database
             //Link the accessible collections to actual DB collections
             Users = Database.GetCollection<User>("users");
             Pings = Database.GetCollection<Ping>("pings");
-            Companies = Database.GetCollection<Company>("companies");
-            Types = Database.GetCollection<DataType>("types");
+            Companies = Database.GetCollection<Organization>("companies");
+            Types = Database.GetCollection<InstanceType>("types");
         }
 
         //Define the collections which are accessible
         public IMongoCollection<User> Users { get; set; }
         public IMongoCollection<Ping> Pings { get; set; }
-        public IMongoCollection<Company> Companies { get; set; }
-        public IMongoCollection<DataType> Types { get; set; }
+        public IMongoCollection<Organization> Companies { get; set; }
+        public IMongoCollection<InstanceType> Types { get; set; }
     }
 }
