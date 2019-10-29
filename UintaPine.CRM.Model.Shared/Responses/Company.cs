@@ -10,7 +10,7 @@ namespace UintaPine.CRM.Model.Shared.Responses
         public string Id { get; set; }
         public string Name { get; set; }
         public List<AuthorizedUser> Users { get; set; } = new List<AuthorizedUser>();
-        public List<CustomerTag> Tags { get; set; } = new List<CustomerTag>();
+        public List<InstanceTag> Tags { get; set; } = new List<InstanceTag>();
     }
 
     public class AuthorizedUser
@@ -20,7 +20,7 @@ namespace UintaPine.CRM.Model.Shared.Responses
         public bool Owner { get; set; } = false;
     }
 
-    public class CustomerTag
+    public class InstanceTag
     {
         public string Id { get; set; }
         public string Name { get; set; }

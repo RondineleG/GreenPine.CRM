@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <form>
+    <form @onsubmit="SaveInstance">
         @for (int row = 1; row <= Type.Fields.Select(f => f.Row).Max(); row++)
         {
         <div class="row">
@@ -28,41 +28,41 @@
                     {
                         <div class="form-group col-md-@(field.Column + (field.ColumnSpan - 1))">
                             <label for="@field.Id">@field.Name</label>
-                            <input id="@field.Id" type="text" class="form-control" required="@(field.Optional == false ? "required" : string.Empty)">
+                            <input id="@field.Id" type="text" class="form-control" required="@(field.Optional == false ? "required" : string.Empty)" @bind="Instance[field.Id]" />
                         </div>
                     }
                     else if (field.Type == Model.Shared.Enumerations.FieldType.TextArea)
                     {
                         <div class="form-group col-md-@(field.Column + (field.ColumnSpan - 1))">
                             <label for="@field.Id">@field.Name</label>
-                            <textarea id="@field.Id" class="form-control" required="@(field.Optional == false ? "required" : string.Empty)"></textarea>
+                            <textarea id="@field.Id" class="form-control" required="@(field.Optional == false ? "required" : string.Empty)" @bind="Instance[field.Id]" ></textarea>
                         </div>
                     }
                     else if (field.Type == Model.Shared.Enumerations.FieldType.Number)
                     {
                         <div class="form-group col-md-@(field.Column + (field.ColumnSpan - 1))">
                             <label for="@field.Id">@field.Name</label>
-                            <input id="@field.Id" type="number" class="form-control" required="@(field.Optional == false ? "required" : string.Empty)">
+                            <input id="@field.Id" type="number" class="form-control" required="@(field.Optional == false ? "required" : string.Empty)" @bind="Instance[field.Id]" />
                         </div>
                     }
                     else if (field.Type == Model.Shared.Enumerations.FieldType.Date)
                     {
                         <div class="form-group col-md-@(field.Column + (field.ColumnSpan - 1))">
                             <label for="@field.Id">@field.Name</label>
-                            <input id="@field.Id" type="date" class="form-control" required="@(field.Optional == false ? "required" : string.Empty)">
+                            <input id="@field.Id" type="text" class="form-control" required="@(field.Optional == false ? "required" : string.Empty)" @bind="Instance[field.Id]" />
                         </div>
                     }
                     else if (field.Type == Model.Shared.Enumerations.FieldType.Time)
                     {
                         <div class="form-group col-md-@(field.Column + (field.ColumnSpan - 1))">
                             <label for="@field.Id">@field.Name</label>
-                            <input id="@field.Id" type="time" class="form-control" required="@(field.Optional == false ? "required" : string.Empty)">
+                            <input id="@field.Id" type="text" class="form-control" required="@(field.Optional == false ? "required" : string.Empty)" @bind="Instance[field.Id]" />
                         </div>
                     }
                     else if (field.Type == Model.Shared.Enumerations.FieldType.Boolean)
                     {
                         <div class="form-check col-md-@(field.Column + (field.ColumnSpan - 1))">
-                            <input class="form-check-input" type="checkbox" value="" id="@field.Id">
+                            <input class="form-check-input" type="checkbox" value="" id="@field.Id" @bind="Instance[field.Id]" />
                             <label class="form-check-label" for="defaultCheck1">
                                 @field.Name
                             </label>
@@ -72,7 +72,7 @@
                     {
                         <div class="form-group col-md-@(field.Column + (field.ColumnSpan - 1))">
                             <label for="@field.Id">@field.Name</label>
-                            <select class="form-control" required="@(field.Optional == false ? "required" : string.Empty)">
+                            <select class="form-control" required="@(field.Optional == false ? "required" : string.Empty)" @bind="Instance[field.Id]">
                                 @foreach (var option in field.Options.Split(','))
                                 {
                                     <option value="@option">@option</option>
@@ -100,6 +100,8 @@
     public Organization Organization { get; set; } = new Organization();
     public InstanceType Type { get; set; }
 
+    public Dictionary<string, string> Instance { get; set; } = new Dictionary<string, string>();
+
     async protected override Task OnInitializedAsync()
     {
         await GetOrganization();
@@ -114,5 +116,18 @@
     async private Task GetDataTypes()
     {
         Type = await _api.GetDataTypeByOrganizationIdTypeId(OrganizationId, DataTypeId);
+
+        foreach(var t in Type.Fields)
+        {
+            Instance.Add(t.Id, string.Empty);
+        }
+    }
+
+    async private Task SaveInstance()
+    {
+        var obj = Newtonsoft.Json.JsonConvert.SerializeObject(Instance);
+        Console.WriteLine(obj);
+
+        await _api.CreateInstance(OrganizationId, DataTypeId, Instance);
     }
 }

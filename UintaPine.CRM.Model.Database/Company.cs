@@ -13,7 +13,7 @@ namespace UintaPine.CRM.Model.Database
         public string Name { get; set; }
 
         public List<AuthorizedUser> Users { get; set; } = new List<AuthorizedUser>();
-        public List<CustomerTag> Tags { get; set; } = new List<CustomerTag>();
+        public List<InstanceTag> Tags { get; set; } = new List<InstanceTag>();
     }
     public class AuthorizedUser
     {
@@ -21,30 +21,14 @@ namespace UintaPine.CRM.Model.Database
         public bool Authorized { get; set; } = true;
         public bool Owner { get; set; } = false;
     }
-    public class Customer
+    
+    
+    public abstract class Instance
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
-
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public DateTime? DateOfBirth { get; set; }
-        public Gender Gender { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string Postal { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Email { get; set; }
-
+        public string OrganizationId { get; set; }
         public List<string> Tags { get; set; } = new List<string>();
     }
-    public class CustomerTag
-    {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
-        public string Name { get; set; }
-        public string BackgroundColor { get; set; }
-        public string FontColor { get; set; }
-    }
-
     //InstanceType Collection
     public class InstanceType
     {
@@ -63,5 +47,12 @@ namespace UintaPine.CRM.Model.Database
         public int ColumnSpan { get; set; }
         public string Options { get; set; }
         public bool Optional { get; set; } = true;
+    }
+    public class InstanceTag
+    {
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string Name { get; set; }
+        public string BackgroundColor { get; set; }
+        public string FontColor { get; set; }
     }
 }

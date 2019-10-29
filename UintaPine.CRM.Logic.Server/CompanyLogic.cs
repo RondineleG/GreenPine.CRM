@@ -43,7 +43,7 @@ namespace UintaPine.CRM.Logic.Server
 
         async public Task CreateTag(string organizationId, string name, string backgroundColor, string fontColor)
         {
-            CustomerTag tag = new CustomerTag()
+            InstanceTag tag = new InstanceTag()
             {
                 Name = name,
                 BackgroundColor = backgroundColor.ToLower(),
@@ -62,7 +62,7 @@ namespace UintaPine.CRM.Logic.Server
             await _db.Companies.UpdateOneAsync(c => c.Id == organizationId, update);
         }
 
-        async public Task<List<CustomerTag>> GetTags(string organizationId)
+        async public Task<List<InstanceTag>> GetTags(string organizationId)
         {
             var tags = await _db.Companies.Find(c => c.Id == organizationId).Project(c => c.Tags).FirstOrDefaultAsync();
             return tags;
@@ -171,6 +171,11 @@ namespace UintaPine.CRM.Logic.Server
             //            .Set(model => model.Fields[-1].Optional, optional)
             //            .Set(model => model.Fields[-1].CSS, css);
             //await _db.Companies.UpdateOneAsync(filter, update);
+        }
+
+        async public Task CreateInstance(Dictionary<string, string> data)
+        {
+            await _db.Instances.InsertOneAsync(data);
         }
 
         //async public Task DeleteField(string organizationId, string fieldId)

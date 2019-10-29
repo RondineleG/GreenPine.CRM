@@ -15,7 +15,7 @@ namespace UintaPine.CRM.Model.Server
             {
                 Id = organization.Id,
                 Name = organization.Name,
-                Tags = organization.Tags.Select(t => new Shared.Responses.CustomerTag()
+                Tags = organization.Tags.Select(t => new Shared.Responses.InstanceTag()
                 {
                     Id = t.Id,
                     Name = t.Name,

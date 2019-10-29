@@ -98,7 +98,7 @@ namespace UintaPine.CRM.App.Services
             return await GetAsync<List<Organization>>($"api/v1/organization/user/{userId}");
         }
 
-        public async Task<CustomerTag> CreateTagByOrganizationId(string organizationId, string name, string backgroundColor, string fontColor)
+        public async Task<InstanceTag> CreateTagByOrganizationId(string organizationId, string name, string backgroundColor, string fontColor)
         {
             CreateTag content = new CreateTag()
             {
@@ -108,7 +108,7 @@ namespace UintaPine.CRM.App.Services
             };
             await PostAsync($"api/v1/organization/{organizationId}/tag", content);
 
-            CustomerTag tag = new CustomerTag()
+            InstanceTag tag = new InstanceTag()
             {
                 Name = content.Name,
                 BackgroundColor = content.BackgroundColor,
@@ -167,17 +167,17 @@ namespace UintaPine.CRM.App.Services
             {
                 Name = name
             };
-            return await PostAsync<InstanceType>($"api/v1/organization/{organizationId}/datatype", content);
+            return await PostAsync<InstanceType>($"api/v1/organization/{organizationId}/instancetype", content);
         }
 
         public async Task<List<InstanceType>> GetDataTypeByOrganizationId(string organizationId)
         {
-            return await GetAsync<List<InstanceType>>($"api/v1/organization/{organizationId}/datatype");
+            return await GetAsync<List<InstanceType>>($"api/v1/organization/{organizationId}/instancetype");
         }
 
         public async Task<InstanceType> GetDataTypeByOrganizationIdTypeId(string organizationId, string typeId)
         {
-            return await GetAsync<InstanceType>($"api/v1/organization/{organizationId}/datatype/{typeId}");
+            return await GetAsync<InstanceType>($"api/v1/organization/{organizationId}/instancetype/{typeId}");
         }
 
         public async Task<Field> CreateField(string organizationId, string typeId, Field field)
@@ -192,8 +192,15 @@ namespace UintaPine.CRM.App.Services
                 Options = field.Options,
                 Type = field.Type
             };
-            return await PostAsync<Field>($"api/v1/organization/{organizationId}/datatype/{typeId}/field", content);
+            return await PostAsync<Field>($"api/v1/organization/{organizationId}/instancetype/{typeId}/field", content);
         }
+
+        public async Task<Dictionary<string, string>> CreateInstance(string organizationId, string typeId, Dictionary<string,string> content)
+        {
+            return await PostAsync<Dictionary<string, string>>($"api/v1/organization/{organizationId}/instancetype/{typeId}/instance", content);
+        }
+
+        
 
         //public async Task EditField(string organizationId, Field field)
         //{

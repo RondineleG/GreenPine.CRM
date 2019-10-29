@@ -170,7 +170,7 @@
             toastService.ShowWarning("Tag Font Color is Required");
         else
         {
-            CustomerTag newTag = await _api.CreateTagByOrganizationId(Organization.Id, NewTagName, NewTagBackgroundColor, NewTagFontColor);
+            InstanceTag newTag = await _api.CreateTagByOrganizationId(Organization.Id, NewTagName, NewTagBackgroundColor, NewTagFontColor);
 
             Organization.Tags.Add(newTag);
 

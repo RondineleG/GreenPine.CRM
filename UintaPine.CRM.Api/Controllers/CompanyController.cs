@@ -127,7 +127,7 @@ namespace UintaPine.CRM.Api.Controllers
             return Ok();
         }
 
-        [Route("api/v1/organization/{organizationId}/datatype")]
+        [Route("api/v1/organization/{organizationId}/instancetype")]
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> CreateDataType([FromBody]CreateDataType model, string organizationId)
@@ -136,7 +136,7 @@ namespace UintaPine.CRM.Api.Controllers
             return Ok(result.ToSharedResponseDataType());
         }
 
-        [Route("api/v1/organization/{organizationId}/datatype")]
+        [Route("api/v1/organization/{organizationId}/instancetype")]
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetDataType(string organizationId)
@@ -146,7 +146,7 @@ namespace UintaPine.CRM.Api.Controllers
             return Ok(response);
         }
 
-        [Route("api/v1/organization/{organizationId}/datatype/{typeId}")]
+        [Route("api/v1/organization/{organizationId}/instancetype/{typeId}")]
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetDataType(string organizationId, string typeId)
@@ -156,7 +156,7 @@ namespace UintaPine.CRM.Api.Controllers
             return Ok(response);
         }
 
-        //[Route("api/v1/organization/{organizationId}/datatype/{typeId}")]
+        //[Route("api/v1/organization/{organizationId/instancetype/{typeId}")]
         //[HttpDelete]
         //[Authorize]
         //public async Task<IActionResult> DeleteDataType(string organizationId, string typeId)
@@ -165,7 +165,7 @@ namespace UintaPine.CRM.Api.Controllers
         //}
 
 
-        [Route("api/v1/organization/{organizationId}/datatype/{typeId}/field")]
+        [Route("api/v1/organization/{organizationId}/instancetype/{typeId}/field")]
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> CreateField([FromBody]CreateField model, string organizationId, string typeId)
@@ -174,7 +174,7 @@ namespace UintaPine.CRM.Api.Controllers
             return Ok(newField.ToSharedResponseField());
         }
 
-        //[Route("api/v1/organization/{organizationId}/datatype/{typeid/field/{fieldId}")]
+        //[Route("api/v1/organization/{organizationId/instancetype/{typeid/field/{fieldId}")]
         //[HttpPut]
         //[Authorize]
         //public async Task<IActionResult> CreateField([FromBody]EditField model, string organizationId, string fieldId)
@@ -182,5 +182,19 @@ namespace UintaPine.CRM.Api.Controllers
         //    //await _organizationLogic.UpdateField(organizationId, fieldId, model.Name, model.Row, model.Column, model.ColumnSpan, model.Options, model.CSS, model.Optional);
         //    return Ok();
         //}
+
+        [Route("api/v1/organization/{organizationId}/instancetype/{typeId}/instance")]
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> CreateInstance([FromBody]Dictionary<string,string> model, string organizationId, string typeId)
+        {
+            model.Add("InstanceId", Guid.NewGuid().ToString());
+            model.Add("OrganizationId", organizationId);
+            model.Add("TypeId", typeId);
+            await _organizationLogic.CreateInstance(model);
+            return Ok(model);
+        }
+
+
     }
 }

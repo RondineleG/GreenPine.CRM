@@ -2,6 +2,7 @@
 using UintaPine.CRM.Model.Database;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
+using System.Collections.Generic;
 
 namespace UintaPine.CRM.Database
 {
@@ -35,8 +36,9 @@ namespace UintaPine.CRM.Database
             //Link the accessible collections to actual DB collections
             Users = Database.GetCollection<User>("users");
             Pings = Database.GetCollection<Ping>("pings");
-            Companies = Database.GetCollection<Organization>("companies");
+            Companies = Database.GetCollection<Organization>("organizations");
             Types = Database.GetCollection<InstanceType>("types");
+            Instances = Database.GetCollection<Dictionary<string, string>>("instances");
         }
 
         //Define the collections which are accessible
@@ -44,5 +46,6 @@ namespace UintaPine.CRM.Database
         public IMongoCollection<Ping> Pings { get; set; }
         public IMongoCollection<Organization> Companies { get; set; }
         public IMongoCollection<InstanceType> Types { get; set; }
+        public IMongoCollection<Dictionary<string, string>> Instances { get; set; }
     }
 }
