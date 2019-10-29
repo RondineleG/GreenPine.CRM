@@ -148,7 +148,6 @@ namespace UintaPine.CRM.Logic.Server
                 Column = col,
                 ColumnSpan = colSpan,
                 Options = options,
-                CSS = css,
                 Optional = optional
             };
 

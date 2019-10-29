@@ -188,7 +188,6 @@ namespace UintaPine.CRM.App.Services
                 Row = field.Row,
                 Column = field.Column,
                 ColumnSpan = field.ColumnSpan,
-                CSS = field.CSS,
                 Optional = field.Optional,
                 Options = field.Options,
                 Type = field.Type

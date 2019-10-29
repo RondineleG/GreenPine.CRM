@@ -40,11 +40,10 @@ namespace UintaPine.CRM.Model.Shared.Responses
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; }
         public FieldType Type { get; set; }
-        public int Row { get; set; }
-        public int Column { get; set; }
-        public int ColumnSpan { get; set; }
+        public int Row { get; set; } = 1;
+        public int Column { get; set; } = 1;
+        public int ColumnSpan { get; set; } = 1;
         public string Options { get; set; }
-        public string CSS { get; set; }
         public bool Optional { get; set; } = true;
     }
 }

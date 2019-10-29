@@ -1,6 +1,7 @@
 ﻿@page "/organization/{Id}/fields"
 @using UintaPine.CRM.App.Services
 @using UintaPine.CRM.Model.Shared.Responses
+@using UintaPine.CRM.Model.Shared.Enumerations
 
 @inject API _api
 
@@ -65,16 +66,14 @@
                         </td>
                         <td>
                             <select class="form-control" @bind="NewField.Type">
-                                <option></option>
-                                <option>Text</option>
-                                <option>TextArea</option>
-                                <option>Number</option>
-                                <option>Date</option>
-                                <option>Time</option>
-                                <option>Date/Time</option>
-                                <option>Boolean</option>
-                                <option>Enum</option>
-                                <option>Linked</option>
+                                <option value="@FieldType.Text">Text</option>
+                                <option value="@FieldType.TextArea">TextArea</option>
+                                <option value="@FieldType.Number">Number</option>
+                                <option value="@FieldType.Date">Date</option>
+                                <option value="@FieldType.Time">Time</option>
+                                <option value="@FieldType.Boolean">Boolean</option>
+                                <option value="@FieldType.Enum">Enum</option>
+                                <option value="@FieldType.Linked">Linked</option>
                             </select>
                         </td>
                         <td>
@@ -87,22 +86,12 @@
                             <input type="number" class="form-control" @bind="NewField.ColumnSpan" min="1" max="12" />
                         </td>
                         <td>
-                            <button class="form-control btn btn-danger">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
                         </td>
                     </tr>
                     <tr>
                         <td>Options:</td>
                         <td colspan="4">
                             <input type="text" class="form-control" @bind="NewField.Options" />
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Special CSS:</td>
-                        <td colspan="4">
-                            <input type="text" class="form-control" @bind="NewField.CSS" />
                         </td>
                         <td></td>
                     </tr>
@@ -136,18 +125,7 @@
                                     <input type="text" class="form-control" @bind="field.Name" />
                                 </td>
                                 <td>
-                                    <select class="form-control" @bind="field.Type">
-                                        <option></option>
-                                        <option>Text</option>
-                                        <option>TextArea</option>
-                                        <option>Number</option>
-                                        <option>Date</option>
-                                        <option>Time</option>
-                                        <option>Date/Time</option>
-                                        <option>Boolean</option>
-                                        <option>Enum</option>
-                                        <option>Linked</option>
-                                    </select>
+                                    <span>@field.Type</span>
                                 </td>
                                 <td>
                                     <input type="number" class="form-control" @bind="field.Row" min="1" />
@@ -172,13 +150,6 @@
                                 <td></td>
                             </tr>
                             <tr>
-                                <td>Special CSS:</td>
-                                <td colspan="4">
-                                    <input type="text" class="form-control" @bind="field.CSS" />
-                                </td>
-                                <td></td>
-                            </tr>
-                            <tr>
                                 <td>Optional:</td>
                                 <td colspan="4">
                                     <input type="checkbox" @bind="field.Optional" />
@@ -186,7 +157,12 @@
                                 <td></td>
                             </tr>
                             <tr>
-                        </tr>
+                                <td>Show in Search:</td>
+                                <td colspan="4">
+                                    <input type="checkbox" @bind="field.Optional" />
+                                </td>
+                                <td></td>
+                            </tr>
                         </tbody>
                     }
                 }

@@ -23,7 +23,6 @@ namespace UintaPine.CRM.Model.Server
                     Row = field.Row,
                     Column = field.Column,
                     ColumnSpan = field.ColumnSpan,
-                    CSS = field.CSS,
                     Optional = field.Optional,
                     Options = field.Options
                 }).ToList()
