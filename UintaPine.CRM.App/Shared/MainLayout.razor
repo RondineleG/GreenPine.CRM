@@ -36,7 +36,7 @@
                         @if (_appState.Companies.Count > 0)
                         {
                             <li class="nav-item">
-                                <NavLink class="nav-link" href="@($"portal")">
+                                <NavLink class="nav-link" href="@($"portal/{LastOrganizationId}")">
                                     <i class="fas fa-users mr-2"></i>Portal
                                 </NavLink>
                             </li>
@@ -94,6 +94,9 @@
 
 @code {
 
+    private const string LastOrganizationLabel = "LastOrganizationLabel";
+    private string LastOrganizationId { get; set; }
+
     protected override void OnInitialized()
     {
         _appState.OnChange += StateHasChanged;
@@ -114,6 +117,12 @@
             localStorage.SetItem("user", user.Id);
 
             _appState.Companies = await _api.GetCompaniesByUser(_appState.User.Id);
+
+            LastOrganizationId = localStorage.GetItem<string>(LastOrganizationLabel);
+            if(LastOrganizationId == null)
+            {
+                LastOrganizationId = _appState.Companies.FirstOrDefault()?.Id;
+            }
         }
         else
         {

@@ -1,5 +1,4 @@
-﻿@page "/portal"
-@page "/portal/{id}"
+﻿@page "/portal/{id}"
 
 @using UintaPine.CRM.App.Services
 @using UintaPine.CRM.Model.Shared.Responses
@@ -59,43 +58,38 @@
             <div class="input-group float-right">
                 <input type="text" class="form-control" aria-label="Text input with dropdown button" />
                 <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search mr-2"></i>Search</button>
+                    <button class="btn btn-outline-secondary" type="button" @onclick="SearchType"><i class="fas fa-search mr-2"></i>Search</button>
                 </div>
             </div>
         </div>
 
     </div>
 
+    @if (Instances.Count > 0)
+    {
     <table class="table table-hover mt-3">
         <thead>
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                @foreach (var field in Types.FirstOrDefault(t => t.Id == SelectedType)?.Fields)
+                {
+                    <th scope="col">@field.Name</th>
+                }
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@@mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@@fat</td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@@twitter</td>
-            </tr>
+            @foreach (var instance in Instances)
+            {
+                <tr>
+                    @foreach (var field in instance)
+                    {
+                        <td>@field.Value</td>
+                    }
+                </tr>
+            }
         </tbody>
     </table>
-}
+        }
+    }
 
 @code {
 
@@ -105,6 +99,7 @@
     //Loaded from API
     Organization Organization { get; set; }
     List<InstanceType> Types { get; set; } = new List<InstanceType>();
+    List<Dictionary<string, string>> Instances = new List<Dictionary<string, string>>();
 
     //Selection
     private string SelectedType { get; set; }
@@ -113,36 +108,18 @@
     /// <summary>
     /// Id for local storage. Last organization loaded is stored in local storage. Will be retrieved and used if no Id is specified on the ULR parameter.
     /// </summary>
-    private const string LastOrganizationId = "LastOrganizationId";
+    private const string LastOrganizationLabel = "LastOrganizationLabel";
 
     async protected override Task OnInitializedAsync()
     {
-
-        var lastOrganization = localStorage.GetItem<string>(LastOrganizationId);
-        if (Id == null && lastOrganization != null)
-        {
-            _navigationManger.NavigateTo($"portal/{lastOrganization}");
-        }
-        else
-        {
-            await LoadOrganizationData();
-            await GetDataTypes();
-        }
-    }
-
-    protected override async Task OnParametersSetAsync()
-    {
         await LoadOrganizationData();
-        await GetDataTypes();
     }
 
     private async Task LoadOrganizationData()
     {
-        if (Id != null)
-        {
-            Organization = await _api.GetOrganizationById(Id);
-            localStorage.SetItem(LastOrganizationId, Id);
-        }
+        Organization = await _api.GetOrganizationById(Id);
+        await GetDataTypes();
+        localStorage.SetItem(LastOrganizationLabel, Id);
     }
 
     async private Task GetDataTypes()
@@ -152,6 +129,13 @@
             Types = await _api.GetDataTypeByOrganizationId(Id);
         }
     }
+
+    async private Task SearchType()
+    {
+        Console.WriteLine("Searching...");
+        Instances = await _api.SearchInstance(Id, SelectedType);
+    }
+
 
     //private void SearchTagSelectedEvent(ChangeEventArgs e)
     //{

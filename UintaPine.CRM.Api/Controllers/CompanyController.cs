@@ -195,6 +195,21 @@ namespace UintaPine.CRM.Api.Controllers
             return Ok(model);
         }
 
+        [Route("api/v1/organization/{organizationId}/instancetype/{typeId}/instance/search")]
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> SearchInstances(string organizationId, string typeId)
+        {
+            try
+            {
+                var result = await _organizationLogic.SearchInstances(organizationId, typeId);
+                return Ok(result);
+            }
+            catch(Exception ex)
+            {
+                return Ok();
+            }
+        }
 
     }
 }

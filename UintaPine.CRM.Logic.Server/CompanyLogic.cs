@@ -5,6 +5,7 @@ using UintaPine.CRM.Model.Database;
 using MongoDB.Driver;
 using System.Linq;
 using UintaPine.CRM.Model.Shared.Enumerations;
+using MongoDB.Bson;
 
 namespace UintaPine.CRM.Logic.Server
 {
@@ -176,6 +177,32 @@ namespace UintaPine.CRM.Logic.Server
         async public Task CreateInstance(Dictionary<string, string> data)
         {
             await _db.Instances.InsertOneAsync(data);
+        }
+
+        async public Task<List<Dictionary<string,string>>> SearchInstances(string companyId, string typeId)
+        {
+            //Query used in data results and count results. Separate the query from the rest of the pipeline so it can be reused.
+            var query = new BsonDocument("$and",
+                        new BsonArray
+                        {
+                            new BsonDocument("OrganizationId", companyId),
+                            new BsonDocument("TypeId", typeId)
+                        });
+
+            PipelineDefinition<Dictionary<string,string>, Dictionary<string, string>> pipelineData = new BsonDocument[]
+            {
+                new BsonDocument("$match", query),
+                new BsonDocument("$project",
+                new BsonDocument
+                    {
+                        { "_id", 0 },
+                    })
+            };
+
+            //Search
+            var response = await _db.Instances.Aggregate(pipelineData).ToListAsync();
+
+            return response;
         }
 
         //async public Task DeleteField(string organizationId, string fieldId)

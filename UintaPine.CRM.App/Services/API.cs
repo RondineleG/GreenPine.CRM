@@ -200,7 +200,12 @@ namespace UintaPine.CRM.App.Services
             return await PostAsync<Dictionary<string, string>>($"api/v1/organization/{organizationId}/instancetype/{typeId}/instance", content);
         }
 
-        
+        public async Task<List<Dictionary<string, string>>> SearchInstance(string organizationId, string typeId)
+        {
+            return await GetAsync<List<Dictionary<string, string>>>($"api/v1/organization/{organizationId}/instancetype/{typeId}/instance/search");
+        }
+
+
 
         //public async Task EditField(string organizationId, Field field)
         //{
