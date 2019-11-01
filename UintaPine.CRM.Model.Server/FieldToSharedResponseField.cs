@@ -15,12 +15,14 @@ namespace UintaPine.CRM.Model.Server
             {
                 Id = field.Id,
                 Name = field.Name,
+                Type = field.Type,
                 Row = field.Row,
                 Column = field.Column,
                 ColumnSpan = field.ColumnSpan,
                 Optional = field.Optional,
                 Options = field.Options,
-                Type = field.Type
+                SearchShow = field.SearchShow,
+                SearchOrder = field.SearchOrder
             };
         }
     }

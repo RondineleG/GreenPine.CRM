@@ -42,7 +42,7 @@
             <h4>Data Fields in Type</h4>
         </div>
         <div class="col-md-6">
-            <input type="button" class="btn btn-primary float-right" value="Save Changes" />
+            <span class="float-right">Changes are automatically saved</span>
         </div>
     </div>
 
@@ -105,10 +105,20 @@
                     <tr>
                         <td>Show in Search:</td>
                         <td colspan="4">
-                            <input type="checkbox" @bind="NewField.Optional" />
+                            <input type="checkbox" @bind="NewField.SearchShow" />
                         </td>
                         <td></td>
                     </tr>
+                    @if (NewField.SearchShow == true)
+                    {
+                        <tr>
+                            <td>Search Column Order:</td>
+                            <td colspan="1">
+                                <input type="number" class="form-control" @bind="NewField.SearchOrder" />
+                            </td>
+                            <td colspan="4"></td>
+                        </tr>
+                    }
                     <tr>
                         <td colspan="6">
                             <input type="button" class="btn btn-success float-right" value="Create New Field" @onclick="CreateField" />
@@ -122,19 +132,19 @@
                         <tbody class="fields">
                             <tr>
                                 <td>
-                                    <input type="text" class="form-control" @bind="field.Name" />
+                                    <input type="text" class="form-control" @bind="field.Name" @onblur="(() => UpdateField(field))" />
                                 </td>
                                 <td>
                                     <span>@field.Type</span>
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control" @bind="field.Row" min="1" />
+                                    <input type="number" class="form-control" @bind="field.Row" min="1" @onblur="(() => UpdateField(field))" />
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control" @bind="field.Column" min="1" max="12" />
+                                    <input type="number" class="form-control" @bind="field.Column" min="1" max="12" @onblur="(() => UpdateField(field))" />
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control" @bind="field.ColumnSpan" min="1" max="12" />
+                                    <input type="number" class="form-control" @bind="field.ColumnSpan" min="1" max="12" @onblur="(() => UpdateField(field))" />
                                 </td>
                                 <td>
                                     <button class="form-control btn btn-danger">
@@ -145,24 +155,34 @@
                             <tr>
                                 <td>Options:</td>
                                 <td colspan="4">
-                                    <input type="text" class="form-control" @bind="field.Options" />
+                                    <input type="text" class="form-control" @bind="field.Options" @onblur="(() => UpdateField(field))" />
                                 </td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Optional:</td>
                                 <td colspan="4">
-                                    <input type="checkbox" @bind="field.Optional" />
+                                    <input type="checkbox" @bind="field.Optional" @onblur="(() => UpdateField(field))" />
                                 </td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>Show in Search:</td>
                                 <td colspan="4">
-                                    <input type="checkbox" @bind="field.Optional" />
+                                    <input type="checkbox" @bind="field.SearchShow" @onblur="(() => UpdateField(field))" />
                                 </td>
                                 <td></td>
                             </tr>
+                            @if (field.SearchShow == true)
+                            {
+                                <tr>
+                                    <td>Search Column Order:</td>
+                                    <td colspan="1">
+                                        <input type="number" class="form-control" min="1" @bind="field.SearchOrder" @onblur="(() => UpdateField(field))" />
+                                    </td>
+                                    <td colspan="4"></td>
+                                </tr>
+                            }
                         </tbody>
                     }
                 }
@@ -222,6 +242,10 @@
             InstanceType type = Types.FirstOrDefault(t => t.Id == SelectedType);
             type.Fields.Add(result);
         }
+    }
+    async private Task UpdateField(Field field)
+    {
+        await _api.EditField(Organization.Id, SelectedType, field);
     }
 
 

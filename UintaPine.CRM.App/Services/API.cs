@@ -207,20 +207,21 @@ namespace UintaPine.CRM.App.Services
 
 
 
-        //public async Task EditField(string organizationId, Field field)
-        //{
-        //    EditField content = new EditField()
-        //    {
-        //        Name = field.Name,
-        //        Row = field.Row,
-        //        Column = field.Column,
-        //        ColumnSpan = field.ColumnSpan,
-        //        CSS = field.CSS,
-        //        Optional = field.Optional,
-        //        Options = field.Options
-        //    };
-        //    await PutAsync($"api/v1/organization/{organizationId}/field/{field.Id}", content);
-        //}
+        public async Task EditField(string organizationId, string typeId, Field field)
+        {
+            EditField content = new EditField()
+            {
+                Name = field.Name,
+                Row = field.Row,
+                Column = field.Column,
+                ColumnSpan = field.ColumnSpan,
+                Optional = field.Optional,
+                Options = field.Options,
+                SearchShow = field.SearchShow,
+                SearchOrder = field.SearchOrder
+            };
+            await PutAsync($"api/v1/organization/{organizationId}/instancetype/{typeId}/field/{field.Id}", content);
+        }
 
 
         #region HttpClient Methods

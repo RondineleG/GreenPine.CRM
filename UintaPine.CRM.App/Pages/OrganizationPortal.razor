@@ -70,21 +70,28 @@
     <table class="table table-hover mt-3">
         <thead>
             <tr>
-                @foreach (var field in Types.FirstOrDefault(t => t.Id == SelectedType)?.Fields)
+                @foreach (var column in Types.FirstOrDefault(t => t.Id == SelectedType)?.Fields.Where(f => f.SearchShow == true).OrderBy(f => f.SearchOrder))
                 {
-                    <th scope="col">@field.Name</th>
+                    <th scope="col">@column.Name</th>
                 }
             </tr>
         </thead>
         <tbody>
             @foreach (var instance in Instances)
             {
-                <tr>
-                    @foreach (var field in instance)
+            <tr>
+                @foreach (var column in Types.FirstOrDefault(t => t.Id == SelectedType)?.Fields.Where(f => f.SearchShow == true).OrderBy(f => f.SearchOrder))
+                {
+                    @if (instance.Where(i => i.Key == column.Id).Count() > 0)
                     {
-                        <td>@field.Value</td>
+                        <td>@instance.Where(i => i.Key == column.Id).FirstOrDefault().Value</td>
                     }
-                </tr>
+                    else
+                    {
+                        <td></td>
+                    }
+                }
+            </tr>
             }
         </tbody>
     </table>

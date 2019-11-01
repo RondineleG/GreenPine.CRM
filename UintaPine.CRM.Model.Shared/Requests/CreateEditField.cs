@@ -18,8 +18,9 @@ namespace UintaPine.CRM.Model.Shared.Requests
         public int Column { get; set; }
         public int ColumnSpan { get; set; }
         public string Options { get; set; }
-        public string CSS { get; set; }
         public bool Optional { get; set; }
+        public bool SearchShow { get; set; }
+        public int SearchOrder { get; set; }
     }
 
     public class EditField
@@ -29,7 +30,8 @@ namespace UintaPine.CRM.Model.Shared.Requests
         public int Column { get; set; }
         public int ColumnSpan { get; set; }
         public string Options { get; set; }
-        public string CSS { get; set; }
         public bool Optional { get; set; }
+        public bool SearchShow { get; set; }
+        public int SearchOrder { get; set; }
     }
 }

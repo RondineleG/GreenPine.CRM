@@ -47,6 +47,8 @@ namespace UintaPine.CRM.Model.Database
         public int ColumnSpan { get; set; }
         public string Options { get; set; }
         public bool Optional { get; set; } = true;
+        public bool SearchShow { get; set; } = false;
+        public int SearchOrder { get; set; } = 1;
     }
     public class InstanceTag
     {

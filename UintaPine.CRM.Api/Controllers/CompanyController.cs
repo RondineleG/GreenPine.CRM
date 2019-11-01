@@ -170,18 +170,18 @@ namespace UintaPine.CRM.Api.Controllers
         [Authorize]
         public async Task<IActionResult> CreateField([FromBody]CreateField model, string organizationId, string typeId)
         {
-            Field newField = await _organizationLogic.CreateField(organizationId, typeId, model.Name, model.Type, model.Row, model.Column, model.ColumnSpan, model.Options, model.CSS, model.Optional);
+            Field newField = await _organizationLogic.CreateField(organizationId, typeId, model.Name, model.Type, model.Row, model.Column, model.ColumnSpan, model.Options, model.Optional, model.SearchShow, model.SearchOrder);
             return Ok(newField.ToSharedResponseField());
         }
 
-        //[Route("api/v1/organization/{organizationId/instancetype/{typeid/field/{fieldId}")]
-        //[HttpPut]
-        //[Authorize]
-        //public async Task<IActionResult> CreateField([FromBody]EditField model, string organizationId, string fieldId)
-        //{
-        //    //await _organizationLogic.UpdateField(organizationId, fieldId, model.Name, model.Row, model.Column, model.ColumnSpan, model.Options, model.CSS, model.Optional);
-        //    return Ok();
-        //}
+        [Route("api/v1/organization/{organizationId}/instancetype/{typeId}/field/{fieldId}")]
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> EditField([FromBody]EditField model, string organizationId, string typeId, string fieldId)
+        {
+            await _organizationLogic.UpdateField(organizationId, typeId, fieldId, model.Name, model.Row, model.Column, model.ColumnSpan, model.Options, model.Optional, model.SearchShow, model.SearchOrder);
+            return Ok();
+        }
 
         [Route("api/v1/organization/{organizationId}/instancetype/{typeId}/instance")]
         [HttpPost]

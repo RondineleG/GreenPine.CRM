@@ -15,17 +15,7 @@ namespace UintaPine.CRM.Model.Server
             {
                 Id = dataType.Id,
                 Name = dataType.Name,
-                Fields = dataType.Fields.Select(field => new Shared.Responses.Field()
-                {
-                    Id = field.Id,
-                    Name = field.Name,
-                    Type = field.Type,
-                    Row = field.Row,
-                    Column = field.Column,
-                    ColumnSpan = field.ColumnSpan,
-                    Optional = field.Optional,
-                    Options = field.Options
-                }).ToList()
+                Fields = dataType.Fields.Select(field => field.ToSharedResponseField()).ToList()
             };
         }
     }

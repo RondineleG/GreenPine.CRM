@@ -139,7 +139,7 @@ namespace UintaPine.CRM.Logic.Server
             return type;
         }
 
-        async public Task<Field> CreateField(string organizationId, string typeId, string name, FieldType type, int row, int col, int colSpan, string options, string css, bool optional)
+        async public Task<Field> CreateField(string organizationId, string typeId, string name, FieldType type, int row, int col, int colSpan, string options, bool optional, bool searchShow, int searchOrder)
         {
             Field newField = new Field()
             {
@@ -149,7 +149,9 @@ namespace UintaPine.CRM.Logic.Server
                 Column = col,
                 ColumnSpan = colSpan,
                 Options = options,
-                Optional = optional
+                Optional = optional,
+                SearchShow = searchShow,
+                SearchOrder = searchOrder
             };
 
             var update = Builders<InstanceType>.Update.Push(c => c.Fields, newField);
@@ -158,20 +160,23 @@ namespace UintaPine.CRM.Logic.Server
             return newField;
         }
 
-        async public Task UpdateField(string organizationId, string fieldId, string name, int row, int col, int colSpan, string options, string css, bool optional)
+        async public Task UpdateField(string organizationId, string typeId, string fieldId, string name, int row, int col, int colSpan, string options, bool optional, bool searchShow, int searchOrder)
         {
-            //var filter = Builders<Organization>.Filter.And(Builders<Organization>.Filter.Eq(x => x.Id, organizationId),
-            //Builders<Organization>.Filter.ElemMatch(x => x.Fields, p => p.Id == fieldId));
+            var filter = Builders<InstanceType>.Filter.And(
+                Builders<InstanceType>.Filter.Eq(x => x.OrganizationId, organizationId),
+                Builders<InstanceType>.Filter.Eq(x => x.Id, typeId),
+                Builders<InstanceType>.Filter.ElemMatch(x => x.Fields, p => p.Id == fieldId));
 
-            //var update = Builders<Organization>.Update
-            //            .Set(model => model.Fields[-1].Name, name)
-            //            .Set(model => model.Fields[-1].Row, row)
-            //            .Set(model => model.Fields[-1].Column, col)
-            //            .Set(model => model.Fields[-1].ColumnSpan, colSpan)
-            //            .Set(model => model.Fields[-1].Options, options)
-            //            .Set(model => model.Fields[-1].Optional, optional)
-            //            .Set(model => model.Fields[-1].CSS, css);
-            //await _db.Companies.UpdateOneAsync(filter, update);
+            var update = Builders<InstanceType>.Update
+                        .Set(model => model.Fields[-1].Name, name)
+                        .Set(model => model.Fields[-1].Row, row)
+                        .Set(model => model.Fields[-1].Column, col)
+                        .Set(model => model.Fields[-1].ColumnSpan, colSpan)
+                        .Set(model => model.Fields[-1].Options, options)
+                        .Set(model => model.Fields[-1].Optional, optional)
+                        .Set(model => model.Fields[-1].SearchShow, searchShow)
+                        .Set(model => model.Fields[-1].SearchOrder, searchOrder);
+            await _db.Types.UpdateOneAsync(filter, update);
         }
 
         async public Task CreateInstance(Dictionary<string, string> data)
