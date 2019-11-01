@@ -117,13 +117,14 @@
     /// </summary>
     private const string LastOrganizationLabel = "LastOrganizationLabel";
 
-    async protected override Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         await LoadOrganizationData();
     }
 
     private async Task LoadOrganizationData()
     {
+        _appState.LastOrganizationId = Id;
         Organization = await _api.GetOrganizationById(Id);
         await GetDataTypes();
         localStorage.SetItem(LastOrganizationLabel, Id);

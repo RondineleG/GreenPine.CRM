@@ -155,3 +155,7 @@ html {
 .new-field {
     background-color: lightgray;
 }
+
+.dark-nav-dropdown {
+    color: black !important;
+}

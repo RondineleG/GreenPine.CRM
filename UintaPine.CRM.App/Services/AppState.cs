@@ -34,6 +34,20 @@ namespace UintaPine.CRM.App.Services
             }
         }
 
+        private string _lastOrganizationId { get; set; }
+        public string LastOrganizationId
+        {
+            get
+            {
+                return _lastOrganizationId;
+            }
+            set
+            {
+                _lastOrganizationId = value;
+                NotifyStateChanged();
+            }
+        }
+
         private bool _isInitialized { get; set; } = false;
         public bool IsInitialized
         {

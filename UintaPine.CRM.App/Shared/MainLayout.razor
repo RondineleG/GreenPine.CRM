@@ -17,7 +17,7 @@
                 SuccessIconClass="fa fa-thumbs-up"
                 ErrorIconClass="fas fa-exclamation-circle" />
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <NavLink class="navbar-brand nav-link" href="/">
         <i class="fas fa-tree mr-1"></i> <span>Uinta Pine</span>
     </NavLink>
@@ -36,7 +36,7 @@
                         @if (_appState.Companies.Count > 0)
                         {
                             <li class="nav-item">
-                                <NavLink class="nav-link" href="@($"portal/{LastOrganizationId}")">
+                                <NavLink class="nav-link" href="@($"portal/{_appState.LastOrganizationId}")">
                                     <i class="fas fa-users mr-2"></i>Portal
                                 </NavLink>
                             </li>
@@ -49,7 +49,7 @@
                                     <div class="dropdown-menu organization-dropdown-menu" aria-labelledby="navbarDropdown">
                                         @foreach (var organization in _appState.Companies)
                                         {
-                                            <NavLink class="nav-link" href="@($"portal/{organization.Id}")">
+                                            <NavLink class="nav-link dark-nav-dropdown" href="@($"portal/{organization.Id}")">
                                                 <i class="fas fa-exchange-alt mr-2"></i> @organization.Name
                                             </NavLink>
                                         }
@@ -95,7 +95,6 @@
 @code {
 
     private const string LastOrganizationLabel = "LastOrganizationLabel";
-    private string LastOrganizationId { get; set; }
 
     protected override void OnInitialized()
     {
@@ -118,10 +117,10 @@
 
             _appState.Companies = await _api.GetCompaniesByUser(_appState.User.Id);
 
-            LastOrganizationId = localStorage.GetItem<string>(LastOrganizationLabel);
-            if(LastOrganizationId == null)
+            _appState.LastOrganizationId = localStorage.GetItem<string>(LastOrganizationLabel);
+            if(_appState.LastOrganizationId == null)
             {
-                LastOrganizationId = _appState.Companies.FirstOrDefault()?.Id;
+                _appState.LastOrganizationId = _appState.Companies.FirstOrDefault()?.Id;
             }
         }
         else
