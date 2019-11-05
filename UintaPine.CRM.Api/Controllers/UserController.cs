@@ -1,16 +1,15 @@
-﻿using System;
-using System.Text;
-using System.Threading.Tasks;
-using UintaPine.CRM.Logic.Server;
+﻿using GreenPine.CRM.Logic.Server;
+using GreenPine.CRM.Model.Database;
+using GreenPine.CRM.Model.Server;
+using GreenPine.CRM.Model.Shared.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
-using UintaPine.CRM.Model.Shared.Requests;
-using UintaPine.CRM.Model.Server;
-using UintaPine.CRM.Model.Database;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace UintaPine.CRM.Api.Controllers
+namespace GreenPine.CRM.Api.Controllers
 {
     public class UserController : Controller
     {

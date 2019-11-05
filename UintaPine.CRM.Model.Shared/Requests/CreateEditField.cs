@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using UintaPine.CRM.Model.Shared.Enumerations;
+﻿using GreenPine.CRM.Model.Shared.Enumerations;
 
-namespace UintaPine.CRM.Model.Shared.Requests
+namespace GreenPine.CRM.Model.Shared.Requests
 {
     public class CreateDataType
     {

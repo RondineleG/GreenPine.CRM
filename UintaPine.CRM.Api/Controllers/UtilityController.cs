@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using UintaPine.CRM.Logic.Server;
-using Microsoft.AspNetCore.Http;
+﻿using GreenPine.CRM.Logic.Server;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System.Threading.Tasks;
 
-namespace UintaPine.CRM.Api.Controllers
+namespace GreenPine.CRM.Api.Controllers
 {
     public class UtilityController : ControllerBase
     {

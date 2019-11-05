@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Blazor.Hosting;
 
-namespace UintaPine.CRM.App
+namespace GreenPine.CRM.App
 {
     public class Program
     {

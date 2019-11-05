@@ -1,10 +1,8 @@
-﻿using System;
+﻿using GreenPine.CRM.Model.Shared.Enumerations;
+using System;
 using System.Collections.Generic;
-using System.Text;
-using UintaPine.CRM.Model.Shared;
-using UintaPine.CRM.Model.Shared.Enumerations;
 
-namespace UintaPine.CRM.Model.Database
+namespace GreenPine.CRM.Model.Database
 {
     //organization Collection
     public class Organization

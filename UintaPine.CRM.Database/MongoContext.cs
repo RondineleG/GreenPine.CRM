@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
-using UintaPine.CRM.Model.Database;
+﻿using GreenPine.CRM.Model.Database;
+using Microsoft.Extensions.Configuration;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using System.Collections.Generic;
 
-namespace UintaPine.CRM.Database
+namespace GreenPine.CRM.Database
 {
     public class MongoContext
     {

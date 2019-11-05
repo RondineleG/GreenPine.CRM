@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UintaPine.CRM.Logic.Server\UintaPine.CRM.Logic.Server.csproj" />
+    <ProjectReference Include="..\UintaPine.CRM.Logic.Server\GreenPine.CRM.Logic.Server.csproj" />
   </ItemGroup>
 
 </Project>

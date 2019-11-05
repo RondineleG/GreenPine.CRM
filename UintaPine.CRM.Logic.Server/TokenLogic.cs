@@ -1,8 +1,11 @@
-﻿using JWT;
+﻿using GreenPine.CRM.Model.Database;
+using GreenPine.CRM.Model.Server;
+using JWT;
 using JWT.Algorithms;
 using JWT.Serializers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
@@ -10,13 +13,10 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using UintaPine.CRM.Model.Server;
-using UintaPine.CRM.Model.Database;
 
-namespace UintaPine.CRM.Logic.Server
+namespace GreenPine.CRM.Logic.Server
 {
-	public class TokenLogic
+    public class TokenLogic
 	{
 		private IConfiguration _configuration { get; set; }
 

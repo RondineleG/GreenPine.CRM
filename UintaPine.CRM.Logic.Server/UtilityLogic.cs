@@ -1,14 +1,12 @@
-﻿using UintaPine.CRM.Database;
-using UintaPine.CRM.Model.Database;
+﻿using GreenPine.CRM.Database;
+using GreenPine.CRM.Model.Database;
 using MongoDB.Driver;
 using System;
-using System.Collections.Generic;
 using System.Security.Cryptography;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace UintaPine.CRM.Logic.Server
+namespace GreenPine.CRM.Logic.Server
 {
     public class UtilityLogic
     {

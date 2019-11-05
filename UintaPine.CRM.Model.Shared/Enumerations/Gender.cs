@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace UintaPine.CRM.Model.Shared.Enumerations
+﻿namespace GreenPine.CRM.Model.Shared.Enumerations
 {
     public enum Gender
     {

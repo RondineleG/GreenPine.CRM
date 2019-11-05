@@ -1,7 +1,6 @@
-﻿using UintaPine.CRM.Model.Database;
-using UintaPine.CRM.Model.Shared;
+﻿using GreenPine.CRM.Model.Database;
 
-namespace UintaPine.CRM.Model.Server
+namespace GreenPine.CRM.Model.Server
 {
     public enum UserValidationResponseCode
     {

@@ -1,8 +1,9 @@
-using UintaPine.CRM.Database;
-using UintaPine.CRM.Logic.Server;
+using GreenPine.CRM.Database;
+using GreenPine.CRM.Logic.Server;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -10,10 +11,7 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Serialization;
-
-namespace UintaPine.CRM.Api
+namespace GreenPine.CRM.Api
 {
     public class Startup
     {

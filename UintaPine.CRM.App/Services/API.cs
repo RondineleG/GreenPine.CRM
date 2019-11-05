@@ -1,22 +1,16 @@
-﻿using UintaPine.CRM.App.Services;
+﻿using Blazored.Toast.Services;
+using GreenPine.CRM.Model.Shared.Requests;
+using GreenPine.CRM.Model.Shared.Responses;
+using Microsoft.AspNetCore.Blazor.Http;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Blazored.Toast;
-using Blazored.Toast.Services;
-using Blazored.Toast.Configuration;
-using UintaPine.CRM.Model.Shared;
-using System.Diagnostics;
-using Microsoft.AspNetCore.Blazor.Http;
-using UintaPine.CRM.Model.Shared.Responses;
-using UintaPine.CRM.Model.Shared.Requests;
 
-namespace UintaPine.CRM.App.Services
+namespace GreenPine.CRM.App.Services
 {
     public class API
     {

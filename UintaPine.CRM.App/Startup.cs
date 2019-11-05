@@ -1,13 +1,13 @@
-using UintaPine.CRM.App.Services;
+using Blazored.LocalStorage;
+using Blazored.Toast;
+using GreenPine.CRM.App.Services;
 using Microsoft.AspNetCore.Blazor.Http;
 using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.InteropServices;
-using Blazored.Toast;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
-using Blazored.LocalStorage;
 
-namespace UintaPine.CRM.App
+namespace GreenPine.CRM.App
 {
     public class Startup
     {

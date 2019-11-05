@@ -1,17 +1,15 @@
-﻿using System;
+﻿using GreenPine.CRM.Logic.Server;
+using GreenPine.CRM.Model.Database;
+using GreenPine.CRM.Model.Server;
+using GreenPine.CRM.Model.Shared.Requests;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using UintaPine.CRM.Logic.Server;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using UintaPine.CRM.Model.Shared;
-using UintaPine.CRM.Model.Database;
-using UintaPine.CRM.Model.Shared.Requests;
-using UintaPine.CRM.Model.Server;
 
-namespace UintaPine.CRM.Api.Controllers
+namespace GreenPine.CRM.Api.Controllers
 {
     public class OrganizationController : ControllerBase
     {

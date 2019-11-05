@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using UintaPine.CRM.Model.Shared.Responses;
+using GreenPine.CRM.Model.Shared.Responses;
 
-namespace UintaPine.CRM.App.Services
+namespace GreenPine.CRM.App.Services
 {
     public class AppState
     {

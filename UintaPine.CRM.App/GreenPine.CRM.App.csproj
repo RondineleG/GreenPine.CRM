@@ -20,10 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UintaPine.CRM.Model.Shared\UintaPine.CRM.Model.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Watch Include="..\**\*.html" />
     <Watch Include="..\**\*.razor" />
     <Watch Include="..\**\*.scss" />
@@ -38,6 +34,10 @@
     <Watch Remove="Pages\OrganizationFields.razor" />
     <Watch Remove="Pages\OrganizationPortal.razor" />
     <Watch Remove="Pages\OrganizationSettings.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UintaPine.CRM.Model.Shared\GreenPine.CRM.Model.Shared.csproj" />
   </ItemGroup>
 
 </Project>

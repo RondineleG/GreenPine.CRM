@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using UintaPine.CRM.Model.Shared.Enumerations;
+﻿using GreenPine.CRM.Model.Shared.Enumerations;
+using System;
 
-namespace UintaPine.CRM.Model.Shared.Responses
+namespace GreenPine.CRM.Model.Shared.Responses
 {
     public class Customer
     {

@@ -1,11 +1,6 @@
-﻿using UintaPine.CRM.Model.Database;
-using UintaPine.CRM.Model.Shared;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
+﻿using GreenPine.CRM.Model.Database;
 
-namespace UintaPine.CRM.Model.Server
+namespace GreenPine.CRM.Model.Server
 {
     public static class FieldToSharedResponseField
     {

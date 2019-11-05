@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace UintaPine.CRM.Model.Database
+namespace GreenPine.CRM.Model.Database
 {
     public class Ping
     {

@@ -1,13 +1,13 @@
-﻿using UintaPine.CRM.Database;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using UintaPine.CRM.Model.Database;
-using MongoDB.Driver;
-using System.Linq;
-using UintaPine.CRM.Model.Shared.Enumerations;
+﻿using GreenPine.CRM.Database;
+using GreenPine.CRM.Model.Database;
+using GreenPine.CRM.Model.Shared.Enumerations;
 using MongoDB.Bson;
+using MongoDB.Driver;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace UintaPine.CRM.Logic.Server
+namespace GreenPine.CRM.Logic.Server
 {
     public class OrganizationLogic
     {

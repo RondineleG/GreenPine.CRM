@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace UintaPine.CRM.Model.Shared.Responses
+namespace GreenPine.CRM.Model.Shared.Responses
 {
     public class User
     {
