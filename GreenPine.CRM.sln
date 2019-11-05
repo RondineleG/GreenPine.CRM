@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29123.89
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenPine.CRM.Database", "UintaPine.CRM.Database\GreenPine.CRM.Database.csproj", "{D7D4505F-9526-42F5-B2F1-70CF81A6F9B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenPine.CRM.Api", "GreenPine.CRM.Api\GreenPine.CRM.Api.csproj", "{5920E69B-DE30-453E-B0F8-55E5D7DA0B64}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenPine.CRM.Logic.Server", "UintaPine.CRM.Logic.Server\GreenPine.CRM.Logic.Server.csproj", "{DB22E9C9-D210-471C-BBFD-97689CD11ECC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenPine.CRM.App", "GreenPine.CRM.App\GreenPine.CRM.App.csproj", "{A6CF65D4-3DF0-4F4D-A2DA-6BAFB3B6741C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenPine.CRM.Api", "UintaPine.CRM.Api\GreenPine.CRM.Api.csproj", "{F4ABAD0B-F5F2-43F8-A6C3-5EAF73C19EFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenPine.CRM.Database", "GreenPine.CRM.Database\GreenPine.CRM.Database.csproj", "{4AA25F2A-A59F-49FF-A90C-868690266903}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenPine.CRM.App", "UintaPine.CRM.App\GreenPine.CRM.App.csproj", "{AC33B116-6B33-491A-B75D-57449F83A014}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenPine.CRM.Logic.Server", "GreenPine.CRM.Logic.Server\GreenPine.CRM.Logic.Server.csproj", "{76ADB281-DE61-48E1-B552-6BD8511F974B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenPine.CRM.Model.Shared", "UintaPine.CRM.Model.Shared\GreenPine.CRM.Model.Shared.csproj", "{B7C26128-BB7C-4B32-9128-67F7CE30C552}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenPine.CRM.Model.Database", "GreenPine.CRM.Model.Database\GreenPine.CRM.Model.Database.csproj", "{F6D92E17-49BB-4B88-81BE-F92B40C13AC6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenPine.CRM.Model.Database", "UintaPine.CRM.Model.Database\GreenPine.CRM.Model.Database.csproj", "{636EF1E3-AE65-4FE5-AF13-34519272B375}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenPine.CRM.Model.Server", "GreenPine.CRM.Model.Server\GreenPine.CRM.Model.Server.csproj", "{3D3B3BD2-8B9F-4494-972F-85236B1CCEA0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenPine.CRM.Model.Server", "UintaPine.CRM.Model.Server\GreenPine.CRM.Model.Server.csproj", "{7BFEC8CE-D26F-4A43-916B-6202FABCA4FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenPine.CRM.Model.Shared", "GreenPine.CRM.Model.Shared\GreenPine.CRM.Model.Shared.csproj", "{B3A99BBB-5549-4332-B819-6DFAB67F6875}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,34 +23,34 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D7D4505F-9526-42F5-B2F1-70CF81A6F9B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D7D4505F-9526-42F5-B2F1-70CF81A6F9B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D7D4505F-9526-42F5-B2F1-70CF81A6F9B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D7D4505F-9526-42F5-B2F1-70CF81A6F9B2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DB22E9C9-D210-471C-BBFD-97689CD11ECC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DB22E9C9-D210-471C-BBFD-97689CD11ECC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DB22E9C9-D210-471C-BBFD-97689CD11ECC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DB22E9C9-D210-471C-BBFD-97689CD11ECC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F4ABAD0B-F5F2-43F8-A6C3-5EAF73C19EFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F4ABAD0B-F5F2-43F8-A6C3-5EAF73C19EFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F4ABAD0B-F5F2-43F8-A6C3-5EAF73C19EFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F4ABAD0B-F5F2-43F8-A6C3-5EAF73C19EFC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AC33B116-6B33-491A-B75D-57449F83A014}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AC33B116-6B33-491A-B75D-57449F83A014}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AC33B116-6B33-491A-B75D-57449F83A014}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AC33B116-6B33-491A-B75D-57449F83A014}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B7C26128-BB7C-4B32-9128-67F7CE30C552}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B7C26128-BB7C-4B32-9128-67F7CE30C552}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B7C26128-BB7C-4B32-9128-67F7CE30C552}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B7C26128-BB7C-4B32-9128-67F7CE30C552}.Release|Any CPU.Build.0 = Release|Any CPU
-		{636EF1E3-AE65-4FE5-AF13-34519272B375}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{636EF1E3-AE65-4FE5-AF13-34519272B375}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{636EF1E3-AE65-4FE5-AF13-34519272B375}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{636EF1E3-AE65-4FE5-AF13-34519272B375}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7BFEC8CE-D26F-4A43-916B-6202FABCA4FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7BFEC8CE-D26F-4A43-916B-6202FABCA4FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7BFEC8CE-D26F-4A43-916B-6202FABCA4FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7BFEC8CE-D26F-4A43-916B-6202FABCA4FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5920E69B-DE30-453E-B0F8-55E5D7DA0B64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5920E69B-DE30-453E-B0F8-55E5D7DA0B64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5920E69B-DE30-453E-B0F8-55E5D7DA0B64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5920E69B-DE30-453E-B0F8-55E5D7DA0B64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6CF65D4-3DF0-4F4D-A2DA-6BAFB3B6741C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6CF65D4-3DF0-4F4D-A2DA-6BAFB3B6741C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6CF65D4-3DF0-4F4D-A2DA-6BAFB3B6741C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6CF65D4-3DF0-4F4D-A2DA-6BAFB3B6741C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AA25F2A-A59F-49FF-A90C-868690266903}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AA25F2A-A59F-49FF-A90C-868690266903}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AA25F2A-A59F-49FF-A90C-868690266903}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AA25F2A-A59F-49FF-A90C-868690266903}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76ADB281-DE61-48E1-B552-6BD8511F974B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76ADB281-DE61-48E1-B552-6BD8511F974B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76ADB281-DE61-48E1-B552-6BD8511F974B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76ADB281-DE61-48E1-B552-6BD8511F974B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6D92E17-49BB-4B88-81BE-F92B40C13AC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6D92E17-49BB-4B88-81BE-F92B40C13AC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6D92E17-49BB-4B88-81BE-F92B40C13AC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6D92E17-49BB-4B88-81BE-F92B40C13AC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D3B3BD2-8B9F-4494-972F-85236B1CCEA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D3B3BD2-8B9F-4494-972F-85236B1CCEA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D3B3BD2-8B9F-4494-972F-85236B1CCEA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D3B3BD2-8B9F-4494-972F-85236B1CCEA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3A99BBB-5549-4332-B819-6DFAB67F6875}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3A99BBB-5549-4332-B819-6DFAB67F6875}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3A99BBB-5549-4332-B819-6DFAB67F6875}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3A99BBB-5549-4332-B819-6DFAB67F6875}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
