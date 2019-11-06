@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UintaPine.CRM.Database\GreenPine.CRM.Database.csproj" />
-    <ProjectReference Include="..\UintaPine.CRM.Model.Server\GreenPine.CRM.Model.Server.csproj" />
+    <ProjectReference Include="..\GreenPine.CRM.Database\GreenPine.CRM.Database.csproj" />
+    <ProjectReference Include="..\GreenPine.CRM.Model.Server\GreenPine.CRM.Model.Server.csproj" />
   </ItemGroup>
 
 </Project>

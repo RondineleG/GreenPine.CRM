@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UintaPine.CRM.Model.Database\GreenPine.CRM.Model.Database.csproj" />
+    <ProjectReference Include="..\GreenPine.CRM.Model.Database\GreenPine.CRM.Model.Database.csproj" />
   </ItemGroup>
 
 </Project>

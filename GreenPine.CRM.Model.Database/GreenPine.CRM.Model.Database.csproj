@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UintaPine.CRM.Model.Shared\GreenPine.CRM.Model.Shared.csproj" />
+    <ProjectReference Include="..\GreenPine.CRM.Model.Shared\GreenPine.CRM.Model.Shared.csproj" />
   </ItemGroup>
 
 </Project>

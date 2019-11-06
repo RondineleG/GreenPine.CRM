@@ -37,7 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UintaPine.CRM.Model.Shared\GreenPine.CRM.Model.Shared.csproj" />
+    <ProjectReference Include="..\GreenPine.CRM.Model.Shared\GreenPine.CRM.Model.Shared.csproj" />
   </ItemGroup>
 
 </Project>
