@@ -1,5 +1,4 @@
 ﻿using GreenPine.CRM.Database;
-using GreenPine.CRM.Logic.Server;
 using GreenPine.CRM.Model.Database;
 using GreenPine.CRM.Model.Server;
 using MongoDB.Driver;
@@ -7,7 +6,7 @@ using System;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
-namespace UintaPine.CRM.Logic.Server
+namespace GreenPine.CRM.Logic.Server
 {
     public class UserLogic
     {
